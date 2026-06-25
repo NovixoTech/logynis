@@ -42,6 +42,13 @@
   color: var(--text);
 }
 
+.logoImg {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
 .main {
   flex: 1;
   max-width: 680px;
