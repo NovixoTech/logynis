@@ -46,7 +46,7 @@ export default function Home() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <span className={styles.logoMark}>S</span>
+          <img src="/logo.png" alt="StudySphere" className={styles.logoImg} />
           <span className={styles.logoText}>StudySphere</span>
         </div>
       </header>
