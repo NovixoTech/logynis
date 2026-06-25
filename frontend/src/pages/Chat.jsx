@@ -40,23 +40,65 @@ const MODE_CONFIG = {
   },
 };
 
-// Hardcoded backend URL
 const API_URL = "https://studysphere-api-production.up.railway.app";
+const MAX_STORED_MESSAGES = 50;
+
+function getStorageKey(mode) {
+  return `studysphere_chat_${mode}`;
+}
+
+function loadMessages(mode) {
+  try {
+    const stored = localStorage.getItem(getStorageKey(mode));
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveMessages(mode, messages) {
+  try {
+    // Only keep last 50 messages to avoid storage limits
+    const toSave = messages.slice(-MAX_STORED_MESSAGES);
+    localStorage.setItem(getStorageKey(mode), JSON.stringify(toSave));
+  } catch {
+    // Storage full or unavailable — fail silently
+  }
+}
+
+function getFriendlyError(err) {
+  const msg = err.message || "";
+  if (msg.includes("rate limit") || msg.includes("429")) {
+    return "The AI is a bit busy right now. Wait a moment and try again.";
+  }
+  if (msg.includes("Failed to fetch") || msg.includes("network")) {
+    return "Can't reach the server. Check your connection and try again.";
+  }
+  if (msg.includes("All AI providers failed")) {
+    return "All AI services are busy right now. Please try again in a minute.";
+  }
+  if (msg.includes("API key")) {
+    return "There's a configuration issue. Please contact support.";
+  }
+  return "Something went wrong. Please try again.";
+}
 
 export default function Chat() {
   const { mode } = useParams();
   const navigate = useNavigate();
   const config = MODE_CONFIG[mode] || MODE_CONFIG.study;
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => loadMessages(mode));
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [saved, setSaved] = useState(false);
 
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
+  // Track online/offline
   useEffect(() => {
     const onOnline = () => setIsOffline(false);
     const onOffline = () => setIsOffline(true);
@@ -68,10 +110,22 @@ export default function Chat() {
     };
   }, []);
 
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      saveMessages(mode, messages);
+      setSaved(true);
+      const t = setTimeout(() => setSaved(false), 1500);
+      return () => clearTimeout(t);
+    }
+  }, [messages, mode]);
+
+  // Auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  // Auto-resize textarea
   useEffect(() => {
     const ta = textareaRef.current;
     if (!ta) return;
@@ -92,7 +146,6 @@ export default function Chat() {
     setError(null);
 
     try {
-      // Strip any extra fields before sending to API
       const cleanMessages = updatedMessages.map(({ role, content }) => ({ role, content }));
 
       const res = await fetch(`${API_URL}/api/chat`, {
@@ -102,14 +155,20 @@ export default function Chat() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Something went wrong");
+        const err = await res.json().catch(() => ({ error: "Server error" }));
+        throw new Error(err.error || `Server error ${res.status}`);
       }
 
       const data = await res.json();
-      setMessages([...updatedMessages, { role: "assistant", content: data.text, provider: data.provider }]);
+      const assistantMessage = {
+        role: "assistant",
+        content: data.text,
+        provider: data.provider,
+      };
+      setMessages([...updatedMessages, assistantMessage]);
     } catch (err) {
-      setError(err.message);
+      setError(getFriendlyError(err));
+      // Remove user message if it failed so they can try again
       setMessages(messages);
     } finally {
       setLoading(false);
@@ -126,6 +185,7 @@ export default function Chat() {
   function clearChat() {
     setMessages([]);
     setError(null);
+    localStorage.removeItem(getStorageKey(mode));
   }
 
   return (
@@ -139,9 +199,8 @@ export default function Chat() {
           <span className={styles.modeLabel}>{config.label}</span>
         </div>
         <div className={styles.headerRight}>
-          {isOffline && (
-            <span className={styles.offlineBadge}>Offline</span>
-          )}
+          {isOffline && <span className={styles.offlineBadge}>Offline</span>}
+          {saved && <span className={styles.savedBadge}>Saved</span>}
           {messages.length > 0 && (
             <button className={styles.clearBtn} onClick={clearChat}>
               Clear
@@ -200,6 +259,9 @@ export default function Chat() {
         {error && (
           <div className={styles.error}>
             ⚠️ {error}
+            <button className={styles.retryBtn} onClick={() => setError(null)}>
+              Dismiss
+            </button>
           </div>
         )}
 
@@ -214,7 +276,7 @@ export default function Chat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={config.placeholder}
+            placeholder={isOffline ? "You're offline..." : config.placeholder}
             rows={1}
             disabled={loading || isOffline}
           />
@@ -226,7 +288,7 @@ export default function Chat() {
             {loading ? "..." : "→"}
           </button>
         </div>
-        <p className={styles.hint}>Enter to send · Shift+Enter for new line</p>
+        <p className={styles.hint}>Enter to send · Shift+Enter for new line · Chats saved automatically</p>
       </div>
     </div>
   );
@@ -247,4 +309,4 @@ function formatResponse(text) {
     .replace(/\n/g, "<br/>")
     .replace(/^(?!<[hup])(.+)$/gm, "<p>$1</p>")
     .replace(/<p><\/p>/g, "");
-}
+    }
