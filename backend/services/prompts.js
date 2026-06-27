@@ -9,11 +9,11 @@ export function buildSystemPrompt(user) {
 Student Profile:
 - Name: ${user?.name || "Student"}
 - Country: ${user?.country || "Nigeria"}
-- Education Level: ${user?.educationLevel || "Secondary School"}
-- Sub Level: ${user?.subLevel || ""}
-- Exam Type: ${user?.examType || ""}
+- Education Level: ${user?.educationlevel || user?.educationLevel || "Secondary School"}
+- Sub Level: ${user?.sublevel || user?.subLevel || ""}
+- Exam Type: ${user?.examtype || user?.examType || ""}
 - Subjects: ${subjectList}
-- Course Field: ${user?.courseField || ""}
+- Course Field: ${user?.coursefield || user?.courseField || ""}
 - Goal: ${user?.goal || "Daily Study"}
 
 BEHAVIOR RULES:
@@ -31,16 +31,7 @@ BEHAVIOR RULES:
   5. Summary`;
 }
 
-// Route AI based on mode
 export function getAIProvider(mode) {
   const geminiModes = ["study", "exam", "revision", "homework"];
   return geminiModes.includes(mode) ? "gemini" : "groq";
 }
-
-export const STUDY_PROMPTS = {
-  study: "You are a patient study assistant. Explain concepts clearly step by step.",
-  exam: "You are an exam coach. Focus on practice questions and model answers.",
-  homework: "You are a homework helper. Walk through problems step by step.",
-  revision: "You are a revision specialist. Create clear summaries and key points.",
-  motivation: "You are a supportive study coach. Be encouraging and positive.",
-};
