@@ -230,6 +230,5 @@
   font-weight: 600;
   transition: opacity 0.15s;
 }
-
 .saveBtn:disabled { opacity: 0.6; }
-.saveBtn:not(:disabled):hover { opacity: 0.88; }
+.saveBtn:not(:disabled):hover { opacity: 0.88;}
