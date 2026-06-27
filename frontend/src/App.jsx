@@ -7,11 +7,12 @@ import Signup from "./pages/auth/Signup.jsx";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Timetable from "./pages/timetable/Timetable.jsx";
 import Feed from "./pages/feed/Feed.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontSize: "1.5rem" }}>
+    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", color:"var(--text-muted)", fontFamily:"var(--font-body)" }}>
       Loading...
     </div>
   );
@@ -29,18 +30,14 @@ function PublicRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Public */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-
-      {/* Protected */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/chat/:mode" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
       <Route path="/timetable" element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
       <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
-
-      {/* Fallback */}
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
@@ -52,4 +49,4 @@ export default function App() {
       <AppRoutes />
     </AuthProvider>
   );
-       }
+                      }
