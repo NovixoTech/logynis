@@ -4,10 +4,7 @@ import Home from "./pages/Home.jsx";
 import Chat from "./pages/Chat.jsx";
 import Login from "./pages/auth/Login.jsx";
 import Signup from "./pages/auth/Signup.jsx";
-import Dashboard from "./pages/dashboard/Dashboard.jsx";
-import Timetable from "./pages/timetable/Timetable.jsx";
-import Feed from "./pages/feed/Feed.jsx";
-import Profile from "./pages/profile/Profile.jsx";
+import Settings from "./pages/Settings.jsx";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -33,11 +30,8 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></PublicRoute>} />
       <Route path="/chat/:mode" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
-      <Route path="/timetable" element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
-      <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
