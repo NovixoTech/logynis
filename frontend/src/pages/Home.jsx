@@ -15,8 +15,8 @@ export default function Home() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <div className={styles.logoMark}>S</div>
-          <span className={styles.logoText}>Logynis — Your AI Study Companion That Thinks With You</span>
+          <div className={styles.logoMark}>logo.png</div>
+          <span className={styles.logoText}>Logynis</span>
         </div>
         <div className={styles.headerBtns}>
           <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
