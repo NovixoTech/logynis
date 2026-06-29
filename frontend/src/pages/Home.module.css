@@ -1,0 +1,24 @@
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+.header { padding: 1rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 0.6rem; }
+.logoMark { width: 34px; height: 34px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: #fff; }
+.logoText { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text); }
+.headerBtns { display: flex; gap: 0.625rem; }
+.loginBtn { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); padding: 0.4rem 0.875rem; border-radius: 50px; border: 1.5px solid var(--border); transition: all 0.15s; }
+.loginBtn:hover { color: var(--text); border-color: var(--text-muted); }
+.signupBtn { font-size: 0.875rem; font-weight: 600; color: #fff; padding: 0.4rem 1rem; border-radius: 50px; background: var(--accent); transition: opacity 0.15s; }
+.signupBtn:hover { opacity: 0.88; }
+.main { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 2.5rem 1.25rem 2rem; }
+.headline { font-family: var(--font-display); font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 0.75rem; }
+.accent { color: var(--accent); }
+.sub { font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem; }
+.grid { display: flex; flex-direction: column; gap: 0.625rem; }
+.card { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); text-align: left; transition: border-color 0.2s, transform 0.15s; box-shadow: var(--shadow-sm); }
+.card:hover { border-color: var(--accent); transform: translateX(3px); }
+.cardLabel { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--text); flex: 1; }
+.cardDesc { font-size: 0.825rem; color: var(--text-muted); flex: 2; }
+.arrow { color: var(--text-muted); font-size: 1rem; transition: color 0.2s; }
+.card:hover .arrow { color: var(--accent); }
+.footer { padding: 1.25rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); }
+.footer a { color: var(--accent); }
+@media (max-width: 600px) { .cardDesc { display: none; } }
