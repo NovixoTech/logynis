@@ -25,7 +25,7 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <h1 className={styles.headline}>Your AI Study Companion,<br /><span className={styles.accent}> That Thinks With You.</span></h1>
-        <p className={styles.sub}>Pick a mode and start learning. No sign-up needed to try.</p>
+        <p className={styles.sub}>Pick a mode and start learning.</p>
         <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/chat/${m.id}`)}>
