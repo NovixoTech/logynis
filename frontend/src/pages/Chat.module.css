@@ -3,7 +3,7 @@
 /* Sidebar */
 .sidebar { width: 56px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 0.75rem 0; flex-shrink: 0; }
 .logoWrap { cursor: pointer; margin-bottom: 1.25rem; }
-.logoMark { width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: #fff; }
+.logoMark { width: 36px; height: 36px; border-radius: 10px; object-fit: contain; display: block; }
 .nav { flex: 1; display: flex; flex-direction: column; gap: 0.2rem; width: 100%; padding: 0 0.5rem; }
 .navBtn { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); color: var(--text-muted); transition: background 0.15s, color 0.15s; margin: 0 auto; }
 .navBtn:hover { background: var(--surface-2); color: var(--text); }
