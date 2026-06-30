@@ -47,10 +47,20 @@ export default function Chat() {
 
   const bottomRef = useRef(null);
   const taRef = useRef(null);
-
-  useEffect(() => { setMessages(load(mode)); setError(null); }, [mode]);
+  const skipSaveRef = useRef(false);
 
   useEffect(() => {
+    skipSaveRef.current = true;
+    setMessages(load(mode));
+    setError(null);
+  }, [mode]);
+
+  useEffect(() => {
+    if (skipSaveRef.current) {
+      skipSaveRef.current = false;
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
     if (messages.length > 0) save(mode, messages);
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, mode]);
@@ -231,4 +241,4 @@ export default function Chat() {
       </div>
     </div>
   );
-   }
+         }
