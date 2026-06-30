@@ -42,8 +42,7 @@ export default function Settings() {
             <label className={styles.label}>Name</label>
             <input className={styles.input} value={name} onChange={e => setName(e.target.value)} />
           </div>
-         
-          <div className={styles.section}>
+        <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Session</h2>
           <button className={styles.logoutBtn} onClick={() => { logout(); navigate("/"); }}>
             <IconLogout size={16} /> Logout
