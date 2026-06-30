@@ -9,7 +9,7 @@ import Settings from "./pages/Settings.jsx";
 function Protected({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",color:"#6b7280"}}>Loading...</div>;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/signup" replace />;
   return children;
 }
 
@@ -26,7 +26,7 @@ function Routes_() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Public><Login /></Public>} />
       <Route path="/signup" element={<Public><Signup /></Public>} />
-      <Route path="/chat/:mode" element={<Chat />} />
+      <Route path="/chat/:mode" element={<Protected><Chat /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
