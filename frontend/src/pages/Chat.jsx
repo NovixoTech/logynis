@@ -14,9 +14,9 @@ const MODES = [
 
 const API = "https://studysphere-api-production.up.railway.app";
 
-function getKey(mode) { return `ss_chat_${mode}`; }
-function load(mode) { try { return JSON.parse(localStorage.getItem(getKey(mode)) || "[]"); } catch { return []; } }
-function save(mode, msgs) { try { localStorage.setItem(getKey(mode), JSON.stringify(msgs.slice(-50))); } catch {} }
+function getKey(mode, userId) { return `ss_chat_${userId || "guest"}_${mode}`; }
+function load(mode, userId) { try { return JSON.parse(localStorage.getItem(getKey(mode, userId)) || "[]"); } catch { return []; } }
+function save(mode, userId, msgs) { try { localStorage.setItem(getKey(mode, userId), JSON.stringify(msgs.slice(-50))); } catch {} }
 
 function formatResponse(text) {
   return text
@@ -37,9 +37,10 @@ export default function Chat() {
   const { mode = "study" } = useParams();
   const navigate = useNavigate();
   const { token, user } = useAuth();
+  const userId = user?.id;
   const active = MODES.find(m => m.id === mode) || MODES[0];
 
-  const [messages, setMessages] = useState(() => load(mode));
+  const [messages, setMessages] = useState(() => load(mode, userId));
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -51,9 +52,9 @@ export default function Chat() {
 
   useEffect(() => {
     skipSaveRef.current = true;
-    setMessages(load(mode));
+    setMessages(load(mode, userId));
     setError(null);
-  }, [mode]);
+  }, [mode, userId]);
 
   useEffect(() => {
     if (skipSaveRef.current) {
@@ -61,9 +62,9 @@ export default function Chat() {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
       return;
     }
-    if (messages.length > 0) save(mode, messages);
+    if (messages.length > 0) save(mode, userId, messages);
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, mode]);
+  }, [messages, mode, userId]);
 
   useEffect(() => {
     const ta = taRef.current;
@@ -156,7 +157,7 @@ export default function Chat() {
           <div className={styles.topRight}>
             {user && <span className={styles.userChip}>{user.name?.split(" ")[0]}</span>}
             {messages.length > 0 && (
-              <button className={styles.newBtn} onClick={() => { setMessages([]); localStorage.removeItem(getKey(mode)); }} title="New chat">
+              <button className={styles.newBtn} onClick={() => { setMessages([]); localStorage.removeItem(getKey(mode, userId)); }} title="New chat">
                 <IconPlus size={14} />
               </button>
             )}
@@ -214,7 +215,7 @@ export default function Chat() {
           <div ref={bottomRef} />
         </div>
 
-       {/* Input */}
+        {/* Input */}
         <div className={styles.inputWrap}>
           <div className={styles.inputBox}>
             <textarea
@@ -241,4 +242,4 @@ export default function Chat() {
       </div>
     </div>
   );
-    }
+}
