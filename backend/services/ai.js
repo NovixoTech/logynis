@@ -5,7 +5,7 @@ const ai = new NovixoAI({
     groq: process.env.GROQ_API_KEY,
     gemini: process.env.GEMINI_API_KEY,
   },
-  providers: ["groq", "gemini"],
+  providers: ["gemini", "groq"],
   models: {
     groq: "llama-3.3-70b-versatile",
     gemini: "gemini-2.0-flash",
