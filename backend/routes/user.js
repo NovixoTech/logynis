@@ -25,11 +25,21 @@ router.get("/profile", authMiddleware, async (req, res) => {
 // PUT /user/update
 router.put("/update", authMiddleware, async (req, res) => {
   try {
-    const { name, country, educationLevel, subLevel, subjects, courseField, courseName, goal } = req.body;
+    const { name, country, educationLevel, subLevel, examType, subjects, courseField, courseName, goal } = req.body;
 
     const { data: user, error } = await supabase
       .from("users")
-      .update({ name, country, educationLevel, subLevel, subjects, courseField, courseName, goal })
+      .update({
+        name,
+        country,
+        educationlevel: educationLevel,
+        sublevel: subLevel,
+        examtype: examType,
+        subjects,
+        coursefield: courseField,
+        coursename: courseName,
+        goal,
+      })
       .eq("id", req.user.id)
       .select()
       .single();
@@ -39,6 +49,7 @@ router.put("/update", authMiddleware, async (req, res) => {
     const { password: _, ...safeUser } = user;
     res.json(safeUser);
   } catch (err) {
+    console.error("[user-update]", err.message);
     res.status(500).json({ error: "Failed to update profile" });
   }
 });
