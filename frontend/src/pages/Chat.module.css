@@ -41,7 +41,7 @@
 /* Input */
 .inputWrap { padding: 1rem 1.25rem 1.5rem; background: var(--surface); flex-shrink: 0; max-width: 760px; width: 100%; margin: 0 auto; }
 .inputBox { display: flex; gap: 0.75rem; align-items: flex-end; }
-.textarea { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 1.0625rem; font-weight: 500; line-height: 1.6; resize: none; min-height: 28px; max-height: 160px; padding: 0.5rem 0; }
+.textarea { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 1.05rem; font-weight: 500; line-height: 1.6; resize: none; min-height: 28px; max-height: 160px; padding: 0.5rem 0; }
 .textarea::placeholder { color: var(--text-muted); font-weight: 500; }
 .textarea:disabled { opacity: 0.5; }
 .sendBtn { width: 36px; height: 36px; background: var(--border); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s, transform 0.1s; margin-bottom: 0.25rem; }
