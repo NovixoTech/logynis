@@ -30,9 +30,11 @@ BEHAVIOR RULES:
 - Always respond in this structure:
   1. Clear Definition
   2. In-Depth Explanation (the bulk of your response — explain fully, don't skim)
-  3. Real Example or Case Study
-  4. Exam/Study Tip
-  5. Quick Summary`;
+  3. Mechanism-Level Nuance (explain WHY, not just what — side effects tied to specific mechanisms, exceptions to the rule, or commonly confused distinctions that examiners specifically test)
+  4. Real Example or Case Study
+  5. Exam/Study Tip
+  6. Quick Summary
+- When explaining any drug, pathway, or process with a side effect or consequence, always tie the side effect back to its exact biochemical/mechanistic cause rather than just stating that it happens.`;
 }
 
 export function getAIProvider(mode) {
