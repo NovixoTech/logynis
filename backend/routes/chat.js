@@ -36,10 +36,19 @@ router.post("/", authMiddleware, async (req, res, next) => {
     logger.log({ action: "chat_request", mode, subject, userId: req.user.id });
 
     const start = Date.now();
-    const response = await ai.chat(messages, {
-      systemPrompt,
-      providers: [preferredProvider, preferredProvider === "groq" ? "gemini" : "groq"],
-    });
+
+    let response;
+    try {
+      response = await ai.chat(messages, {
+        systemPrompt,
+        providers: [preferredProvider, preferredProvider === "groq" ? "gemini" : "groq"],
+      });
+    } catch (aiErr) {
+      console.error("[AI_ERROR]", aiErr.message, aiErr.stack);
+      throw aiErr;
+    }
+
+    console.log("[AI_DEBUG] provider used:", response.provider, "| errors:", response.errors || "none");
 
     // Save chat to Supabase
     await supabase.from("chats").insert({
