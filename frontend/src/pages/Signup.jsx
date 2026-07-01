@@ -15,7 +15,7 @@ export default function Signup() {
   const [educationLevel, setEducationLevel] = useState("");
   const [examType, setExamType] = useState("");
   const [courseName, setCourseName] = useState("");
-  const [subjects, setSubjects] = useState("");
+  const [subjectBoxes, setSubjectBoxes] = useState(["", "", ""]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -33,10 +33,23 @@ export default function Signup() {
     setStep(3);
   }
 
+  function updateSubjectBox(index, value) {
+    const updated = [...subjectBoxes];
+    updated[index] = value;
+    setSubjectBoxes(updated);
+  }
+
+  function addSubjectBox() {
+    if (subjectBoxes.length >= 20) return;
+    setSubjectBoxes([...subjectBoxes, ""]);
+  }
+
   async function handleFinish() {
     if (educationLevel === "Entrance Exam" && !examType) { setError("Please select your exam type"); return; }
     if (educationLevel === "Tertiary Institution" && !courseName) { setError("Please enter your course name"); return; }
-    if (!subjects) { setError("Please enter at least one subject"); return; }
+
+    const subjects = subjectBoxes.map(s => s.trim()).filter(Boolean);
+    if (subjects.length === 0) { setError("Please enter at least one subject"); return; }
 
     setLoading(true); setError(null);
     try {
@@ -44,7 +57,7 @@ export default function Signup() {
         educationLevel,
         examType: educationLevel === "Entrance Exam" ? examType : undefined,
         courseName: educationLevel === "Tertiary Institution" ? courseName : undefined,
-        subjects,
+        subjects: subjects.join(", "),
       });
       navigate("/chat/study");
     } catch (e) {
@@ -113,8 +126,40 @@ export default function Signup() {
             )}
 
             <div className={styles.field}>
-              <label className={styles.label}>Subjects</label>
-              <input className={styles.input} placeholder="e.g. Maths, Physics, English" value={subjects} onChange={e => setSubjects(e.target.value)} onKeyDown={e => e.key === "Enter" && handleFinish()} />
+              <label className={styles.label}>Your Subjects</label>
+              <p style={{ fontSize: "0.8rem", color: "#666", marginBottom: "0.5rem" }}>
+                Add each subject one at a time
+              </p>
+              {subjectBoxes.map((subj, i) => (
+                <input
+                  key={i}
+                  className={styles.input}
+                  style={{ marginBottom: "0.5rem" }}
+                  placeholder={`Subject ${i + 1}`}
+                  value={subj}
+                  onChange={e => updateSubjectBox(i, e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleFinish()}
+                />
+              ))}
+              {subjectBoxes.length < 20 && (
+                <button
+                  type="button"
+                  onClick={addSubjectBox}
+                  style={{
+                    background: "none",
+                    border: "1px dashed #999",
+                    borderRadius: "8px",
+                    padding: "0.5rem",
+                    width: "100%",
+                    cursor: "pointer",
+                    color: "#555",
+                    fontSize: "0.85rem",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  + Add another subject
+                </button>
+              )}
             </div>
 
             <button className={styles.btn} onClick={handleFinish} disabled={loading}>
