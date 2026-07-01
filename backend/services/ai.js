@@ -54,7 +54,7 @@ async function callGemini(messages, systemPrompt) {
 
 async function callGroq(messages, systemPrompt) {
   const body = {
-    model: "openai/gpt-oss-120b",
+    model: "llama-3.3-70b-versatile",
     messages: [{ role: "system", content: systemPrompt }, ...messages],
     max_tokens: 2048,
     temperature: 0.7,
