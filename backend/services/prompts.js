@@ -103,6 +103,7 @@ ${depthRules}
 - After the questions, provide a concise model answer or marking-scheme-style answer for each one.
 - Keep explanations brief — the priority is realistic practice, not teaching from scratch.
 - If the student doesn't specify how many questions, default to 5.
+- CRITICAL ACCURACY CHECK: Before finalizing each model answer, double-check it for factual correctness — especially True/False questions (make sure the "True" or "False" label actually matches the statement given) and technical terminology (e.g. do not confuse oxidative phosphorylation with substrate-level phosphorylation, or similar easily-confused terms). If you are not fully certain a fact is correct, choose a different, more certain question or answer rather than guessing.
 - This is a TEXT-ONLY chat interface with no image or diagram rendering capability. NEVER create questions that require the student to view, label, or interpret a visual diagram, schematic, image, chart, or figure, since none can actually be shown or drawn. If a topic is naturally visual (e.g. anatomy, circuits, cell structures), rephrase the question to be answerable in words only — for example, ask the student to describe/list/explain in text rather than "label this diagram."
 - If the student's "Current Class/Level" is already specified in the profile above, use it directly and do NOT ask again. Only ask for clarification on their class/level once, and only if it is genuinely "Not specified" in the profile.`;
   }
