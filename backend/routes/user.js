@@ -25,21 +25,28 @@ router.get("/profile", authMiddleware, async (req, res) => {
 // PUT /user/update
 router.put("/update", authMiddleware, async (req, res) => {
   try {
-    const { name, country, educationLevel, subLevel, examType, subjects, courseField, courseName, goal } = req.body;
+    const { name, country, educationLevel, subLevel, examType, subjects, courseField, courseName, goal, currentClass } = req.body;
+
+    const updatePayload = {
+      name,
+      country,
+      educationlevel: educationLevel,
+      sublevel: subLevel,
+      examtype: examType,
+      subjects,
+      coursefield: courseField,
+      coursename: courseName,
+      goal,
+    };
+
+    if (currentClass !== undefined) {
+      updatePayload.currentclass = currentClass;
+      updatePayload.classupdatedat = new Date().toISOString();
+    }
 
     const { data: user, error } = await supabase
       .from("users")
-      .update({
-        name,
-        country,
-        educationlevel: educationLevel,
-        sublevel: subLevel,
-        examtype: examType,
-        subjects,
-        coursefield: courseField,
-        coursename: courseName,
-        goal,
-      })
+      .update(updatePayload)
       .eq("id", req.user.id)
       .select()
       .single();
