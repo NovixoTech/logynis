@@ -22,32 +22,28 @@ function setCache(key, value) {
   cacheStore.set(key, { value, time: Date.now() });
 }
 
-async function callGemini(messages, systemPrompt) {
-  const contents = messages.map(m => ({
-    role: m.role === "assistant" ? "model" : "user",
-    parts: [{ text: m.content }],
-  }));
-
+async function callCerebras(messages, systemPrompt) {
   const body = {
-    contents,
-    systemInstruction: { parts: [{ text: systemPrompt }] },
-    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+    model: "llama-3.3-70b",
+    messages: [{ role: "system", content: systemPrompt }, ...messages],
+    max_tokens: 2048,
+    temperature: 0.7,
   };
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }
-  );
+  const res = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.CEREBRAS_API_KEY}`,
+    },
+    body: JSON.stringify(body),
+  });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(`gemini failed: ${data.error?.message || res.statusText}`);
+  if (!res.ok) throw new Error(`cerebras failed: ${data.error?.message || res.statusText}`);
 
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("gemini failed: empty response");
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) throw new Error("cerebras failed: empty response");
 
   return text;
 }
@@ -78,7 +74,37 @@ async function callGroq(messages, systemPrompt) {
   return text;
 }
 
-async function chat(messages, { systemPrompt, providers = ["groq", "gemini"] }) {
+async function callGemini(messages, systemPrompt) {
+  const contents = messages.map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }],
+  }));
+
+  const body = {
+    contents,
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+  };
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(`gemini failed: ${data.error?.message || res.statusText}`);
+
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error("gemini failed: empty response");
+
+  return text;
+}
+
+async function chat(messages, { systemPrompt, providers = ["cerebras", "groq", "gemini"] }) {
   const cacheKey = getCacheKey(messages, systemPrompt);
   const cached = getFromCache(cacheKey);
   if (cached) return { text: cached.text, provider: cached.provider, cached: true };
@@ -88,10 +114,12 @@ async function chat(messages, { systemPrompt, providers = ["groq", "gemini"] }) 
   for (const provider of providers) {
     try {
       let text;
-      if (provider === "gemini") {
-        text = await callGemini(messages, systemPrompt);
+      if (provider === "cerebras") {
+        text = await callCerebras(messages, systemPrompt);
       } else if (provider === "groq") {
         text = await callGroq(messages, systemPrompt);
+      } else if (provider === "gemini") {
+        text = await callGemini(messages, systemPrompt);
       } else {
         continue;
       }
