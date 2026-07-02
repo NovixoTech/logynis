@@ -48,7 +48,7 @@ ${depthRules}
 - Always respond in this structure:
   1. Clear Definition
   2. In-Depth Explanation (the bulk of your response — explain fully, don't skim)
-  3. Advanced Insight (something NEW — an exception, a commonly confused distinction, or a subtlety not covered in step 2. Keep this simple for secondary students, advanced for tertiary students)
+  3. 3. Advanced Insight (something NEW — an important exception, a commonly confused distinction, a critical nuance, or a deeper analytical point not covered in step 2. This applies to ANY subject — sciences, law, humanities, business, arts, etc. Keep this simple for secondary students, advanced and analytically rigorous for tertiary students)
   4. Real Example or Case Study
   5. Exam/Study Tip
   6. Quick Summary
