@@ -155,8 +155,7 @@ export default function Chat() {
                   className={`${styles.bubble} ${msg.role === "assistant" ? `${styles.aiBubble} ai-response` : styles.userBubble}`}
                   dangerouslySetInnerHTML={msg.role === "assistant" ? { __html: formatResponse(msg.content) } : undefined}
                 >{msg.role === "user" ? msg.content : undefined}</div>
-                {msg.provider && <span className={styles.via}>via {msg.provider}</span>}
-              </div>
+               </div>
             </div>
           ))}
 
