@@ -24,7 +24,7 @@ function setCache(key, value) {
 
 async function callCerebras(messages, systemPrompt) {
   const body = {
-    model: "llama-3.3-70b",
+    model: "gpt-oss-120b",
     messages: [{ role: "system", content: systemPrompt }, ...messages],
     max_tokens: 2048,
     temperature: 0.7,
