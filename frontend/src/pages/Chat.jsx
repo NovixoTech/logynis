@@ -272,7 +272,10 @@ export default function Chat() {
               <IconSend size={15} color="#fff" />
             </button>
           </div>
-          <p className={styles.hint}>Enter to send · Shift+Enter for new line</p>
+          <p className={styles.hint}>
+  {mode === "exam"
+    ? "Logynis is AI can make mistakes. Please double check responses ."}
+</p>
         </div>
       </div>
 
