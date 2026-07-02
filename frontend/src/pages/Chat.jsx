@@ -274,7 +274,8 @@ export default function Chat() {
           </div>
           <p className={styles.hint}>
   {mode === "exam"
-    ? "Logynis is AI can make mistakes. Please double check responses ."}
+    ? "Logynis can make mistakes. Please verify important facts. · Enter to send · Shift+Enter for new line"
+    : "Enter to send · Shift+Enter for new line"}
 </p>
         </div>
       </div>
