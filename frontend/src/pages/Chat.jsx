@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import { IconStudy, IconExam, IconHomework, IconRevision, IconMotivation, IconSettings, IconSend, IconPlus } from "../components/Icons.jsx";
+import { IconStudy, IconExam, IconHomework, IconRevision, IconMotivation, IconSettings, IconSend, IconPlus, IconClock } from "../components/Icons.jsx";
 import styles from "./Chat.module.css";
 
 const MODES = [
@@ -14,16 +14,12 @@ const MODES = [
 
 const API = "https://studysphere-api-production.up.railway.app";
 
-function getKey(mode, userId) { return `ss_chat_${userId || "guest"}_${mode}`; }
-function load(mode, userId) { try { return JSON.parse(localStorage.getItem(getKey(mode, userId)) || "[]"); } catch { return []; } }
-function save(mode, userId, msgs) { try { localStorage.setItem(getKey(mode, userId), JSON.stringify(msgs.slice(-50))); } catch {} }
-
 function formatTable(tableBlock) {
   const lines = tableBlock.trim().split("\n").filter(Boolean);
   if (lines.length < 2) return tableBlock;
 
   const headerCells = lines[0].split("|").map(c => c.trim()).filter(Boolean);
-  const bodyLines = lines.slice(2); // skip header + separator row
+  const bodyLines = lines.slice(2);
 
   let html = '<div class="table-wrap"><table><thead><tr>';
   headerCells.forEach(cell => { html += `<th>${cell}</th>`; });
@@ -45,7 +41,6 @@ function formatResponse(text) {
   let escaped = text
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  // Extract and convert markdown tables first (before other formatting mangles the pipes/newlines)
   escaped = escaped.replace(/((?:^\|.*\|$\n?)+)/gm, (match) => formatTable(match));
 
   return escaped
@@ -65,34 +60,34 @@ function formatResponse(text) {
 export default function Chat() {
   const { mode = "study" } = useParams();
   const navigate = useNavigate();
-  const { token, user } = useAuth();
+  const { token, user, authFetch } = useAuth();
   const userId = user?.id;
   const active = MODES.find(m => m.id === mode) || MODES[0];
 
-  const [messages, setMessages] = useState(() => load(mode, userId));
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+
   const bottomRef = useRef(null);
   const taRef = useRef(null);
-  const skipSaveRef = useRef(false);
 
+  // Reset to a fresh chat whenever the mode changes
   useEffect(() => {
-    skipSaveRef.current = true;
-    setMessages(load(mode, userId));
+    setMessages([]);
+    setConversationId(null);
     setError(null);
+    setHistoryOpen(false);
   }, [mode, userId]);
 
   useEffect(() => {
-    if (skipSaveRef.current) {
-      skipSaveRef.current = false;
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-    if (messages.length > 0) save(mode, userId, messages);
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, mode, userId]);
+  }, [messages]);
 
   useEffect(() => {
     const ta = taRef.current;
@@ -100,6 +95,46 @@ export default function Chat() {
     ta.style.height = "auto";
     ta.style.height = `${Math.min(ta.scrollHeight, 140)}px`;
   }, [input]);
+
+  async function openHistory() {
+    setHistoryOpen(true);
+    setHistoryLoading(true);
+    try {
+      const res = await authFetch(`/conversations?mode=${mode}`);
+      const data = await res.json();
+      setHistory(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setHistory([]);
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
+
+  async function loadConversation(id) {
+    setHistoryLoading(true);
+    try {
+      const res = await authFetch(`/conversations/${id}/messages`);
+      const data = await res.json();
+      const loadedMessages = (data.messages || []).flatMap(row => ([
+        { role: "user", content: row.message },
+        { role: "assistant", content: row.response },
+      ]));
+      setMessages(loadedMessages);
+      setConversationId(id);
+      setHistoryOpen(false);
+    } catch (e) {
+      setError("Failed to load conversation");
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
+
+  function startNewChat() {
+    setMessages([]);
+    setConversationId(null);
+    setError(null);
+    setHistoryOpen(false);
+  }
 
   async function send() {
     const text = input.trim();
@@ -116,11 +151,14 @@ export default function Chat() {
       if (token) headers["Authorization"] = `Bearer ${token}`;
       const res = await fetch(`${API}/api/chat`, {
         method: "POST", headers,
-        body: JSON.stringify({ mode, messages: clean }),
+        body: JSON.stringify({ mode, messages: clean, conversationId }),
       });
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Error"); }
       const data = await res.json();
       setMessages([...updated, { role: "assistant", content: data.text, provider: data.provider }]);
+      if (data.conversationId && !conversationId) {
+        setConversationId(data.conversationId);
+      }
     } catch (e) {
       setError(e.message.includes("fetch") ? "Connection error. Check your network." : e.message || "Something went wrong.");
       setMessages(messages);
@@ -149,12 +187,17 @@ export default function Chat() {
           <div className={styles.topRight}>
             {user && <span className={styles.userChip}>{user.name?.split(" ")[0]}</span>}
             {user && (
+              <button className={styles.navBtn} onClick={openHistory} title="Recent chats">
+                <IconClock size={18} />
+              </button>
+            )}
+            {user && (
               <button className={styles.navBtn} onClick={() => navigate("/settings")} title="Settings">
                 <IconSettings size={18} />
               </button>
             )}
             {messages.length > 0 && (
-              <button className={styles.newBtn} onClick={() => { setMessages([]); localStorage.removeItem(getKey(mode, userId)); }} title="New chat">
+              <button className={styles.newBtn} onClick={startNewChat} title="New chat">
                 <IconPlus size={14} />
               </button>
             )}
@@ -232,6 +275,40 @@ export default function Chat() {
           <p className={styles.hint}>Enter to send · Shift+Enter for new line</p>
         </div>
       </div>
+
+      {/* Recent Chats Sidebar */}
+      {historyOpen && (
+        <>
+          <div className={styles.overlay} onClick={() => setHistoryOpen(false)} />
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarHeader}>
+              <h3>Recent — {active.label}</h3>
+              <button className={styles.sidebarClose} onClick={() => setHistoryOpen(false)}>×</button>
+            </div>
+            <button className={styles.sidebarNewBtn} onClick={startNewChat}>
+              <IconPlus size={14} /> New chat
+            </button>
+            <div className={styles.sidebarList}>
+              {historyLoading && <p className={styles.sidebarEmpty}>Loading...</p>}
+              {!historyLoading && history.length === 0 && (
+                <p className={styles.sidebarEmpty}>No past conversations yet.</p>
+              )}
+              {!historyLoading && history.map(convo => (
+                <button
+                  key={convo.id}
+                  className={`${styles.sidebarItem} ${convo.id === conversationId ? styles.sidebarItemActive : ""}`}
+                  onClick={() => loadConversation(convo.id)}
+                >
+                  <span className={styles.sidebarItemTitle}>{convo.title || "Untitled"}</span>
+                  <span className={styles.sidebarItemDate}>
+                    {new Date(convo.updatedat).toLocaleDateString()}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
-}
+      }
