@@ -18,9 +18,37 @@ function getKey(mode, userId) { return `ss_chat_${userId || "guest"}_${mode}`; }
 function load(mode, userId) { try { return JSON.parse(localStorage.getItem(getKey(mode, userId)) || "[]"); } catch { return []; } }
 function save(mode, userId, msgs) { try { localStorage.setItem(getKey(mode, userId), JSON.stringify(msgs.slice(-50))); } catch {} }
 
+function formatTable(tableBlock) {
+  const lines = tableBlock.trim().split("\n").filter(Boolean);
+  if (lines.length < 2) return tableBlock;
+
+  const headerCells = lines[0].split("|").map(c => c.trim()).filter(Boolean);
+  const bodyLines = lines.slice(2); // skip header + separator row
+
+  let html = '<div class="table-wrap"><table><thead><tr>';
+  headerCells.forEach(cell => { html += `<th>${cell}</th>`; });
+  html += "</tr></thead><tbody>";
+
+  bodyLines.forEach(line => {
+    const cells = line.split("|").map(c => c.trim()).filter(Boolean);
+    if (cells.length === 0) return;
+    html += "<tr>";
+    cells.forEach(cell => { html += `<td>${cell}</td>`; });
+    html += "</tr>";
+  });
+
+  html += "</tbody></table></div>";
+  return html;
+}
+
 function formatResponse(text) {
-  return text
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  let escaped = text
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // Extract and convert markdown tables first (before other formatting mangles the pipes/newlines)
+  escaped = escaped.replace(/((?:^\|.*\|$\n?)+)/gm, (match) => formatTable(match));
+
+  return escaped
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/`([^`]+)`/g, "<code>$1</code>")
@@ -29,8 +57,9 @@ function formatResponse(text) {
     .replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>")
     .replace(/\n{2,}/g, "</p><p>")
     .replace(/\n/g, "<br/>")
-    .replace(/^(?!<[hup])(.+)$/gm, "<p>$1</p>")
-    .replace(/<p><\/p>/g, "");
+    .replace(/^(?!<[hutd])(.+)$/gm, "<p>$1</p>")
+    .replace(/<p><\/p>/g, "")
+    .replace(/<p>(<div class="table-wrap">.*?<\/div>)<\/p>/gs, "$1");
 }
 
 export default function Chat() {
@@ -205,4 +234,4 @@ export default function Chat() {
       </div>
     </div>
   );
-   }
+}
