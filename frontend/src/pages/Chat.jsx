@@ -57,6 +57,10 @@ function formatResponse(text) {
     .replace(/<p>(<div class="table-wrap">.*?<\/div>)<\/p>/gs, "$1");
 }
 
+function getActiveKey(mode, userId) {
+  return `ss_active_convo_${userId || "guest"}_${mode}`;
+}
+
 export default function Chat() {
   const { mode = "study" } = useParams();
   const navigate = useNavigate();
@@ -77,12 +81,38 @@ export default function Chat() {
   const bottomRef = useRef(null);
   const taRef = useRef(null);
 
-  // Reset to a fresh chat whenever the mode changes
+  async function loadConversation(id, closeSidebar = true) {
+    setHistoryLoading(true);
+    try {
+      const res = await authFetch(`/conversations/${id}/messages`);
+      const data = await res.json();
+      const loadedMessages = (data.messages || []).flatMap(row => ([
+        { role: "user", content: row.message },
+        { role: "assistant", content: row.response },
+      ]));
+      setMessages(loadedMessages);
+      setConversationId(id);
+      localStorage.setItem(getActiveKey(mode, userId), id);
+      if (closeSidebar) setHistoryOpen(false);
+    } catch (e) {
+      setError("Failed to load conversation");
+      localStorage.removeItem(getActiveKey(mode, userId));
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
+
+  // On mode/user change, try to restore the last active conversation for this mode
   useEffect(() => {
     setMessages([]);
     setConversationId(null);
     setError(null);
     setHistoryOpen(false);
+
+    const savedId = localStorage.getItem(getActiveKey(mode, userId));
+    if (savedId) {
+      loadConversation(savedId, false);
+    }
   }, [mode, userId]);
 
   useEffect(() => {
@@ -110,30 +140,12 @@ export default function Chat() {
     }
   }
 
-  async function loadConversation(id) {
-    setHistoryLoading(true);
-    try {
-      const res = await authFetch(`/conversations/${id}/messages`);
-      const data = await res.json();
-      const loadedMessages = (data.messages || []).flatMap(row => ([
-        { role: "user", content: row.message },
-        { role: "assistant", content: row.response },
-      ]));
-      setMessages(loadedMessages);
-      setConversationId(id);
-      setHistoryOpen(false);
-    } catch (e) {
-      setError("Failed to load conversation");
-    } finally {
-      setHistoryLoading(false);
-    }
-  }
-
   function startNewChat() {
     setMessages([]);
     setConversationId(null);
     setError(null);
     setHistoryOpen(false);
+    localStorage.removeItem(getActiveKey(mode, userId));
   }
 
   async function send() {
@@ -158,6 +170,7 @@ export default function Chat() {
       setMessages([...updated, { role: "assistant", content: data.text, provider: data.provider }]);
       if (data.conversationId && !conversationId) {
         setConversationId(data.conversationId);
+        localStorage.setItem(getActiveKey(mode, userId), data.conversationId);
       }
     } catch (e) {
       setError(e.message.includes("fetch") ? "Connection error. Check your network." : e.message || "Something went wrong.");
@@ -273,10 +286,10 @@ export default function Chat() {
             </button>
           </div>
           <p className={styles.hint}>
-  {mode === "exam"
-    ? "Logynis can make mistakes. Please verify important facts. · Enter to send · Shift+Enter for new line"
-    : "Enter to send · Shift+Enter for new line"}
-</p>
+            {mode === "exam"
+              ? "Logynis can make mistakes. Please verify important facts. · Enter to send · Shift+Enter for new line"
+              : "Enter to send · Shift+Enter for new line"}
+          </p>
         </div>
       </div>
 
@@ -315,4 +328,4 @@ export default function Chat() {
       )}
     </div>
   );
-      }
+                    }
