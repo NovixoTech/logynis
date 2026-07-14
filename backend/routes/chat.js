@@ -54,6 +54,19 @@ router.post("/", authMiddleware, async (req, res, next) => {
 
     console.log("[AI_DEBUG] provider used:", response.provider, "| errors:", response.errors || "none");
 
+    let finalText = response.text;
+    let imageUrl = null;
+
+    const imageTagMatch = finalText.match(/\[GENERATE_IMAGE:\s*(.+?)\]/);
+    if (imageTagMatch) {
+      const imageDescription = imageTagMatch[1];
+      const imageResult = await ai.generateImage(imageDescription);
+      if (imageResult.success) {
+        imageUrl = imageResult.imageUrl;
+      }
+      finalText = finalText.replace(imageTagMatch[0], "").trim();
+    }
+
     const lastUserMessage = messages[messages.length - 1]?.content;
 
     // Create a new conversation if one wasn't passed in
@@ -82,17 +95,18 @@ router.post("/", authMiddleware, async (req, res, next) => {
 
     // Save chat to Supabase, linked to the conversation
     const { error: chatInsertError } = await supabase.from("chats").insert({
-  userid: req.user.id,
-  conversationid: activeConversationId,
-  message: lastUserMessage,
-  response: response.text,
-  mode,
-  subject: subject || null,
-});
+      userid: req.user.id,
+      conversationid: activeConversationId,
+      message: lastUserMessage,
+      response: finalText,
+      mode,
+      subject: subject || null,
+      imageurl: imageUrl,
+    });
 
-if (chatInsertError) {
-  console.error("[CHAT_INSERT_ERROR]", chatInsertError.message);
-}
+    if (chatInsertError) {
+      console.error("[CHAT_INSERT_ERROR]", chatInsertError.message);
+    }
 
     // Award +5 points
     await supabase
@@ -110,7 +124,8 @@ if (chatInsertError) {
     });
 
     res.json({
-      text: response.text,
+      text: finalText,
+      imageUrl: imageUrl,
       provider: response.provider,
       mode,
       cached: response.cached,
