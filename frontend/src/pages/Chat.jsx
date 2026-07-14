@@ -88,7 +88,7 @@ export default function Chat() {
       const data = await res.json();
       const loadedMessages = (data.messages || []).flatMap(row => ([
         { role: "user", content: row.message },
-        { role: "assistant", content: row.response },
+        { role: "assistant", content: row.response, imageUrl: row.imageurl || null },
       ]));
       setMessages(loadedMessages);
       setConversationId(id);
@@ -167,7 +167,7 @@ export default function Chat() {
       });
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Error"); }
       const data = await res.json();
-      setMessages([...updated, { role: "assistant", content: data.text, provider: data.provider }]);
+      setMessages([...updated, { role: "assistant", content: data.text, provider: data.provider, imageUrl: data.imageUrl || null }]);
       if (data.conversationId && !conversationId) {
         setConversationId(data.conversationId);
         localStorage.setItem(getActiveKey(mode, userId), data.conversationId);
@@ -240,7 +240,10 @@ export default function Chat() {
                   className={`${styles.bubble} ${msg.role === "assistant" ? `${styles.aiBubble} ai-response` : styles.userBubble}`}
                   dangerouslySetInnerHTML={msg.role === "assistant" ? { __html: formatResponse(msg.content) } : undefined}
                 >{msg.role === "user" ? msg.content : undefined}</div>
-               </div>
+                {msg.role === "assistant" && msg.imageUrl && (
+                  <img src={msg.imageUrl} alt="Generated diagram" className={styles.generatedImage} loading="lazy" />
+                )}
+              </div>
             </div>
           ))}
 
@@ -328,4 +331,4 @@ export default function Chat() {
       )}
     </div>
   );
-                    }
+}
