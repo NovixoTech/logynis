@@ -104,6 +104,22 @@ async function callGemini(messages, systemPrompt) {
   return text;
 }
 
+async function callPollinations(prompt) {
+  const encodedPrompt = encodeURIComponent(prompt);
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&nologo=true`;
+  return imageUrl;
+}
+
+async function generateImage(description) {
+  try {
+    const url = await callPollinations(description);
+    return { imageUrl: url, success: true };
+  } catch (err) {
+    console.error("[IMAGE_GEN_ERROR]", err.message);
+    return { imageUrl: null, success: false, error: err.message };
+  }
+}
+
 async function chat(messages, { systemPrompt, providers = ["cerebras", "groq", "gemini"] }) {
   const cacheKey = getCacheKey(messages, systemPrompt);
   const cached = getFromCache(cacheKey);
@@ -134,5 +150,5 @@ async function chat(messages, { systemPrompt, providers = ["cerebras", "groq", "
   throw new Error(`All providers failed: ${errors.map(e => `${e.provider}: ${e.message}`).join(" | ")}`);
 }
 
-const ai = { chat };
+const ai = { chat, generateImage };
 export default ai;
