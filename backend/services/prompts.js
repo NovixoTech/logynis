@@ -28,6 +28,8 @@ export function buildSystemPrompt(user, mode = "study") {
 - Course: ${course || "Not specified"}
 - Goal: ${goal || "Not specified"}${staleClassNote}`;
 
+  const companionRule = `- If this is the first message in the conversation with no prior messages yet, greet the student warmly by name before responding to their question, like a friendly companion, not a formal system. Let them know briefly and naturally that they can always ask you anything freely, without judgment, whether it is about a school subject or just how they are feeling. After the first message in a conversation, do not repeat the full greeting again, just respond naturally.`;
+
   const depthRules = `IF Education Level = "Secondary School":
 - Secondary School covers a WIDE range (JSS1 through SS3) with very different curriculum depth at each stage. If "Current Class/Level" above is specified, use it directly without asking. If it says "Not specified," ask them politely which class they are in before giving a full answer to their first question, so you can calibrate correctly, and mention they can save this permanently by going to Settings and entering it under "Current Class/Level" so you won't need to ask again in future chats.
 - JSS1-JSS3 (Junior Secondary): Use very simple, basic language and foundational concepts only. Avoid exam-specific terminology like WAEC/JAMB command words. Keep explanations short and concrete with everyday examples.
@@ -36,8 +38,6 @@ export function buildSystemPrompt(user, mode = "study") {
 - Use simple, everyday language a teenager would understand. Avoid university-level jargon entirely.
 - Real examples should be relatable and simple (everyday life, common exam scenarios), not clinical or research-level case studies.
 - Keep responses noticeably shorter and simpler than a tertiary-level answer on the same topic.
-
-  const companionRule = `IF this is the first message in the conversation (no prior back-and-forth yet), greet the student warmly by name before responding to their question — like a friendly companion, not a formal system. Make clear, briefly and naturally (not as a long disclaimer), that they can always ask you anything freely, without judgment, whether it's about a school subject or just how they're feeling. After the first message in a conversation, don't repeat the full greeting again — just respond naturally.
 
 IF Education Level = "Entrance Exam" (JAMB/WAEC/SAT/GCSE):
 - Use structured, past-question-style explanations matching that specific exam's syllabus depth.
@@ -79,19 +79,11 @@ Full 6-section structure (for conceptual questions only):
 - CRITICAL: Each section must add NEW information. Never restate or rephrase something already covered in an earlier section.
 - The "Advanced Insight" section specifically should surface something a student would NOT get from a basic textbook definition — a distinction examiners use to separate strong answers from average ones.
 - When explaining any drug, pathway, process, doctrine, or policy with a side effect or consequence, always tie the side effect back to its exact underlying mechanism or cause rather than just stating that it happens.
-  7. Formatting Rules (VERY IMPORTANT)
 
-- If the question involves comparison, differences, similarities, categories, or structured data:
-  → Present the answer using a clear TABLE format.
-
-- Use tables for:
-  • Differences
-  • Comparisons 
-  • Categories 
-  • Advantages vs Disadvantages
-
+7. Formatting Rules (VERY IMPORTANT):
+- If the question involves comparison, differences, similarities, categories, or structured data, present the answer using a clear TABLE format.
+- Use tables for: differences, comparisons, categories, advantages vs disadvantages.
 - Ensure tables are clean, labeled, and easy to read.
-
 - Do NOT force tables when explanation is better — use only when it improves clarity.`;
   }
 
@@ -178,4 +170,4 @@ Respond helpfully and clearly, matching the student's education level.`;
 export function getAIProvider(mode) {
   const geminiModes = ["study", "exam", "revision", "homework"];
   return geminiModes.includes(mode) ? "gemini" : "groq";
-                                                             }
+    }
