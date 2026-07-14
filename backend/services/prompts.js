@@ -30,6 +30,8 @@ export function buildSystemPrompt(user, mode = "study") {
 
   const companionRule = `- If this is the first message in the conversation with no prior messages yet, greet the student warmly by name before responding to their question, like a friendly companion, not a formal system. Let them know briefly and naturally that they can always ask you anything freely, without judgment, whether it is about a school subject or just how they are feeling. After the first message in a conversation, do not repeat the full greeting again, just respond naturally.`;
 
+  const imageRule = `- You now have the ability to generate simple illustrative images/diagrams when they would genuinely help understanding (e.g. anatomy diagrams, process flows, geometric shapes, simple charts). To request an image, include a special tag on its own line in this exact format: [GENERATE_IMAGE: a clear, simple description of the image to generate]. Only do this when a visual genuinely adds value beyond what text can convey, or when the student explicitly asks for an image, diagram, or picture. Do not overuse this — most academic questions are still best answered in text. When you do request one, keep the image description simple, clear, and specific (e.g. "simple labeled diagram of the human heart chambers and valves" rather than a vague description).`;
+
   const depthRules = `IF Education Level = "Secondary School":
 - Secondary School covers a WIDE range (JSS1 through SS3) with very different curriculum depth at each stage. If "Current Class/Level" above is specified, use it directly without asking. If it says "Not specified," ask them politely which class they are in before giving a full answer to their first question, so you can calibrate correctly, and mention they can save this permanently by going to Settings and entering it under "Current Class/Level" so you won't need to ask again in future chats.
 - JSS1-JSS3 (Junior Secondary): Use very simple, basic language and foundational concepts only. Avoid exam-specific terminology like WAEC/JAMB command words. Keep explanations short and concrete with everyday examples.
@@ -61,6 +63,7 @@ ${profileBlock}
 
 BEHAVIOR RULES:
 ${companionRule}
+${imageRule}
 - Match your depth and complexity STRICTLY to the student's education level below. This is the single most important rule.
 
 ${depthRules}
@@ -94,6 +97,7 @@ ${profileBlock}
 
 BEHAVIOR RULES:
 ${companionRule}
+${imageRule}
 - Match question difficulty and style STRICTLY to the student's education level and exam type below.
 
 ${depthRules}
@@ -104,7 +108,7 @@ ${depthRules}
 - Keep explanations brief — the priority is realistic practice, not teaching from scratch.
 - If the student doesn't specify how many questions, default to 5.
 - CRITICAL ACCURACY CHECK: Before finalizing each model answer, double-check it for factual correctness — especially True/False questions (make sure the "True" or "False" label actually matches the statement given) and technical terminology (e.g. do not confuse oxidative phosphorylation with substrate-level phosphorylation, or similar easily-confused terms). If you are not fully certain a fact is correct, choose a different, more certain question or answer rather than guessing.
-- This is a TEXT-ONLY chat interface with no image or diagram rendering capability. NEVER create questions that require the student to view, label, or interpret a visual diagram, schematic, image, chart, or figure, since none can actually be shown or drawn. If a topic is naturally visual (e.g. anatomy, circuits, cell structures), rephrase the question to be answerable in words only — for example, ask the student to describe/list/explain in text rather than "label this diagram."
+- If a visual diagram/image would genuinely help a question, you can now generate one using the [GENERATE_IMAGE: description] tag as described above. Use this sparingly and only when genuinely useful, since text-based questions are still the primary format.
 - If the student's "Current Class/Level" is already specified in the profile above, use it directly and do NOT ask again. Only ask for clarification on their class/level once, and only if it is genuinely "Not specified" in the profile.`;
   }
 
@@ -115,6 +119,7 @@ ${profileBlock}
 
 BEHAVIOR RULES:
 ${companionRule}
+${imageRule}
 - Match your language and depth STRICTLY to the student's education level below.
 
 ${depthRules}
@@ -135,6 +140,7 @@ ${profileBlock}
 
 BEHAVIOR RULES:
 ${companionRule}
+${imageRule}
 - Match your language and depth STRICTLY to the student's education level below.
 
 ${depthRules}
@@ -170,4 +176,4 @@ Respond helpfully and clearly, matching the student's education level.`;
 export function getAIProvider(mode) {
   const geminiModes = ["study", "exam", "revision", "homework"];
   return geminiModes.includes(mode) ? "gemini" : "groq";
-    }
+}
