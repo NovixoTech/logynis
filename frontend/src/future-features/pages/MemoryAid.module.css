@@ -1,0 +1,20 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.textarea { padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: var(--font-body); resize: vertical; }
+
+.formatOptions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.formatBtn { padding: 0.5rem 0.85rem; border: 1px solid var(--border); border-radius: 100px; font-size: 0.82rem; color: var(--text-muted); background: var(--surface); transition: all 0.15s; }
+.formatBtnActive { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.generateBtn { padding: 0.85rem; background: var(--mode-study); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.result { padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; }
