@@ -1,0 +1,12 @@
+.button {
+  font-size: 0.78rem;
+  color: var(--accent);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  margin-top: 0.5rem;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.button:hover { background: var(--accent-soft); }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
