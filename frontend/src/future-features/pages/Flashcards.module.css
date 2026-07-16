@@ -1,0 +1,32 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.textarea { padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: var(--font-body); resize: vertical; }
+
+.generateBtn { padding: 0.85rem; background: var(--mode-study); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.cardArea { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.progress { font-size: 0.85rem; color: var(--text-muted); }
+
+.flashcard { width: 100%; height: 260px; perspective: 1000px; cursor: pointer; }
+.cardInner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
+.flipped .cardInner { transform: rotateY(180deg); }
+
+.cardFront, .cardBack { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); text-align: center; font-size: 1.05rem; }
+.cardFront { background: var(--surface); color: var(--text); }
+.cardBack { background: var(--mode-study); color: #fff; transform: rotateY(180deg); }
+.tapHint { margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted); }
+
+.navButtons { display: flex; gap: 0.75rem; width: 100%; }
+.navBtn { flex: 1; padding: 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text); }
+.navBtn:disabled { opacity: 0.4; }
+
+.newSetBtn { font-size: 0.85rem; color: var(--text-muted); text-decoration: underline; }
