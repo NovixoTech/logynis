@@ -1,0 +1,10 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--text); }
+
+.grid { display: flex; flex-direction: column; gap: 0.75rem; max-width: 480px; margin: 0 auto; }
+.card { display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); text-align: left; transition: border-color 0.15s, transform 0.15s; }
+.card:hover { border-color: var(--accent); transform: translateX(4px); }
+.cardLabel { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); }
+.cardDesc { font-size: 0.85rem; color: var(--text-muted); }
