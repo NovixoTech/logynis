@@ -1,0 +1,31 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+.checkBtn { padding: 0.85rem; background: var(--mode-exam); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.checkBtn:disabled { opacity: 0.6; }
+
+.notEnoughData { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 1.5rem; background: var(--surface-2); border-radius: var(--radius-sm); }
+
+.resultArea { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.scoreCircle { width: 110px; height: 110px; border-radius: 50%; background: var(--mode-exam); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 700; font-family: var(--font-display); margin-top: 0.5rem; }
+.readinessLabel { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); }
+.stats { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
+
+.breakdown { width: 100%; display: flex; flex-direction: column; gap: 0.6rem; }
+.topicRow { display: flex; align-items: center; gap: 0.6rem; }
+.topicName { font-size: 0.8rem; color: var(--text); width: 100px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barTrack { flex: 1; height: 8px; background: var(--surface-2); border-radius: 100px; overflow: hidden; }
+.barFill { height: 100%; background: var(--mode-exam); }
+.topicPercent { font-size: 0.78rem; color: var(--text-muted); width: 32px; text-align: right; }
+
+.insightBtn { margin-top: 1rem; padding: 0.7rem 1.2rem; border: 1px solid var(--mode-exam); color: var(--mode-exam); border-radius: 100px; font-size: 0.85rem; font-weight: 600; }
+.insightBtn:disabled { opacity: 0.6; }
+.insightBox { margin-top: 0.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.6; color: var(--text); }
