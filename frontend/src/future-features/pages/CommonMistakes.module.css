@@ -1,0 +1,23 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.textarea { padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; resize: vertical; }
+
+.generateBtn { padding: 0.85rem; background: var(--mode-exam); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.resultArea { display: flex; flex-direction: column; gap: 0.85rem; }
+.mistakeCard { padding: 1.1rem; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--mode-exam); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.5rem; }
+.mistakeHeader { display: flex; align-items: center; gap: 0.6rem; }
+.mistakeNumber { width: 22px; height: 22px; background: var(--mode-exam); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.mistakeTitle { font-weight: 700; font-size: 0.92rem; color: var(--text); }
+.mistakeWhy, .mistakeCorrection { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+.newBtn { align-self: center; font-size: 0.85rem; color: var(--text-muted); text-decoration: underline; margin-top: 0.5rem; }
