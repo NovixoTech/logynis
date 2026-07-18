@@ -1,0 +1,21 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+
+.connector { text-align: center; font-size: 0.8rem; color: var(--text-muted); font-style: italic; }
+
+.generateBtn { padding: 0.85rem; background: var(--mode-study); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; margin-top: 0.5rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.resultArea { display: flex; flex-direction: column; gap: 1rem; }
+.resultHeader { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text); text-align: center; }
+.result { padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; }
+.newBtn { align-self: center; font-size: 0.85rem; color: var(--text-muted); text-decoration: underline; }
