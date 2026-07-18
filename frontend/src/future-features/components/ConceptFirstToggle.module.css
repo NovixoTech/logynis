@@ -1,0 +1,5 @@
+.wrapper { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+.error { font-size: 0.75rem; color: var(--error); }
+.button { font-size: 0.8rem; color: var(--mode-homework); padding: 0.45rem 0.85rem; border: 1px solid var(--mode-homework); border-radius: 100px; align-self: flex-start; transition: background 0.15s, opacity 0.15s; }
+.button:hover { background: color-mix(in srgb, var(--mode-homework) 8%, transparent); }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
