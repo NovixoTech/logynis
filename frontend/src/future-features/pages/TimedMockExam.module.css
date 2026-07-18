@@ -1,0 +1,39 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); flex: 1; }
+.timer { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--mode-exam); }
+
+.setup, .examArea, .resultsArea { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+.info { font-size: 0.8rem; color: var(--text-muted); text-align: center; }
+.startBtn { padding: 0.85rem; background: var(--mode-exam); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+
+.progress { font-size: 0.8rem; color: var(--text-muted); }
+.question { font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.5; }
+
+.options { display: flex; flex-direction: column; gap: 0.6rem; }
+.option { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: left; font-size: 0.9rem; }
+.optionSelected { border-color: var(--mode-exam); background: color-mix(in srgb, var(--mode-exam) 10%, transparent); }
+.optionKey { font-weight: 700; color: var(--mode-exam); }
+
+.navRow { display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 0.5rem; }
+.navBtn { padding: 0.65rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; }
+.navBtn:disabled { opacity: 0.4; }
+.submitBtn { padding: 0.65rem 1.1rem; background: var(--mode-exam); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; }
+
+.scoreCircle { align-self: center; width: 100px; height: 100px; border-radius: 50%; background: var(--mode-exam); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; font-family: var(--font-display); }
+.scoreText { text-align: center; font-size: 0.9rem; color: var(--text-muted); }
+
+.resultsList { display: flex; flex-direction: column; gap: 0.6rem; }
+.resultItem { padding: 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid; }
+.resultCorrect { background: color-mix(in srgb, var(--success) 8%, transparent); border-color: var(--success); }
+.resultWrong { background: color-mix(in srgb, var(--error) 8%, transparent); border-color: var(--error); }
+.resultQuestion { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+.resultAnswer { font-size: 0.8rem; color: var(--text-muted); }
+
+.newBtn { padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; color: var(--text); }
