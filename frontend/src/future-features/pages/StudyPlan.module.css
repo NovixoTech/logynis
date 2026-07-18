@@ -1,0 +1,30 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+.loading { text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 2rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+.generateBtn { padding: 0.85rem; background: var(--mode-exam); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.planArea { display: flex; flex-direction: column; gap: 1rem; }
+.countdown { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 1.5rem; background: var(--mode-exam); border-radius: var(--radius); color: #fff; }
+.countdownNumber { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; }
+.countdownLabel { font-size: 0.85rem; opacity: 0.9; }
+
+.summary { font-size: 0.88rem; color: var(--text-muted); text-align: center; line-height: 1.6; }
+
+.daysList { display: flex; flex-direction: column; gap: 0.65rem; max-height: 500px; overflow-y: auto; }
+.dayCard { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.dayLabel { font-weight: 700; font-size: 0.88rem; color: var(--text); display: block; margin-bottom: 0.5rem; }
+.focusList { padding-left: 1.1rem; margin: 0; }
+.focusList li { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.25rem; line-height: 1.4; }
+.dayNote { font-size: 0.78rem; color: var(--accent); margin-top: 0.5rem; font-style: italic; }
+
+.newBtn { padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; }
