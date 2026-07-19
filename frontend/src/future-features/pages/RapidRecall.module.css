@@ -1,0 +1,32 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.setup, .quizArea, .resultsArea { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+.startBtn { padding: 0.85rem; background: var(--mode-revision); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.startBtn:disabled { opacity: 0.6; }
+
+.progress { font-size: 0.8rem; color: var(--text-muted); text-align: center; }
+.statement { font-size: 1.05rem; font-weight: 600; color: var(--text); text-align: center; padding: 1rem 0; }
+
+.tfButtons { display: flex; gap: 0.75rem; }
+.trueBtn, .falseBtn { flex: 1; padding: 1rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; color: #fff; }
+.trueBtn { background: var(--success); }
+.falseBtn { background: var(--error); }
+
+.answerInput { padding: 0.85rem; border: 2px solid var(--mode-revision); border-radius: var(--radius-sm); font-size: 1rem; text-align: center; }
+.submitBtn { padding: 0.75rem; background: var(--mode-revision); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; }
+
+.scoreCircle { align-self: center; width: 100px; height: 100px; border-radius: 50%; background: var(--mode-revision); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; font-family: var(--font-display); }
+.resultsList { display: flex; flex-direction: column; gap: 0.4rem; }
+.resultItem { padding: 0.65rem; border-radius: var(--radius-sm); font-size: 0.82rem; border-left: 3px solid; }
+.correct { background: color-mix(in srgb, var(--success) 8%, transparent); border-color: var(--success); color: var(--text); }
+.wrong { background: color-mix(in srgb, var(--error) 8%, transparent); border-color: var(--error); color: var(--text); }
+.correctAnswer { color: var(--text-muted); font-style: italic; }
+.newBtn { padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; }
