@@ -1,0 +1,3 @@
+.button { font-size: 0.8rem; color: var(--mode-motivation); padding: 0.45rem 0.85rem; border: 1px solid var(--mode-motivation); border-radius: 100px; transition: background 0.15s, opacity 0.15s; }
+.button:hover { background: color-mix(in srgb, var(--mode-motivation) 8%, transparent); }
+.button:disabled { opacity: 0.5; }
