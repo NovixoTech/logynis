@@ -1,0 +1,2 @@
+.button { font-size: 0.78rem; color: var(--accent); padding: 0.4rem 0.8rem; border: 1px solid var(--accent); border-radius: 100px; }
+.button:disabled { color: var(--success); border-color: var(--success); opacity: 0.9; }
