@@ -1,0 +1,26 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+.loading { text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 2rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+.label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.input, .select { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; }
+.row { display: flex; gap: 0.75rem; }
+.generateBtn { padding: 0.85rem; background: var(--mode-revision); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+.generateBtn:disabled { opacity: 0.6; }
+
+.timetableArea { display: flex; flex-direction: column; gap: 0.65rem; }
+.dayCard { padding: 0.9rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.dayLabel { font-weight: 700; font-size: 0.85rem; color: var(--text); display: block; margin-bottom: 0.5rem; }
+.restDay { font-size: 0.78rem; color: var(--text-muted); font-style: italic; }
+.session { display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.82rem; }
+.sessionSubject { color: var(--text); }
+.sessionDuration { color: var(--text-muted); }
+
+.tip { padding: 0.85rem; background: var(--surface-2); border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+.newBtn { padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; } 
