@@ -1,0 +1,25 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text); }
+
+.content { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+
+.moodGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.moodOption { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.75rem 0.4rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.moodSelected { border-color: var(--mode-motivation); background: color-mix(in srgb, var(--mode-motivation) 10%, transparent); }
+.emoji { font-size: 1.5rem; }
+.moodLabel { font-size: 0.68rem; color: var(--text-muted); }
+
+.noteInput { padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; resize: vertical; }
+.submitBtn { padding: 0.85rem; background: var(--mode-motivation); color: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+
+.confirmedArea { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+.confirmedText { font-size: 1rem; color: var(--text); }
+.insightBtn { padding: 0.7rem 1.2rem; border: 1px solid var(--mode-motivation); color: var(--mode-motivation); border-radius: 100px; font-size: 0.85rem; font-weight: 600; }
+.insightBtn:disabled { opacity: 0.6; }
+.insightBox { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+
+.historyStrip { display: flex; gap: 0.35rem; }
+.historyEmoji { font-size: 1.1rem; }
