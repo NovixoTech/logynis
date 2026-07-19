@@ -1,0 +1,26 @@
+.page { min-height: 100vh; padding: 1.5rem; background: var(--bg); }
+.header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.back { color: var(--text-muted); font-size: 0.9rem; }
+.title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+.loading { text-align: center; color: var(--text-muted); padding: 3rem; }
+
+.content { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.explainer { padding: 1rem; background: var(--accent-soft); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text); line-height: 1.5; text-align: center; }
+
+.codeCard { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.codeLabel { font-size: 0.78rem; color: var(--text-muted); }
+.code { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+.codeActions { display: flex; gap: 0.6rem; margin-top: 0.5rem; }
+.copyBtn, .shareBtn { padding: 0.55rem 1.1rem; border-radius: 100px; font-size: 0.82rem; font-weight: 600; }
+.copyBtn { border: 1px solid var(--border); color: var(--text); }
+.shareBtn { background: var(--accent); color: #fff; }
+
+.statsRow { display: flex; gap: 0.75rem; }
+.statCard { flex: 1; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; }
+.statNumber { display: block; font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.statLabel { font-size: 0.72rem; color: var(--text-muted); }
+
+.invitedSection { display: flex; flex-direction: column; gap: 0.5rem; }
+.invitedTitle { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.invitedItem { display: flex; justify-content: space-between; padding: 0.6rem 0.85rem; background: var(--surface); border-radius: var(--radius-sm); font-size: 0.82rem; }
+.invitedDate { color: var(--text-muted); }
