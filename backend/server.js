@@ -7,6 +7,7 @@ import userRouter from "./routes/user.js";
 import examRouter from "./routes/exam.js";
 import feedRouter from "./routes/feed.js";
 import conversationsRouter from "./routes/conversations.js";
+import photoHomeworkRouter from "./routes/photoHomework.js";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // Health check
 app.get("/health", (req, res) => {
@@ -28,6 +29,7 @@ app.use("/api/chat", chatRouter);
 app.use("/exam", examRouter);
 app.use("/feed", feedRouter);
 app.use("/conversations", conversationsRouter);
+app.use("/photo-homework", photoHomeworkRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
