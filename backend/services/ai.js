@@ -110,13 +110,123 @@ async function callPollinations(prompt) {
   return imageUrl;
 }
 
+async function callCloudflareImage(prompt) {
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+
+  const res = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    }
+  );
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`cloudflare image failed: ${errText}`);
+  }
+
+  const imageBuffer = await res.arrayBuffer();
+  const base64Image = Buffer.from(imageBuffer).toString("base64");
+  return `data:image/png;base64,${base64Image}`;
+}
+
 async function generateImage(description) {
+  // Try Cloudflare first (better quality), fall back to Pollinations if it fails
   try {
-    const url = await callPollinations(description);
-    return { imageUrl: url, success: true };
-  } catch (err) {
-    console.error("[IMAGE_GEN_ERROR]", err.message);
-    return { imageUrl: null, success: false, error: err.message };
+    const dataUrl = await callCloudflareImage(description);
+    return { imageUrl: dataUrl, success: true, provider: "cloudflare" };
+  } catch (cfErr) {
+    console.error("[IMAGE_GEN_ERROR] cloudflare:", cfErr.message);
+    try {
+      const url = await callPollinations(description);
+      return { imageUrl: url, success: true, provider: "pollinations" };
+    } catch (polErr) {
+      console.error("[IMAGE_GEN_ERROR] pollinations:", polErr.message);
+      return { imageUrl: null, success: false, error: polErr.message };
+    }
+  }
+}
+
+async function callMistralVision(imageBase64, mimeType, systemPrompt, userText) {
+  const body = {
+    model: "pixtral-12b-2409",
+    messages: [
+      { role: "system", content: systemPrompt },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: userText || "Please help me with this homework question." },
+          { type: "image_url", image_url: `data:${mimeType};base64,${imageBase64}` },
+        ],
+      },
+    ],
+    max_tokens: 2048,
+  };
+
+  const res = await fetch("https://api.mistral.ai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.MISTRAL_API_KEY}`,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(`mistral vision failed: ${data.error?.message || res.statusText}`);
+
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) throw new Error("mistral vision failed: empty response");
+
+  return text;
+}
+
+async function callGeminiVision(imageBase64, mimeType, systemPrompt, userText) {
+  const body = {
+    contents: [
+      {
+        role: "user",
+        parts: [
+          { text: userText || "Please help me with this homework question." },
+          { inline_data: { mime_type: mimeType, data: imageBase64 } },
+        ],
+      },
+    ],
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+  };
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(`gemini vision failed: ${data.error?.message || res.statusText}`);
+
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error("gemini vision failed: empty response");
+
+  return text;
+}
+
+async function analyzeImage(imageBase64, mimeType, systemPrompt, userText) {
+  try {
+    const text = await callMistralVision(imageBase64, mimeType, systemPrompt, userText);
+    return { text, success: true, provider: "mistral" };
+  } catch (mistralErr) {
+    console.error("[VISION_ERROR] mistral:", mistralErr.message);
+    return { text: null, success: false, error: mistralErr.message };
   }
 }
 
@@ -150,5 +260,5 @@ async function chat(messages, { systemPrompt, providers = ["cerebras", "groq", "
   throw new Error(`All providers failed: ${errors.map(e => `${e.provider}: ${e.message}`).join(" | ")}`);
 }
 
-const ai = { chat, generateImage };
+const ai = { chat, generateImage, analyzeImage };
 export default ai;
