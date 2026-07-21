@@ -29,6 +29,7 @@ function Routes_() {
       <Route path="/login" element={<Public><Login /></Public>} />
       <Route path="/signup" element={<Public><Signup /></Public>} />
       <Route path="/chat/:mode" element={<Protected><Chat /></Protected>} />
+      <Route path="/mode/:mode/chat" element={<Protected><Chat /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
       <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
       <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
