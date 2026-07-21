@@ -28,7 +28,7 @@ export default function Home() {
         <p className={styles.sub}>Pick a mode and start learning.</p>
         <div className={styles.grid}>
           {MODES.map((m) => (
-            <button key={m.id} className={styles.card} onClick={() => navigate(`/chat/${m.id}`)}>
+            <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
               <div className={styles.cardLabel}>{m.label}</div>
               <div className={styles.cardDesc}>{m.desc}</div>
               <span className={styles.arrow}>→</span>
