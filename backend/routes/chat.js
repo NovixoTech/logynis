@@ -57,18 +57,10 @@ router.post("/", authMiddleware, async (req, res, next) => {
     let finalText = response.text;
     let imageUrl = null;
 
-    const imageTagMatch = finalText.match(/\[GENERATE_IMAGE:\s*(.+?)\]/);
-    if (imageTagMatch) {
-      const imageDescription = imageTagMatch[1];
-      const imageResult = await ai.generateImage(imageDescription);
-      if (imageResult.success) {
-        imageUrl = imageResult.imageUrl;
-      }
-      finalText = finalText.replace(imageTagMatch[0], "").trim();
-    }
+    // Image generation temporarily disabled - strip any leftover [GENERATE_IMAGE:] tag so it doesn't show as raw text
+    finalText = finalText.replace(/\[GENERATE_IMAGE:\s*(.+?)\]/g, "").trim();
 
     const lastUserMessage = messages[messages.length - 1]?.content;
-
     // Create a new conversation if one wasn't passed in
     let activeConversationId = conversationId;
     if (!activeConversationId) {
