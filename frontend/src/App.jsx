@@ -5,6 +5,8 @@ import Chat from "./pages/Chat.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Settings from "./pages/Settings.jsx";
+import ModeFeatures from "./pages/ModeFeatures.jsx";
+import Flashcards from "./pages/Flashcards.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -28,6 +30,8 @@ function Routes_() {
       <Route path="/signup" element={<Public><Signup /></Public>} />
       <Route path="/chat/:mode" element={<Protected><Chat /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
+      <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
+      <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
