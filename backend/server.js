@@ -8,6 +8,7 @@ import examRouter from "./routes/exam.js";
 import feedRouter from "./routes/feed.js";
 import conversationsRouter from "./routes/conversations.js";
 import photoHomeworkRouter from "./routes/photoHomework.js";
+import flashcardsRouter from "./routes/flashcards.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use("/exam", examRouter);
 app.use("/feed", feedRouter);
 app.use("/conversations", conversationsRouter);
 app.use("/photo-homework", photoHomeworkRouter);
+app.use("/flashcards", flashcardsRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
