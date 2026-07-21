@@ -1,6 +1,3 @@
-// Draft prompt builder for Flashcards feature
-// NOT wired into the live app yet - standalone for future integration
-
 export function buildFlashcardsPrompt(user, topic, count = 8) {
   const level = user?.educationlevel || user?.educationLevel || "General";
   const currentClass = user?.currentclass || "";
