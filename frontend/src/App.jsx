@@ -18,7 +18,7 @@ function Protected({ children }) {
 function Public({ children }) {
   const { user, loading } = useAuth();
   if (loading) return null;
-  if (user) return <Navigate to="/chat/study" replace />;
+  if (user) return <Navigate to="/mode/study" replace />;
   return children;
 }
 
