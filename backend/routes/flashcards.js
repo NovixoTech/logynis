@@ -43,4 +43,5 @@ router.post("/", authMiddleware, async (req, res, next) => {
     next(err);
   }
 });
+
 export default router;
