@@ -30,7 +30,7 @@ export default function Flashcards() {
     setFlipped(false);
 
     try {
-      const res = await authFetch("/future/flashcards", {
+      const res = await authFetch("/api/flashcards", {
         method: "POST",
         body: JSON.stringify({ topic, count: 8 }),
       });
