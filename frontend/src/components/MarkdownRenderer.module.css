@@ -1,0 +1,29 @@
+.markdownBody { font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+
+.markdownBody h1, .markdownBody h2, .markdownBody h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+  margin: 1.25rem 0 0.5rem;
+}
+.markdownBody h3 { font-size: 1.05rem; }
+.markdownBody h1:first-child, .markdownBody h2:first-child, .markdownBody h3:first-child { margin-top: 0; }
+
+.markdownBody p { margin: 0 0 0.85rem; }
+.markdownBody p:last-child { margin-bottom: 0; }
+
+.markdownBody strong { font-weight: 700; color: var(--text); }
+.markdownBody em { font-style: italic; }
+
+.markdownBody ul, .markdownBody ol { margin: 0.5rem 0 0.85rem; padding-left: 1.3rem; }
+.markdownBody li { margin-bottom: 0.35rem; }
+
+.markdownBody hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+.markdownBody code { background: var(--surface-2); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.88em; font-family: monospace; }
+.markdownBody pre { background: var(--surface-2); padding: 1rem; border-radius: var(--radius-sm); overflow-x: auto; margin: 0.75rem 0; }
+.markdownBody pre code { background: none; padding: 0; }
+
+.markdownBody table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.markdownBody th { background: var(--surface-2); text-align: left; padding: 0.6rem 0.8rem; font-weight: 700; border: 1px solid var(--border); }
+.markdownBody td { padding: 0.6rem 0.8rem; border: 1px solid var(--border); vertical-align: top; }
