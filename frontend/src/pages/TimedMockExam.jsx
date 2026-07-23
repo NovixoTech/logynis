@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./TimedMockExam.module.css";
 
 export default function TimedMockExam() {
@@ -49,7 +49,7 @@ export default function TimedMockExam() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/timed-mock-exam/generate", {
+      const res = await authFetch("/api/timed-mock-exam/generate", {
         method: "POST",
         body: JSON.stringify({ subject, questionCount: 10, durationMinutes: 20 }),
       });
