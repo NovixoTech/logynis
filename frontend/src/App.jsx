@@ -27,6 +27,7 @@ function Public({ children }) {
   if (user) return <Navigate to="/mode/study" replace />;
   return children;
 }
+
 function Routes_() {
   return (
     <Routes>
