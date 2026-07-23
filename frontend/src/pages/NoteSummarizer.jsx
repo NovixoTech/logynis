@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./NoteSummarizer.module.css";
 
 export default function NoteSummarizer() {
@@ -26,7 +26,7 @@ export default function NoteSummarizer() {
     setResult(null);
 
     try {
-      const res = await authFetch("/future/note-summarizer", {
+      const res = await authFetch("/api/note-summarizer", {
         method: "POST",
         body: JSON.stringify({ rawNotes }),
       });
