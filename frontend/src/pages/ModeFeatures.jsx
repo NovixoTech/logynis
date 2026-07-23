@@ -7,7 +7,7 @@ const MODE_FEATURES = {
     { id: "memory-aid", label: "Memory Aid Generator", desc: "Turn topics into mnemonics, rhymes, or songs", route: "memory-aid" },
     { id: "flashcards", label: "Flashcards", desc: "Generate quick Q&A cards for active recall", route: "flashcards" },
     { id: "concept-map", label: "Concept Map", desc: "See how ideas connect to each other", route: "concept-map" },
-    { id: "explain-differently", label: "Explain Differently", desc: "See how ideas connect to each other", route: "explain-differently" },
+    { id: "explain-differently", label: "Explain Differently", desc: "Re-explain in a genuinely different way", route: "explain-differently" },
     { id: "note-summarizer", label: "Note Summarizer", desc: "Turn messy notes into clean, organized notes", route: "note-summarizer" },
     { id: "cross-subject", label: "Cross-Subject Connections", desc: "See how two topics genuinely connect", route: "cross-subject" },
     { id: "debate-practice", label: "Debate Practice", desc: "Practice arguing and critical thinking", route: "debate-practice" },
