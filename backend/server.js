@@ -42,7 +42,6 @@ app.use((err, req, res, next) => {
     error: err.message || "Internal server error",
   });
 });
-
 app.listen(PORT, () => {
   console.log(`Logynis API running on port ${PORT}`);
 });
