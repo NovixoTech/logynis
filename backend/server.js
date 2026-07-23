@@ -12,6 +12,7 @@ import flashcardsRouter from "./routes/flashcards.js";
 import memoryAidRouter from "./routes/memoryAid.js";
 import conceptMapRouter from "./routes/conceptMap.js";
 import noteSummarizerRouter from "./routes/noteSummarizer.js";
+import crossSubjectRouter from "./routes/crossSubject.js";
 
 dotenv.config();
 
@@ -38,6 +39,8 @@ app.use("/api/flashcards", flashcardsRouter);
 app.use("/api/memory-aid", memoryAidRouter);
 app.use("/api/concept-map", conceptMapRouter);
 app.use("/api/note-summarizer", noteSummarizerRouter);
+app.use("/api/cross-subject", crossSubjectRouter);
+
 
 // Global error handler
 app.use((err, req, res, next) => {
