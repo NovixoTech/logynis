@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildNoteSummarizerPrompt } from "./noteSummarizerPrompt.js";
+import { buildNoteSummarizerPrompt } from "../services/noteSummarizerPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
