@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./ConceptMap.module.css";
 
 export default function ConceptMap() {
@@ -26,7 +26,7 @@ export default function ConceptMap() {
     setMap(null);
 
     try {
-      const res = await authFetch("/future/concept-map", {
+      const res = await authFetch("/api/concept-map", {
         method: "POST",
         body: JSON.stringify({ topic }),
       });
