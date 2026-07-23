@@ -10,6 +10,7 @@ import MemoryAid from "./pages/MemoryAid.jsx";
 import Flashcards from "./pages/Flashcards.jsx";
 import ConceptMap from "./pages/ConceptMap.jsx";
 import NoteSummarizer from "./pages/NoteSummarizer.jsx";
+import CrossSubject from "./pages/CrossSubject.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -39,6 +40,7 @@ function Routes_() {
       <Route path="/mode/study/memory-aid" element={<Protected><MemoryAid /></Protected>} /> 
       <Route path="/mode/study/concept-map" element={<Protected><ConceptMap /></Protected>} />
       <Route path="/mode/study/note-summarizer" element={<Protected><NoteSummarizer /></Protected>} />
+      <Route path="/mode/study/cross-subject" element={<Protected><CrossSubject /></Protected>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
