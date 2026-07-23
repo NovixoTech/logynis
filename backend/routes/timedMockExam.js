@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildTimedMockExamPrompt } from "./timedMockExamPrompt.js";
+import { buildTimedMockExamPrompt } from "../services/timedMockExamPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
