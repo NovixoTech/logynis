@@ -9,6 +9,7 @@ import feedRouter from "./routes/feed.js";
 import conversationsRouter from "./routes/conversations.js";
 import photoHomeworkRouter from "./routes/photoHomework.js";
 import flashcardsRouter from "./routes/flashcards.js";
+import memoryAidRouter from "./routes/memoryAid.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/feed", feedRouter);
 app.use("/conversations", conversationsRouter);
 app.use("/photo-homework", photoHomeworkRouter);
 app.use("/api/flashcards", flashcardsRouter);
+app.use("/api/memory-aid", memoryAidRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
