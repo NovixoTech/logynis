@@ -31,7 +31,7 @@ app.use("/exam", examRouter);
 app.use("/feed", feedRouter);
 app.use("/conversations", conversationsRouter);
 app.use("/photo-homework", photoHomeworkRouter);
-app.use("/flashcards", flashcardsRouter);
+app.use("/api/flashcards", flashcardsRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
