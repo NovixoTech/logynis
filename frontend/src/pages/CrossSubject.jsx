@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./CrossSubject.module.css";
 
 export default function CrossSubject() {
@@ -27,7 +27,7 @@ export default function CrossSubject() {
     setResult(null);
 
     try {
-      const res = await authFetch("/future/cross-subject", {
+      const res = await authFetch("/api/cross-subject", {
         method: "POST",
         body: JSON.stringify({ subjectA, subjectB }),
       });
