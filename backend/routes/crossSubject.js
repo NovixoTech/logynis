@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildCrossSubjectPrompt } from "./crossSubjectPrompt.js";
+import { buildCrossSubjectPrompt } from "../services/crossSubjectPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
