@@ -41,7 +41,7 @@ function Routes_() {
       <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
       <Route path="/mode/study/memory-aid" element={<Protected><MemoryAid /></Protected>} /> 
       <Route path="/mode/study/concept-map" element={<Protected><ConceptMap /></Protected>} />
-      <Route path="/mode/study/explain-different" element={<Protected><ExplainDifferently /></Protected>} />
+      <Route path="/mode/study/explain-differently" element={<Protected><ExplainDifferently /></Protected>} />
       <Route path="/mode/study/note-summarizer" element={<Protected><NoteSummarizer /></Protected>} />
       <Route path="/mode/study/cross-subject" element={<Protected><CrossSubject /></Protected>} />
       <Route path="/mode/study/debate-practice" element={<Protected><DebatePractice /></Protected>} /> 
