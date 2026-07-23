@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./DebatePractice.module.css";
 
 export default function DebatePractice() {
@@ -47,7 +47,7 @@ export default function DebatePractice() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/debate-practice", {
+      const res = await authFetch("/api/debate-practice", {
         method: "POST",
         body: JSON.stringify({ topic, studentPosition: position, messages: updated }),
       });
