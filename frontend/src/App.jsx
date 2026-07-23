@@ -13,6 +13,7 @@ import ExplainDifferently from "./pages/ExplainDifferently.jsx";
 import NoteSummarizer from "./pages/NoteSummarizer.jsx";
 import CrossSubject from "./pages/CrossSubject.jsx";
 import DebatePractice from "./pages/DebatePractice.jsx";
+import TimedMockExam from "./pages/TimedMockExam.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -45,6 +46,7 @@ function Routes_() {
       <Route path="/mode/study/note-summarizer" element={<Protected><NoteSummarizer /></Protected>} />
       <Route path="/mode/study/cross-subject" element={<Protected><CrossSubject /></Protected>} />
       <Route path="/mode/study/debate-practice" element={<Protected><DebatePractice /></Protected>} /> 
+      <Route path="/mode/exam prep/timedmock-exam" element={<Protected><TimedMockExam /></Protected>} /> 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
