@@ -11,6 +11,7 @@ import photoHomeworkRouter from "./routes/photoHomework.js";
 import flashcardsRouter from "./routes/flashcards.js";
 import memoryAidRouter from "./routes/memoryAid.js";
 import conceptMapRouter from "./routes/conceptMap.js";
+import noteSummarizerRouter from "./routes/noteSummarizer.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/photo-homework", photoHomeworkRouter);
 app.use("/api/flashcards", flashcardsRouter);
 app.use("/api/memory-aid", memoryAidRouter);
 app.use("/api/concept-map", conceptMapRouter);
+app.use("/api/note-summarizer", noteSummarizerRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
