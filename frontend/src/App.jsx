@@ -6,6 +6,7 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Settings from "./pages/Settings.jsx";
 import ModeFeatures from "./pages/ModeFeatures.jsx";
+import MemoryAid from "./pages/MemoryAid.jsx";
 import Flashcards from "./pages/Flashcards.jsx";
 
 function Protected({ children }) {
@@ -33,6 +34,7 @@ function Routes_() {
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
       <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
       <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
+      <Route path="/mode/study/memory-aid" element={<Protected><MemoryAid /></Protected>} /> 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
