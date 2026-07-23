@@ -1,9 +1,8 @@
-// Draft page for Memory Aid Generator
-// NOT wired into router yet - standalone for future integration
+// Memory Aid Generator page
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./MemoryAid.module.css";
 
 const FORMATS = [
@@ -35,7 +34,7 @@ export default function MemoryAid() {
     setResult(null);
 
     try {
-      const res = await authFetch("/future/memory-aid", {
+      const res = await authFetch("/api/memory-aid", {
         method: "POST",
         body: JSON.stringify({ topic, format }),
       });
@@ -99,4 +98,4 @@ export default function MemoryAid() {
       </div>
     </div>
   );
-        }
+    }
