@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./CommonMistakes.module.css";
 
 export default function CommonMistakes() {
@@ -26,7 +26,7 @@ export default function CommonMistakes() {
     setMistakes(null);
 
     try {
-      const res = await authFetch("/future/common-mistakes", {
+      const res = await authFetch("/api/common-mistakes", {
         method: "POST",
         body: JSON.stringify({ topic }),
       });
