@@ -3,7 +3,7 @@
 // Meant to sit near the Motivation chat input, letting students request a relatable story
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./SuccessStoryButton.module.css";
 
 export default function SuccessStoryButton({ currentStruggle, onStoryReceived }) {
@@ -15,7 +15,7 @@ export default function SuccessStoryButton({ currentStruggle, onStoryReceived })
 
     setLoading(true);
     try {
-      const res = await authFetch("/future/success-story", {
+      const res = await authFetch("/api/success-story", {
         method: "POST",
         body: JSON.stringify({ currentStruggle }),
       });
