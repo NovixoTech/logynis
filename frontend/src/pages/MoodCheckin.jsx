@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./MoodCheckin.module.css";
 
 const MOODS = [
@@ -34,7 +34,7 @@ export default function MoodCheckin() {
 
   async function loadHistory() {
     try {
-      const res = await authFetch("/future/mood-checkin/history?days=14");
+      const res = await authFetch("/api/mood-checkin/history?days=14");
       if (!res.ok) throw new Error();
       const data = await res.json();
       setHistory(data.checkins || []);
