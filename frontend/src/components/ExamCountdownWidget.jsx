@@ -3,7 +3,7 @@
 // This is separate from the full Study Plan page - just the countdown itself, reusable anywhere
 
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./ExamCountdownWidget.module.css";
 
 export default function ExamCountdownWidget({ onClickSetup }) {
@@ -18,7 +18,7 @@ export default function ExamCountdownWidget({ onClickSetup }) {
 
   async function checkExamDate() {
     try {
-      const res = await authFetch("/future/study-plan/latest");
+      const res = await authFetch("/api/study-plan/latest");
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.hasPlan) {
