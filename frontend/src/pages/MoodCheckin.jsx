@@ -1,6 +1,3 @@
-// Draft page for Mood Check-In Tracker
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -52,7 +49,7 @@ export default function MoodCheckin() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/mood-checkin", {
+      const res = await authFetch("/api/mood-checkin", {
         method: "POST",
         body: JSON.stringify({ mood: selectedMood, note }),
       });
@@ -69,7 +66,7 @@ export default function MoodCheckin() {
   async function loadInsight() {
     setLoadingInsight(true);
     try {
-      const res = await authFetch("/future/mood-checkin/insight");
+      const res = await authFetch("/api/mood-checkin/insight");
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.hasEnoughData) {
