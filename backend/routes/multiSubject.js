@@ -6,7 +6,7 @@
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildSystemPrompt } from "../services/prompts.js";
-import { buildMultiSubjectAddendum } from "./multiSubjectPrompt.js";
+import { buildMultiSubjectAddendum } from "../services/multiSubjectPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
