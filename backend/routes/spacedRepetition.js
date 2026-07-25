@@ -2,7 +2,7 @@
 // NOT registered in index.js yet - standalone for future integration
 
 import { Router } from "express";
-import { calculateNextReview } from "./spacedRepetitionLogic.js";
+import { calculateNextReview } from "../services/spacedRepetitionLogic.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
