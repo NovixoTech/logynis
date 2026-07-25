@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { IconStudy, IconExam, IconHomework, IconRevision, IconMotivation, IconSettings, IconSend, IconPlus, IconClock } from "../components/Icons.jsx";
+import ConceptFirstToggle from "../components/ConceptFirstToggle.jsx";
+import DifficultyBadge from "../components/DifficultyBadge.jsx";
+import SuccessStoryButton from "../components/SuccessStoryButton.jsx";
 import styles from "./Chat.module.css";
 
 const MODES = [
@@ -178,6 +181,17 @@ export default function Chat() {
     } finally { setLoading(false); }
   }
 
+  // Helper: last user message, used by ConceptFirstToggle (homework) and SuccessStoryButton (motivation)
+  const lastUserMessage = [...messages].reverse().find(m => m.role === "user")?.content || input.trim();
+
+  function handleConceptReceived(text) {
+    setMessages(prev => [...prev, { role: "assistant", content: text }]);
+  }
+
+  function handleStoryReceived(text) {
+    setMessages(prev => [...prev, { role: "assistant", content: text }]);
+  }
+
   return (
     <div className={styles.layout}>
       <div className={styles.main}>
@@ -233,6 +247,13 @@ export default function Chat() {
             </div>
           )}
 
+          {mode === "homework" && messages.length > 0 && (
+            <ConceptFirstToggle
+              homeworkQuestion={lastUserMessage}
+              onConceptReceived={handleConceptReceived}
+            />
+          )}
+
           {messages.map((msg, i) => (
             <div key={i} className={`${styles.msg} ${msg.role === "user" ? styles.user : styles.ai}`}>
               <div className={styles.msgWrap}>
@@ -242,6 +263,12 @@ export default function Chat() {
                 >{msg.role === "user" ? msg.content : undefined}</div>
                 {msg.role === "assistant" && msg.imageUrl && (
                   <img src={msg.imageUrl} alt="Generated diagram" className={styles.generatedImage} loading="lazy" />
+                )}
+                {mode === "homework" && msg.role === "assistant" && i === messages.length - 1 && (
+                  <DifficultyBadge
+                    homeworkQuestion={lastUserMessage}
+                    conversationId={conversationId}
+                  />
                 )}
               </div>
             </div>
@@ -255,6 +282,13 @@ export default function Chat() {
                 </div>
               </div>
             </div>
+          )}
+
+          {mode === "motivation" && messages.length > 0 && (
+            <SuccessStoryButton
+              currentStruggle={lastUserMessage}
+              onStoryReceived={handleStoryReceived}
+            />
           )}
 
           {error && (
@@ -331,4 +365,4 @@ export default function Chat() {
       )}
     </div>
   );
-}
+   }
