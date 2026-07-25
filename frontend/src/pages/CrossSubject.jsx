@@ -1,9 +1,7 @@
-// Draft page for Cross-Subject Connections
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./CrossSubject.module.css";
 
 export default function CrossSubject() {
@@ -86,7 +84,9 @@ export default function CrossSubject() {
         {result && (
           <div className={styles.resultArea}>
             <div className={styles.resultHeader}>{subjectA} ↔ {subjectB}</div>
-            <div className={styles.result}>{result}</div>
+            <div className={styles.result}>
+              <MarkdownRenderer content={result} />
+            </div>
             <button className={styles.newBtn} onClick={() => { setResult(null); setSubjectA(""); setSubjectB(""); }}>
               Try Another Pair
             </button>
@@ -95,4 +95,4 @@ export default function CrossSubject() {
       </div>
     </div>
   );
-}
+          }
