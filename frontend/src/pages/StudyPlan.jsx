@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./StudyPlan.module.css";
 
 export default function StudyPlan() {
@@ -25,7 +25,7 @@ export default function StudyPlan() {
   async function loadExistingPlan() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/study-plan/latest");
+      const res = await authFetch("/api/study-plan/latest");
       if (!res.ok) throw new Error("Failed to check for existing plan");
       const data = await res.json();
       if (data.hasPlan) {
