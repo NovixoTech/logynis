@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./SpeedDrill.module.css";
 
 const SECONDS_PER_QUESTION = 10;
@@ -53,7 +53,7 @@ export default function SpeedDrill() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/speed-drill", {
+      const res = await authFetch("/api/speed-drill", {
         method: "POST",
         body: JSON.stringify({ subject, questionCount: 15 }),
       });
