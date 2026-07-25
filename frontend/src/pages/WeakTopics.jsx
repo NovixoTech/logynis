@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./WeakTopics.module.css";
 
 export default function WeakTopics() {
@@ -24,7 +24,7 @@ export default function WeakTopics() {
   async function loadTopics() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/weak-topics");
+      const res = await authFetch("/api/weak-topics");
       if (!res.ok) throw new Error("Failed to load performance data");
       const data = await res.json();
       setWeakTopics(data.weakTopics || []);
