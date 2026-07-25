@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ExplainDifferentlyButton from "../components/ExplainDifferentlyButton.jsx";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./ExplainDifferently.module.css";
 
 export default function ExplainDifferently() {
