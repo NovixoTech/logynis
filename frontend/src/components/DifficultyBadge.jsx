@@ -3,7 +3,7 @@
 // Meant to appear as a small badge after a homework question is answered
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./DifficultyBadge.module.css";
 
 const RATING_COLORS = {
@@ -22,7 +22,7 @@ export default function DifficultyBadge({ homeworkQuestion, conversationId }) {
   async function checkDifficulty() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/difficulty-rating", {
+      const res = await authFetch("/api/difficulty-rating", {
         method: "POST",
         body: JSON.stringify({ homeworkQuestion, conversationId }),
       });
