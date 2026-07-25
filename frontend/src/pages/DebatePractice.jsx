@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./DebatePractice.module.css";
 
 export default function DebatePractice() {
@@ -112,7 +113,7 @@ export default function DebatePractice() {
           <div className={styles.messages}>
             {messages.filter(m => m.content !== "Let's begin the debate.").map((msg, i) => (
               <div key={i} className={`${styles.msg} ${msg.role === "user" ? styles.userMsg : styles.aiMsg}`}>
-                {msg.content}
+                {msg.role === "assistant" ? <MarkdownRenderer content={msg.content} /> : msg.content}
               </div>
             ))}
             {loading && <div className={styles.aiMsg}>Thinking of a counter-argument...</div>}
