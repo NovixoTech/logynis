@@ -78,7 +78,7 @@ app.use("/api/spaced-repetition", spacedRepetitionRouter);
 app.use("/api/speed-drill", speedDrillRouter);
 app.use("/api/study-plan", studyPlanRouter);
 app.use("/api/success-story", successStoryRouter);
-app.use("/api/timed-mock", timedMockExamRouter);
+app.use("/api/timed-mock-exam", timedMockExamRouter);
 app.use("/api/weak-topics", weakTopicRouter);
 
 // Global error handler
