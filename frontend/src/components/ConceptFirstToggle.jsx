@@ -3,7 +3,7 @@
 // Meant to sit above the homework input box as an optional pre-step
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./ConceptFirstToggle.module.css";
 
 export default function ConceptFirstToggle({ homeworkQuestion, onConceptReceived }) {
@@ -21,7 +21,7 @@ export default function ConceptFirstToggle({ homeworkQuestion, onConceptReceived
     setError(null);
 
     try {
-      const res = await authFetch("/future/concept-first", {
+      const res = await authFetch("/api/concept-first", {
         method: "POST",
         body: JSON.stringify({ homeworkQuestion }),
       });
