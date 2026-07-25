@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildCommonMistakesPrompt } from "./commonMistakesPrompt.js";
+import { buildCommonMistakesPrompt } from "../services/commonMistakesPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
