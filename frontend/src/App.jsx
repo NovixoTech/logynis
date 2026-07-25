@@ -26,6 +26,7 @@ import SpeedDrill from "./pages/SpeedDrill.jsx";
 import StudyPlan from "./pages/StudyPlan.jsx";
 import TimedMockExam from "./pages/TimedMockExam.jsx";
 import WeakTopics from "./pages/WeakTopics.jsx";
+import Reflection from "./pages/Reflection.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -81,6 +82,8 @@ function Routes_() {
 
       {/* Motivation mode */}
       <Route path="/mode/motivation/mood-checkin" element={<Protected><MoodCheckin /></Protected>} />
+      <Route path="/mode/motivation/reflection" element={<Protected><Reflection /></Protected>} />
+
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
