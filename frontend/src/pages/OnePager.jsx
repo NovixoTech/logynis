@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./OnePager.module.css";
 
 export default function OnePager() {
@@ -26,7 +26,7 @@ export default function OnePager() {
     setPage(null);
 
     try {
-      const res = await authFetch("/future/one-pager", {
+      const res = await authFetch("/api/one-pager", {
         method: "POST",
         body: JSON.stringify({ topic }),
       });
