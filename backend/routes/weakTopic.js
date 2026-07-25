@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildTopicTaggingPrompt, buildWeakTopicRecommendationPrompt } from "./weakTopicPrompt.js";
+import { buildTopicTaggingPrompt, buildWeakTopicRecommendationPrompt } from "../services/weakTopicPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
