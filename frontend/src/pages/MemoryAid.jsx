@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./MemoryAid.module.css";
 
 const FORMATS = [
@@ -92,10 +93,10 @@ export default function MemoryAid() {
 
         {result && (
           <div className={styles.result}>
-            {result}
+            <MarkdownRenderer content={result} />
           </div>
         )}
       </div>
     </div>
   );
-    }
+          }
