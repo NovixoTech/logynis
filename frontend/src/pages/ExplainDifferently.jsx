@@ -58,7 +58,7 @@ export default function ExplainDifferently() {
         {explanations.map((text, i) => (
           <div key={i} className={styles.result}>
             <p className={styles.resultLabel}>Attempt {i + 2}</p>
-            <p>{text}</p>
+            <MarkdownRenderer content={text} />
           </div>
         ))}
       </div>
