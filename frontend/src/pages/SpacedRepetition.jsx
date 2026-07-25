@@ -1,6 +1,3 @@
-// Draft page for Spaced Repetition Reminders
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -25,8 +22,8 @@ export default function SpacedRepetition() {
     setLoading(true);
     try {
       const [dueRes, upcomingRes] = await Promise.all([
-        authFetch("/future/spaced-repetition/due"),
-        authFetch("/future/spaced-repetition/upcoming"),
+        authFetch("/api/spaced-repetition/due"),
+        authFetch("/api/spaced-repetition/upcoming"),
       ]);
 
       if (dueRes.ok) {
