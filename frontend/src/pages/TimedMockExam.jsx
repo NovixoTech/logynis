@@ -1,6 +1,3 @@
-// Draft page for Timed Mock Exam
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -77,7 +74,7 @@ export default function TimedMockExam() {
     setLoading(true);
 
     try {
-      const res = await authFetch("/future/timed-mock-exam/submit", {
+      const res = await authFetch("/api/timed-mock-exam/submit", {
         method: "POST",
         body: JSON.stringify({ sessionId, answers }),
       });
