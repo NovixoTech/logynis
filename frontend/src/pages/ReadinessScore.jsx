@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./ReadinessScore.module.css";
 
 export default function ReadinessScore() {
@@ -29,7 +29,7 @@ export default function ReadinessScore() {
     setInsight(null);
 
     try {
-      const res = await authFetch(`/future/readiness-score?subject=${encodeURIComponent(subject)}`);
+      const res = await authFetch(`/api/readiness-score?subject=${encodeURIComponent(subject)}`);
       if (!res.ok) throw new Error("Failed to check readiness");
 
       const data = await res.json();
