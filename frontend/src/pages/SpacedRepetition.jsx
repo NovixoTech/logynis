@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./SpacedRepetition.module.css";
 
 export default function SpacedRepetition() {
@@ -51,7 +51,7 @@ export default function SpacedRepetition() {
     }
 
     try {
-      const res = await authFetch("/future/spaced-repetition/add", {
+      const res = await authFetch("/api/spaced-repetition/add", {
         method: "POST",
         body: JSON.stringify({ topic: newTopic, subject: newSubject }),
       });
