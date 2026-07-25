@@ -1,6 +1,3 @@
-// Draft route for Homework Difficulty Rating
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildDifficultyRatingPrompt } from "../services/difficultyRatingPrompt.js";
