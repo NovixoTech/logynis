@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Reflection.module.css";
 
 export default function Reflection() {
@@ -24,7 +24,7 @@ export default function Reflection() {
   async function loadQuestion() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/reflection/prompt");
+      const res = await authFetch("/api/reflection/prompt");
       if (!res.ok) throw new Error("Failed to load reflection prompt");
       const data = await res.json();
       setQuestion(data.question);
