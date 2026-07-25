@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./NoteSummarizer.module.css";
 
 export default function NoteSummarizer() {
@@ -79,7 +80,7 @@ export default function NoteSummarizer() {
             <div className={styles.result}>{result}</div>
             <button className={styles.newBtn} onClick={() => { setResult(null); setRawNotes(""); }}>
               Summarize New Notes
-            </button>
+            <MarkdownRenderer content={button} />
           </div>
         )}
       </div>
