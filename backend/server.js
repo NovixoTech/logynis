@@ -69,7 +69,7 @@ app.use("/api/difficulty-rating", difficultyRatingRouter);
 app.use("/api/essay-feedback", essayFeedbackRouter);
 app.use("/api/mood-checkin", moodCheckinRouter);
 app.use("/api/multi-subject", multiSubjectRouter);
-app.use("/api/onepager", onePagerRouter);
+app.use("/api/one-pager", onePagerRouter);
 app.use("/api/rapid-recall", rapidRecallRouter);
 app.use("/api/readiness-score", readinessScoreRouter);
 app.use("/api/reflection", reflectionRouter);
