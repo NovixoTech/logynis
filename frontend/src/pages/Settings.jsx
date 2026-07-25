@@ -19,6 +19,11 @@ export default function Settings() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+
   async function save() {
     if (!name.trim()) {
       setError("Name cannot be empty");
@@ -52,6 +57,27 @@ export default function Settings() {
       setError(e.message);
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function deleteAccount() {
+    if (deleteConfirmText !== "DELETE") return;
+
+    setDeleting(true);
+    setDeleteError(null);
+
+    try {
+      const res = await authFetch("/user/delete-account", {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete account");
+
+      logout();
+      navigate("/");
+    } catch (e) {
+      setDeleteError(e.message);
+      setDeleting(false);
     }
   }
 
@@ -174,7 +200,58 @@ export default function Settings() {
             <IconLogout size={16} /> Logout
           </button>
         </div>
+
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Danger Zone</h2>
+
+          {!showDeleteConfirm && (
+            <button
+              className={styles.deleteBtn}
+              onClick={() => setShowDeleteConfirm(true)}
+            >
+              Delete Account
+            </button>
+          )}
+
+          {showDeleteConfirm && (
+            <div className={styles.deleteConfirmBox}>
+              <p className={styles.deleteWarning}>
+                This will permanently delete your account and all your data — chats, exam results, tracked topics, everything. This cannot be undone.
+              </p>
+              {deleteError && <div className={styles.error}>{deleteError}</div>}
+              <label className={styles.label}>
+                Type <strong>DELETE</strong> to confirm
+              </label>
+              <input
+                className={styles.input}
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder="DELETE"
+              />
+              <div className={styles.deleteBtnRow}>
+                <button
+                  className={styles.deleteBtnCancel}
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setDeleteConfirmText("");
+                    setDeleteError(null);
+                  }}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles.deleteBtnConfirm}
+                  onClick={deleteAccount}
+                  disabled={deleteConfirmText !== "DELETE" || deleting}
+                >
+                  {deleting ? "Deleting..." : "Permanently Delete"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
-}
+    }
