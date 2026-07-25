@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./EssayFeedback.module.css";
 
 export default function EssayFeedback() {
@@ -28,7 +28,7 @@ export default function EssayFeedback() {
     setFeedback(null);
 
     try {
-      const res = await authFetch("/future/essay-feedback", {
+      const res = await authFetch("/api/essay-feedback", {
         method: "POST",
         body: JSON.stringify({ subject, studentAnswer, questionContext }),
       });
