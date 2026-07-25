@@ -1,4 +1,4 @@
-routes/ft route for Homework Difficulty Rating
+// Draft route for Homework Difficulty Rating
 // NOT registered in index.js yet - standalone for future integration
 
 import { Router } from "express";
