@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./RapidRecall.module.css";
 
 export default function RapidRecall() {
@@ -35,7 +35,7 @@ export default function RapidRecall() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/rapid-recall", {
+      const res = await authFetch("/api/rapid-recall", {
         method: "POST",
         body: JSON.stringify({ topic, questionCount: 15 }),
       });
