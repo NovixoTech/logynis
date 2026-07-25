@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./RevisionTimetable.module.css";
 
 export default function RevisionTimetable() {
@@ -25,7 +25,7 @@ export default function RevisionTimetable() {
   async function loadExisting() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/revision-timetable/latest");
+      const res = await authFetch("/api/revision-timetable/latest");
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.hasTimetable) setTimetable(data.timetable);
