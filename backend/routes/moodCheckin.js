@@ -6,7 +6,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildMoodPatternPrompt } from "./moodCheckinPrompt.js";
+import { buildMoodPatternPrompt } from "../services/moodCheckinPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
