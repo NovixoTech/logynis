@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./AnxietySimulator.module.css";
 
 export default function AnxietySimulator() {
@@ -49,7 +49,7 @@ export default function AnxietySimulator() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/anxiety-simulator/generate", {
+      const res = await authFetch("/api/anxiety-simulator/generate", {
         method: "POST",
         body: JSON.stringify({ subject, questionCount: 10, durationMinutes: 15 }),
       });
