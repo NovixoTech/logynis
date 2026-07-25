@@ -1,6 +1,3 @@
-// Draft page for Gratitude/Reflection Prompt
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -45,7 +42,7 @@ export default function Reflection() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/reflection/respond", {
+      const res = await authFetch("/api/reflection/respond", {
         method: "POST",
         body: JSON.stringify({ reflection: answer }),
       });
