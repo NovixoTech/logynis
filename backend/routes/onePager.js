@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildOnePagerPrompt } from "./onePagerPrompt.js";
+import { buildOnePagerPrompt } from "../services/onePagerPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
