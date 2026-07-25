@@ -15,6 +15,24 @@ import conceptMapRouter from "./routes/conceptMap.js";
 import noteSummarizerRouter from "./routes/noteSummarizer.js";
 import crossSubjectRouter from "./routes/crossSubject.js";
 import debatePracticeRouter from "./routes/debatePractice.js";
+import anxietySimulatorRouter from "./routes/anxietySimulator.js";
+import commonMistakesRouter from "./routes/commonMistakes.js";
+import conceptFirstRouter from "./routes/conceptFirst.js";
+import difficultyRatingRouter from "./routes/difficultyRating.js";
+import essayFeedbackRouter from "./routes/essayFeedback.js";
+import moodCheckinRouter from "./routes/moodCheckin.js";
+import multiSubjectRouter from "./routes/multiSubject.js";
+import onePagerRouter from "./routes/onePager.js";
+import rapidRecallRouter from "./routes/rapidRecall.js";
+import readinessScoreRouter from "./routes/readinessScore.js";
+import reflectionRouter from "./routes/reflection.js";
+import revisionTimetableRouter from "./routes/revisionTimetable.js";
+import spacedRepetitionRouter from "./routes/spacedRepetition.js";
+import speedDrillRouter from "./routes/speedDrill.js";
+import studyPlanRouter from "./routes/studyPlan.js";
+import successStoryRouter from "./routes/successStory.js";
+import timedMockExamRouter from "./routes/timedMockExam.js";
+import weakTopicRouter from "./routes/weakTopic.js";
 
 dotenv.config();
 
@@ -39,11 +57,29 @@ app.use("/conversations", conversationsRouter);
 app.use("/photo-homework", photoHomeworkRouter);
 app.use("/api/flashcards", flashcardsRouter);
 app.use("/api/memory-aid", memoryAidRouter);
-app.use("/explain-differently", explainDifferentlyRouter);
+app.use("/api/explain-differently", explainDifferentlyRouter);
 app.use("/api/concept-map", conceptMapRouter);
 app.use("/api/note-summarizer", noteSummarizerRouter);
 app.use("/api/cross-subject", crossSubjectRouter);
 app.use("/api/debate-practice", debatePracticeRouter);
+app.use("/api/anxiety-simulator", anxietySimulatorRouter);
+app.use("/api/common-mistakes", commonMistakesRouter);
+app.use("/api/concept-first", conceptFirstRouter);
+app.use("/api/difficulty-rating", difficultyRatingRouter);
+app.use("/api/essay-feedback", essayFeedbackRouter);
+app.use("/api/mood-checkin", moodCheckinRouter);
+app.use("/api/multi-subject", multiSubjectRouter);
+app.use("/api/onepager", onePagerRouter);
+app.use("/api/rapid-recall", rapidRecallRouter);
+app.use("/api/readiness-score", readinessScoreRouter);
+app.use("/api/reflection", reflectionRouter);
+app.use("/api/revision-timetable", revisionTimetableRouter);
+app.use("/api/spaced-repetition", spacedRepetitionRouter);
+app.use("/api/speed-drill", speedDrillRouter);
+app.use("/api/study-plan", studyPlanRouter);
+app.use("/api/success-story", successStoryRouter);
+app.use("/api/timed-mock", timedMockExamRouter);
+app.use("/api/weak-topics", weakTopicRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -52,6 +88,7 @@ app.use((err, req, res, next) => {
     error: err.message || "Internal server error",
   });
 });
+
 app.listen(PORT, () => {
   console.log(`Logynis API running on port ${PORT}`);
 });
