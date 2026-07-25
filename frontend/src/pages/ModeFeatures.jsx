@@ -25,7 +25,6 @@ const MODE_FEATURES = {
   homework: [
     { id: "chat", label: "Step-by-Step Help", desc: "Work through problems together", route: "chat" },
     { id: "photo-homework", label: "Photo Homework Helper", desc: "Upload a photo of your question", route: "photo-homework" },
-    { id: "concept-first", label: "Show Me the Concept First", desc: "Quick refresher before solving", route: "concept-first" },
     { id: "essay-feedback", label: "Essay & Answer Feedback", desc: "Get feedback on your own written answers", route: "essay-feedback" },
   ],
   revision: [
@@ -36,8 +35,7 @@ const MODE_FEATURES = {
     { id: "spaced-repetition", label: "Spaced Repetition", desc: "Get reminded to review at the right time", route: "spaced-repetition" },
   ],
   motivation: [
-    { id: "chat", label: "Talk to Logynis", desc: "Get encouragement and support", route: "chat" },
-    { id: "success-story", label: "Success Story", desc: "Hear a relatable story like yours", route: "success-story" },
+    { id: "chat", label: "Talk to Logynis", desc: "Get encouragement and support", route: "chat" }, 
     { id: "reflection", label: "Reflection Moment", desc: "A gentle daily reflection prompt", route: "reflection" },
     { id: "mood-checkin", label: "Mood Check-In", desc: "Track how you've been feeling", route: "mood-checkin" },
   ],
