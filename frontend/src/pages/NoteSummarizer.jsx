@@ -1,6 +1,3 @@
-// Draft page for Note Summarizer
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -77,13 +74,15 @@ export default function NoteSummarizer() {
 
         {result && (
           <div className={styles.resultArea}>
-            <div className={styles.result}>{result}</div>
+            <div className={styles.result}>
+              <MarkdownRenderer content={result} />
+            </div>
             <button className={styles.newBtn} onClick={() => { setResult(null); setRawNotes(""); }}>
               Summarize New Notes
-            <MarkdownRenderer content={button} />
+            </button>
           </div>
         )}
       </div>
     </div>
   );
-}
+              }
