@@ -3,7 +3,7 @@
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildSpeedDrillPrompt } from "./speedDrillPrompt.js";
+import { buildSpeedDrillPrompt } from "../services/speedDrillPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
 
