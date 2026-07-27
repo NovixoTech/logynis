@@ -83,12 +83,15 @@ export async function deleteCachedContent(key) {
     const tx = db.transaction(STORE_NAME, "readwrite");
     const store = tx.objectStore(STORE_NAME);
     store.delete(key);
-    return true;
+    return new Promise((resolve, reject) => {
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
   } catch (err) {
     console.error("[offline-cache-delete-error]", err);
     return false;
   }
-}
+                     }
 
 export function isOnline() {
   return navigator.onLine;
