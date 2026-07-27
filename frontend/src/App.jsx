@@ -54,6 +54,8 @@ function Routes_() {
       <Route path="/mode/:mode/chat" element={<Protected><Chat /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
       <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
+      <Route path="/glossary" element={<Protected><Glossary /></Protected>} />
+      <Route path="/referrals" element={<Protected><Referrals /></Protected>} />
 
       {/* Study mode */}
       <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
@@ -63,8 +65,7 @@ function Routes_() {
       <Route path="/mode/study/note-summarizer" element={<Protected><NoteSummarizer /></Protected>} />
       <Route path="/mode/study/cross-subject" element={<Protected><CrossSubject /></Protected>} />
       <Route path="/mode/study/debate-practice" element={<Protected><DebatePractice /></Protected>} />
-      <Route path="/mode/study/glossary" element={<Protected><Glossary /></Protected>} />
-      <Route path="/mode/study/referrals" element={<Protected><Referrals /></Protected>} />
+      
 
       {/* Exam mode */}
       <Route path="/mode/exam/timed-mock" element={<Protected><TimedMockExam /></Protected>} />
