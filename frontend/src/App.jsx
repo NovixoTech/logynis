@@ -29,6 +29,7 @@ import WeakTopics from "./pages/WeakTopics.jsx";
 import Reflection from "./pages/Reflection.jsx";
 import Glossary from "./pages/Glossary.jsx";
 import Referrals from "./pages/Referrals.jsx";
+import OfflineLibrary from "./pages/OfflineLibrary.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -56,6 +57,7 @@ function Routes_() {
       <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
       <Route path="/glossary" element={<Protected><Glossary /></Protected>} />
       <Route path="/referrals" element={<Protected><Referrals /></Protected>} />
+      <Route path="/offline-library" element={<Protected><OfflineLibrary /></Protected>} />
 
       {/* Study mode */}
       <Route path="/mode/study/flashcards" element={<Protected><Flashcards /></Protected>} />
