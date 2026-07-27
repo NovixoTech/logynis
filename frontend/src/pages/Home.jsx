@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { IconSettings } from "../components/Icons.jsx";
@@ -14,6 +15,12 @@ const MODES = [
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function goTo(path) {
+    setMenuOpen(false);
+    navigate(path);
+  }
 
   return (
     <div className={styles.page}>
@@ -24,22 +31,42 @@ export default function Home() {
         </div>
         <div className={styles.headerBtns}>
           {user ? (
-  <div className={styles.userGroup}>
-    <span className={styles.userNameSmall}>{user.name?.split(" ")[0] || "Account"}</span>
-    <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
-      <IconSettings size={18} />
-    </button>
-    <button className={styles.textBtn} onClick={() => navigate("/glossary")}>Glossary</button>
-    <button className={styles.textBtn} onClick={() => navigate("/referrals")}>Refer</button>
-  </div>
-) : (
-  <>
-    <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
-    <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
-  </>
-)}
+            <div className={styles.userGroup}>
+              <span className={styles.userNameSmall}>{user.name?.split(" ")[0] || "Account"}</span>
+              <button className={styles.iconBtn} onClick={() => setMenuOpen(true)} title="Menu">
+                ☰
+              </button>
+            </div>
+          ) : (
+            <>
+              <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
+              <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
+            </>
+          )}
         </div>
       </header>
+
+      {menuOpen && (
+        <>
+          <div className={styles.overlay} onClick={() => setMenuOpen(false)} />
+          <div className={styles.menuPanel}>
+            <div className={styles.menuHeader}>
+              <h3>Menu</h3>
+              <button className={styles.menuClose} onClick={() => setMenuOpen(false)}>×</button>
+            </div>
+            <button className={styles.menuItem} onClick={() => goTo("/settings")}>
+               Settings
+            </button>
+            <button className={styles.menuItem} onClick={() => goTo("/glossary")}>
+               Glossary
+            </button>
+            <button className={styles.menuItem} onClick={() => goTo("/referrals")}>
+               Refer a Friend
+            </button>
+          </div>
+        </>
+      )}
+
       <main className={styles.main}>
         <h1 className={styles.headline}>Your AI Study Companion,<br /><span className={styles.accent}> That Thinks With You.</span></h1>
         <p className={styles.sub}>Pick a mode and start learning.</p>
@@ -56,4 +83,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-          }
+   }
