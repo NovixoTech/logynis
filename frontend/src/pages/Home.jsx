@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
@@ -11,6 +12,8 @@ const MODES = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  
   return (
     <div className={styles.page}>
       <header className={styles.header}>
