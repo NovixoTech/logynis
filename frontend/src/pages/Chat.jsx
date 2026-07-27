@@ -5,6 +5,7 @@ import { IconStudy, IconExam, IconHomework, IconRevision, IconMotivation, IconSe
 import ConceptFirstToggle from "../components/ConceptFirstToggle.jsx";
 import DifficultyBadge from "../components/DifficultyBadge.jsx";
 import SuccessStoryButton from "../components/SuccessStoryButton.jsx";
+import PomodoroTimer from "../components/PomodoroTimer.jsx";
 import styles from "./Chat.module.css";
 
 const MODES = [
@@ -363,6 +364,8 @@ export default function Chat() {
           </div>
         </>
       )}
+      {user && <PomodoroTimer />}
     </div>
   );
-   }
+}
+
