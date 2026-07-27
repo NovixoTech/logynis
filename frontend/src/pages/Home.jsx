@@ -63,6 +63,9 @@ export default function Home() {
             <button className={styles.menuItem} onClick={() => goTo("/referrals")}>
                Refer a Friend
             </button>
+            <button className={styles.menuItem} onClick={() => goTo("/offline-library")}>
+              Offline Library
+           </button>
           </div>
         </>
       )}
