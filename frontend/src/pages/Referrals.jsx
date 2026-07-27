@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Referrals.module.css";
 
 export default function Referrals() {
@@ -21,7 +21,7 @@ export default function Referrals() {
   async function loadSummary() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/referral/summary");
+      const res = await authFetch("/api/referral/summary");
       if (!res.ok) throw new Error("Failed to load referral info");
       const result = await res.json();
       setData(result);
