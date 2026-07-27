@@ -9,7 +9,7 @@ import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// GET /future/referral/summary
+// GET /api/referral/summary
 router.get("/summary", authMiddleware, async (req, res, next) => {
   try {
     const { data: user, error } = await supabase
