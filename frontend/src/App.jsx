@@ -27,6 +27,8 @@ import StudyPlan from "./pages/StudyPlan.jsx";
 import TimedMockExam from "./pages/TimedMockExam.jsx";
 import WeakTopics from "./pages/WeakTopics.jsx";
 import Reflection from "./pages/Reflection.jsx";
+import Glossary from "./pages/Glossary.jsx";
+import Referrals from "./pages/Referrals.jsx";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -61,6 +63,8 @@ function Routes_() {
       <Route path="/mode/study/note-summarizer" element={<Protected><NoteSummarizer /></Protected>} />
       <Route path="/mode/study/cross-subject" element={<Protected><CrossSubject /></Protected>} />
       <Route path="/mode/study/debate-practice" element={<Protected><DebatePractice /></Protected>} />
+      <Route path="/mode/study/glossary" element={<Protected><Glossary /></Protected>} />
+      <Route path="/mode/study/referrals" element={<Protected><Referrals /></Protected>} />
 
       {/* Exam mode */}
       <Route path="/mode/exam/timed-mock" element={<Protected><TimedMockExam /></Protected>} />
