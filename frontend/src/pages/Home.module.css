@@ -48,3 +48,19 @@
   color: var(--text);
   font-size: 1rem;
            }
+
+.userNameSmall {
+  padding: 0.4rem 0.85rem;
+  background: var(--mode-study);
+  color: #fff;
+  border-radius: var(--radius-sm, 8px);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.textBtn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  padding: 0.3rem 0.5rem;
+       }
