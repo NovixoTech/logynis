@@ -3,7 +3,7 @@
 // Meant to appear on the homepage/main dashboard
 
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./DailyChallengeCard.module.css";
 
 export default function DailyChallengeCard() {
@@ -21,7 +21,7 @@ export default function DailyChallengeCard() {
   async function loadChallenge() {
     setLoading(true);
     try {
-      const res = await authFetch("/future/daily-challenge");
+      const res = await authFetch("/api/daily-challenge");
       if (!res.ok) throw new Error();
       const data = await res.json();
       setChallenge(data.challenge);
@@ -37,7 +37,7 @@ export default function DailyChallengeCard() {
   async function submitAnswer(option) {
     setSubmitting(true);
     try {
-      const res = await authFetch("/future/daily-challenge/answer", {
+      const res = await authFetch("/api/daily-challenge/answer", {
         method: "POST",
         body: JSON.stringify({ answer: option }),
       });
