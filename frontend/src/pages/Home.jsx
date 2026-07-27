@@ -24,22 +24,20 @@ export default function Home() {
         </div>
         <div className={styles.headerBtns}>
           {user ? (
-  <div className={styles.userGroup}>
-    <span className={styles.userName}>{user.name?.split(" ")[0] || "Account"}</span>
-    <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
-      <IconSettings size={18} />
-    </button>
-  </div>
-) : (
-  <>
-    <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
-    <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
-  </>
-)}
-          {user ? (
-            <button className={styles.userBtn} onClick={() => navigate("/settings")}>
-              {user.name?.split(" ")[0] || "Account"}
-            </button>
+            <div className={styles.userGroup}>
+              <button className={styles.userBtn} onClick={() => navigate("/settings")}>
+                {user.name?.split(" ")[0] || "Account"}
+              </button>
+              <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
+                <IconSettings size={18} />
+              </button>
+              <button className={styles.iconBtn} onClick={() => navigate("/glossary")} title="My Glossary">
+                📖
+              </button>
+              <button className={styles.iconBtn} onClick={() => navigate("/referrals")} title="Invite Friends">
+                🎁
+              </button>
+            </div>
           ) : (
             <>
               <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
@@ -64,4 +62,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-      }
+          }
