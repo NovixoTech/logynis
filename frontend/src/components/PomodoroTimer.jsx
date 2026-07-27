@@ -1,16 +1,20 @@
-// Draft component for Study Session Timer (Pomodoro)
-// NOT wired into the app yet - standalone for future integration
+// Study Session Timer (Pomodoro)
 // No backend needed - pure frontend timer state
 
 import { useState, useEffect, useRef } from "react";
 import styles from "./PomodoroTimer.module.css";
 
-const FOCUS_MINUTES = 25;
-const BREAK_MINUTES = 5;
+const PRESETS = [
+  { label: "25 / 5", focus: 25, break: 5 },
+  { label: "50 / 10", focus: 50, break: 10 },
+  { label: "60 / 15", focus: 60, break: 15 },
+];
 
 export default function PomodoroTimer() {
+  const [focusMinutes, setFocusMinutes] = useState(25);
+  const [breakMinutes, setBreakMinutes] = useState(5);
   const [mode, setMode] = useState("focus"); // focus | break
-  const [secondsLeft, setSecondsLeft] = useState(FOCUS_MINUTES * 60);
+  const [secondsLeft, setSecondsLeft] = useState(focusMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [sessionsCompleted, setSessionsCompleted] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -39,13 +43,12 @@ export default function PomodoroTimer() {
     if (mode === "focus") {
       setSessionsCompleted(c => c + 1);
       setMode("break");
-      setSecondsLeft(BREAK_MINUTES * 60);
+      setSecondsLeft(breakMinutes * 60);
     } else {
       setMode("focus");
-      setSecondsLeft(FOCUS_MINUTES * 60);
+      setSecondsLeft(focusMinutes * 60);
     }
 
-    // Simple browser notification if permission was granted (optional, fails silently otherwise)
     try {
       if (Notification.permission === "granted") {
         new Notification(mode === "focus" ? "Break time!" : "Back to focus!");
@@ -63,7 +66,15 @@ export default function PomodoroTimer() {
     clearInterval(intervalRef.current);
     setIsRunning(false);
     setMode("focus");
-    setSecondsLeft(FOCUS_MINUTES * 60);
+    setSecondsLeft(focusMinutes * 60);
+  }
+
+  function applyPreset(preset) {
+    setFocusMinutes(preset.focus);
+    setBreakMinutes(preset.break);
+    setMode("focus");
+    setIsRunning(false);
+    setSecondsLeft(preset.focus * 60);
   }
 
   function formatTime(seconds) {
@@ -96,7 +107,21 @@ export default function PomodoroTimer() {
         <button className={styles.resetBtn} onClick={reset}>Reset</button>
       </div>
 
+      {!isRunning && (
+        <div className={styles.presets}>
+          {PRESETS.map(p => (
+            <button
+              key={p.label}
+              className={`${styles.presetBtn} ${focusMinutes === p.focus && breakMinutes === p.break ? styles.presetActive : ""}`}
+              onClick={() => applyPreset(p)}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <p className={styles.sessionCount}>{sessionsCompleted} focus sessions completed today</p>
     </div>
   );
-    }
+                                                 }
