@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Glossary.module.css";
 
 export default function Glossary() {
@@ -25,7 +25,7 @@ export default function Glossary() {
     setLoading(true);
     try {
       const params = search ? `?search=${encodeURIComponent(search)}` : "";
-      const res = await authFetch(`/future/glossary${params}`);
+      const res = await authFetch(`/api/glossary${params}`);
       if (!res.ok) throw new Error("Failed to load glossary");
       const data = await res.json();
       setTerms(data.terms || []);
@@ -46,7 +46,7 @@ export default function Glossary() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/glossary/add", {
+      const res = await authFetch("/api/glossary/add", {
         method: "POST",
         body: JSON.stringify({ term: newTerm }),
       });
@@ -64,7 +64,7 @@ export default function Glossary() {
 
   async function deleteTerm(id) {
     try {
-      await authFetch(`/future/glossary/${id}`, { method: "DELETE" });
+      await authFetch(`/api/glossary/${id}`, { method: "DELETE" });
       loadTerms(searchQuery);
     } catch (e) {
       // silent
