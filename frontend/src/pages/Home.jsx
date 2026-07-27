@@ -24,26 +24,20 @@ export default function Home() {
         </div>
         <div className={styles.headerBtns}>
           {user ? (
-            <div className={styles.userGroup}>
-              <button className={styles.userBtn} onClick={() => navigate("/settings")}>
-                {user.name?.split(" ")[0] || "Account"}
-              </button>
-              <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
-                <IconSettings size={18} />
-              </button>
-              <button className={styles.iconBtn} onClick={() => navigate("/glossary")} title="My Glossary">
-                📖
-              </button>
-              <button className={styles.iconBtn} onClick={() => navigate("/referrals")} title="Invite Friends">
-                🎁
-              </button>
-            </div>
-          ) : (
-            <>
-              <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
-              <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
-            </>
-          )}
+  <div className={styles.userGroup}>
+    <span className={styles.userNameSmall}>{user.name?.split(" ")[0] || "Account"}</span>
+    <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
+      <IconSettings size={18} />
+    </button>
+    <button className={styles.textBtn} onClick={() => navigate("/glossary")}>Glossary</button>
+    <button className={styles.textBtn} onClick={() => navigate("/referrals")}>Refer</button>
+  </div>
+) : (
+  <>
+    <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
+    <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
+  </>
+)}
         </div>
       </header>
       <main className={styles.main}>
