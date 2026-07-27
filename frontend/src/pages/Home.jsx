@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { IconSettings } from "../components/Icons.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
@@ -22,6 +23,19 @@ export default function Home() {
           <span className={styles.logoText}>Logynis</span>
         </div>
         <div className={styles.headerBtns}>
+          {user ? (
+  <div className={styles.userGroup}>
+    <span className={styles.userName}>{user.name?.split(" ")[0] || "Account"}</span>
+    <button className={styles.iconBtn} onClick={() => navigate("/settings")} title="Settings">
+      <IconSettings size={18} />
+    </button>
+  </div>
+) : (
+  <>
+    <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
+    <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
+  </>
+)}
           {user ? (
             <button className={styles.userBtn} onClick={() => navigate("/settings")}>
               {user.name?.split(" ")[0] || "Account"}
