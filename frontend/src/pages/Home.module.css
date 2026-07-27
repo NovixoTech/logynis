@@ -23,14 +23,6 @@
 .footer a { color: var(--accent-hover); }
 @media (max-width: 600px) { .cardDesc { display: none; } }
 
-.userBtn {
-  padding: 0.55rem 1.1rem;
-  background: var(--mode-study);
-  color: #fff;
-  border-radius: var(--radius-sm, 8px);
-  font-weight: 600;
-  font-size: 0.9rem;
-           }
 .userGroup {
   display: flex;
   align-items: center;
