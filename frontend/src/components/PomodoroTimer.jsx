@@ -5,9 +5,9 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./PomodoroTimer.module.css";
 
 const PRESETS = [
-  { label: "25 / 5", focus: 25, break: 5 },
-  { label: "50 / 10", focus: 50, break: 10 },
-  { label: "60 / 15", focus: 60, break: 15 },
+  { label: "25 min / 5 min", focus: 25, break: 5 },
+{ label: "50 min / 10 min", focus: 50, break: 10 },
+{ label: "60 min / 15 min", focus: 60, break: 15 },
 ];
 
 export default function PomodoroTimer() {
