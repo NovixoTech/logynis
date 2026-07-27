@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { IconSettings } from "../components/Icons.jsx";
+import PomodoroTimer from "../components/PomodoroTimer.jsx";
+import DailyChallengeCard from "../components/DailyChallengeCard.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
@@ -64,8 +66,8 @@ export default function Home() {
                Refer a Friend
             </button>
             <button className={styles.menuItem} onClick={() => goTo("/offline-library")}>
-              Offline Library
-           </button>
+               Offline Library
+            </button>
           </div>
         </>
       )}
@@ -73,6 +75,13 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.headline}>Your AI Study Companion,<br /><span className={styles.accent}> That Thinks With You.</span></h1>
         <p className={styles.sub}>Pick a mode and start learning.</p>
+
+        {user && (
+          <div className={styles.dashboardExtras}>
+            <DailyChallengeCard />
+          </div>
+        )}
+
         <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
@@ -83,7 +92,10 @@ export default function Home() {
           ))}
         </div>
       </main>
+
+      {user && <PomodoroTimer />}
+
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-   }
+                        }
