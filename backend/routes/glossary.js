@@ -9,7 +9,7 @@ import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/glossary/add
+// POST /api/glossary/add
 // Manually add a term (student types a word they want defined and saved)
 router.post("/add", authMiddleware, async (req, res, next) => {
   try {
@@ -50,7 +50,7 @@ router.post("/add", authMiddleware, async (req, res, next) => {
   }
 });
 
-// GET /future/glossary?subject=Biology&search=cell
+// GET /api/glossary?subject=Biology&search=cell
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { subject, search } = req.query;
@@ -75,7 +75,7 @@ router.get("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-// DELETE /future/glossary/:id
+// DELETE /api/glossary/:id
 router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { error } = await supabase
