@@ -13,7 +13,7 @@ const MODES = [
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -22,8 +22,16 @@ export default function Home() {
           <span className={styles.logoText}>Logynis</span>
         </div>
         <div className={styles.headerBtns}>
-          <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
-          <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
+          {user ? (
+            <button className={styles.userBtn} onClick={() => navigate("/settings")}>
+              {user.name?.split(" ")[0] || "Account"}
+            </button>
+          ) : (
+            <>
+              <button className={styles.loginBtn} onClick={() => navigate("/login")}>Login</button>
+              <button className={styles.signupBtn} onClick={() => navigate("/signup")}>Sign up</button>
+            </>
+          )}
         </div>
       </header>
       <main className={styles.main}>
@@ -42,4 +50,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-            }
+      }
