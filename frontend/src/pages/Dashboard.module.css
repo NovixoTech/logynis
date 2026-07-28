@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap");
+
+.page {
+  min-height: 100vh;
+  background: #0f1b2d;
+  color: #f5f1e8;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(245, 241, 232, 0.08);
+}
+
+.brand {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navLink {
+  background: none;
+  border: none;
+  color: #9aa7bd;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.navLink:hover {
+  color: #f5f1e8;
+  background: rgba(245, 241, 232, 0.06);
+}
+
+.logoutBtn {
+  background: none;
+  border: 1px solid rgba(245, 241, 232, 0.18);
+  color: #f5f1e8;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}
+
+.logoutBtn:hover {
+  border-color: rgba(245, 241, 232, 0.4);
+}
+
+.main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.hero {
+  margin-bottom: 3rem;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #e3b341;
+  margin: 0 0 0.4rem;
+}
+
+.heroName {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  margin: 0 0 1.5rem;
+  line-height: 1.05;
+}
+
+.passport {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0;
+  background: #16233a;
+  border: 1px solid rgba(227, 179, 65, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.passportRow {
+  padding: 0.9rem 1.1rem;
+  border-right: 1px solid rgba(245, 241, 232, 0.06);
+  border-bottom: 1px solid rgba(245, 241, 232, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.passportLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6f7c92;
+}
+
+.passportValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f5f1e8;
+}
+
+.subjectRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.subjectChip {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(79, 209, 197, 0.12);
+  color: #4fd1c5;
+  border: 1px solid rgba(79, 209, 197, 0.25);
+}
+
+.sectionTitle {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0 0 1.25rem;
+  color: #f5f1e8;
+}
+
+.modeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+
+.modeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.35rem;
+  background: #16233a;
+  border: 1px solid rgba(245, 241, 232, 0.08);
+  border-radius: 12px;
+  padding: 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.modeCard:hover {
+  border-color: rgba(227, 179, 65, 0.5);
+  transform: translateY(-2px);
+}
+
+.modeIndex {
+  font-family: "Fraunces", serif;
+  font-size: 0.8rem;
+  color: #e3b341;
+}
+
+.modeLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f5f1e8;
+}
+
+.modeBlurb {
+  font-size: 0.8rem;
+  color: #9aa7bd;
+}
+
+.referralStrip {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: linear-gradient(120deg, rgba(227, 179, 65, 0.1), rgba(79, 209, 197, 0.06));
+  border: 1px solid rgba(227, 179, 65, 0.2);
+  border-radius: 12px;
+  padding: 1.1rem 1.4rem;
+}
+
+.referralLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9aa7bd;
+  margin: 0 0 0.2rem;
+}
+
+.referralCode {
+  font-family: "Fraunces", serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: #e3b341;
+}
+
+.referralBtn {
+  background: #e3b341;
+  color: #16233a;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.referralBtn:hover {
+  filter: brightness(1.05);
+}
+
+@media (max-width: 480px) {
+  .topnav {
+    display: none;
+  }
+  }
