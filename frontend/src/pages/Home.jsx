@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { IconSettings } from "../components/Icons.jsx";
 import PomodoroTimer from "../components/PomodoroTimer.jsx";
+import DailyChallengeCard from "../components/DailyChallengeCard.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
