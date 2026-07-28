@@ -56,6 +56,9 @@ export default function Home() {
               <h3>Menu</h3>
               <button className={styles.menuClose} onClick={() => setMenuOpen(false)}>×</button>
             </div>
+            <button className={styles.menuItem} onClick={() => goTo("/dashboard")}>
+              Dashboard
+            </button>
             <button className={styles.menuItem} onClick={() => goTo("/settings")}>
               Settings
             </button>
@@ -94,4 +97,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-   }
+            }
