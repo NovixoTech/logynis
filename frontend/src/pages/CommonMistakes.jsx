@@ -1,9 +1,7 @@
-// Draft page for Common Mistakes Digest
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./CommonMistakes.module.css";
 
 export default function CommonMistakes() {
@@ -82,6 +80,11 @@ export default function CommonMistakes() {
                 <p className={styles.mistakeCorrection}><strong>Do this instead:</strong> {m.correction}</p>
               </div>
             ))}
+            <SaveOfflineButton
+              contentKey={`common-mistakes-${topic}-${Date.now()}`}
+              contentData={{ topic, mistakes }}
+              contentType="common-mistakes"
+            />
             <button className={styles.newBtn} onClick={() => { setMistakes(null); setTopic(""); }}>
               Check Another Topic
             </button>
@@ -90,4 +93,4 @@ export default function CommonMistakes() {
       </div>
     </div>
   );
-    }
+  }
