@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllCachedByType, deleteCachedContent } from "../utils/offlineCache.js";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 import styles from "./OfflineLibrary.module.css";
 
 const CONTENT_TYPES = ["flashcards", "memory-aid", "concept-map", "explain-differently", "note-summarizer", "cross-subject", "one-pager", "common-mistakes"];
@@ -124,7 +125,12 @@ function ContentView({ item }) {
             <span className={styles.conceptConnection}>{n.connection}</span>
           </div>
         ))}
-        {insight && <p className={styles.plainText}><strong>Why this matters:</strong> {insight}</p>}
+        {insight && (
+          <div className={styles.plainText}>
+            <strong>Why this matters:</strong>
+            <MarkdownRenderer content={insight} />
+          </div>
+        )}
       </div>
     );
   }
@@ -159,11 +165,11 @@ function ContentView({ item }) {
   }
 
   if (typeof data?.content === "string") {
-    return <div className={styles.plainText}>{data.content}</div>;
+    return <MarkdownRenderer content={data.content} />;
   }
 
   if (typeof data === "string") {
-    return <div className={styles.plainText}>{data}</div>;
+    return <MarkdownRenderer content={data} />;
   }
 
   return <pre className={styles.rawFallback}>{JSON.stringify(data, null, 2)}</pre>;
