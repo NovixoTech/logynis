@@ -1,15 +1,13 @@
-// Draft route for Speed Drill Mode
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildSpeedDrillPrompt } from "../services/speedDrillPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
+import { getRecentQuestions, logQuestions } from "../services/examHistory.js";
 
 const router = Router();
 
-// POST /future/speed-drill
+// POST /api/speed-drill
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { subject, questionCount } = req.body;
@@ -24,7 +22,9 @@ router.post("/", authMiddleware, async (req, res, next) => {
       .eq("id", req.user.id)
       .single();
 
-    const systemPrompt = buildSpeedDrillPrompt(user, subject, questionCount || 15);
+    const recentQuestions = await getRecentQuestions(req.user.id, subject);
+
+    const systemPrompt = buildSpeedDrillPrompt(user, subject, questionCount || 15, recentQuestions);
 
     const response = await ai.chat(
       [{ role: "user", content: `Generate a speed drill for: ${subject}` }],
@@ -39,6 +39,8 @@ router.post("/", authMiddleware, async (req, res, next) => {
       console.error("[speed-drill-parse-error]", parseErr.message, response.text);
       return res.status(500).json({ error: "Failed to generate valid drill questions, please try again" });
     }
+
+    await logQuestions(req.user.id, subject, questions);
 
     res.json({ questions, provider: response.provider, subject });
   } catch (err) {
