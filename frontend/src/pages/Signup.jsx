@@ -65,7 +65,7 @@ export default function Signup() {
         examType: educationLevel === "Entrance Exam" ? finalExamType : undefined,
         courseName: educationLevel === "Tertiary Institution" ? courseName : undefined,
         subjects: subjects.join(", "),
-        referralCode: referralCode.trim() ? referralCode.trim() : undefined,
+        referredBy: referralCode.trim() ? referralCode.trim() : undefined,
       });
       navigate("/chat/study");
     } catch (e) {
@@ -201,4 +201,4 @@ export default function Signup() {
       </div>
     </div>
   );
-  }
+                                           }
