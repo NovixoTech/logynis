@@ -17,6 +17,7 @@ export default function Signup() {
   const [customExamType, setCustomExamType] = useState("");
   const [courseName, setCourseName] = useState("");
   const [subjectBoxes, setSubjectBoxes] = useState(["", "", ""]);
+  const [referralCode, setReferralCode] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -64,6 +65,7 @@ export default function Signup() {
         examType: educationLevel === "Entrance Exam" ? finalExamType : undefined,
         courseName: educationLevel === "Tertiary Institution" ? courseName : undefined,
         subjects: subjects.join(", "),
+        referralCode: referralCode.trim() ? referralCode.trim() : undefined,
       });
       navigate("/chat/study");
     } catch (e) {
@@ -177,6 +179,17 @@ export default function Signup() {
               )}
             </div>
 
+            <div className={styles.field}>
+              <label className={styles.label}>Referral Code (optional)</label>
+              <input
+                className={styles.input}
+                placeholder="Enter a referral code if you have one"
+                value={referralCode}
+                onChange={e => setReferralCode(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && handleFinish()}
+              />
+            </div>
+
             <button className={styles.btn} onClick={handleFinish} disabled={loading}>
               {loading ? "Creating account..." : "Create account"}
             </button>
@@ -188,4 +201,4 @@ export default function Signup() {
       </div>
     </div>
   );
-        }
+  }
