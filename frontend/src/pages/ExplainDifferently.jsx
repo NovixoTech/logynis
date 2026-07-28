@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ExplainDifferentlyButton from "../components/ExplainDifferentlyButton.jsx";
 import MarkdownRenderer from "../components/MarkdownRenderer";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./ExplainDifferently.module.css";
 
 export default function ExplainDifferently() {
@@ -59,9 +60,14 @@ export default function ExplainDifferently() {
           <div key={i} className={styles.result}>
             <p className={styles.resultLabel}>Attempt {i + 2}</p>
             <MarkdownRenderer content={text} />
+            <SaveOfflineButton
+              contentKey={`explain-differently-${originalQuestion}-${i}-${Date.now()}`}
+              contentData={{ topic: originalQuestion, content: text }}
+              contentType="explain-differently"
+            />
           </div>
         ))}
       </div>
     </div>
   );
-}
+      }
