@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import MarkdownRenderer from "../components/MarkdownRenderer";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./NoteSummarizer.module.css";
 
 export default function NoteSummarizer() {
@@ -77,6 +78,11 @@ export default function NoteSummarizer() {
             <div className={styles.result}>
               <MarkdownRenderer content={result} />
             </div>
+            <SaveOfflineButton
+              contentKey={`note-summarizer-${Date.now()}`}
+              contentData={{ title: "Summarized Notes", content: result }}
+              contentType="note-summarizer"
+            />
             <button className={styles.newBtn} onClick={() => { setResult(null); setRawNotes(""); }}>
               Summarize New Notes
             </button>
@@ -85,4 +91,4 @@ export default function NoteSummarizer() {
       </div>
     </div>
   );
-              }
+                 }
