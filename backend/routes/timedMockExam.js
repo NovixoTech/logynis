@@ -6,6 +6,7 @@ import ai from "../services/ai.js";
 import { buildTimedMockExamPrompt } from "../services/timedMockExamPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
+import { recordTopicAttempt } from "../routes/weakTopicTracker.js";
 
 const router = Router();
 
@@ -121,6 +122,11 @@ router.post("/submit", authMiddleware, async (req, res, next) => {
       .update({ status: "completed", score, results })
       .eq("id", sessionId);
 
+    // ← CHANGE 2: new block, tags each question's topic and updates topic_performance
+    await Promise.allSettled(
+      results.map(r => recordTopicAttempt(req.user.id, session.subject, r.question, r.isCorrect))
+    );
+    
     res.json({ score, correctCount, total: session.questions.length, results });
   } catch (err) {
     console.error("[timed-mock-exam-submit-error]", err.message);
