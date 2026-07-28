@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./TimedMockExam.module.css";
 
+const COUNT_OPTIONS = [5, 10, 15, 20, 25, 30];
+const MINUTES_PER_QUESTION = 2;
+
 export default function TimedMockExam() {
   const navigate = useNavigate();
   const { authFetch } = useAuth();
 
   const [stage, setStage] = useState("setup"); // setup | exam | results
   const [subject, setSubject] = useState("");
+  const [questionCount, setQuestionCount] = useState(10);
   const [sessionId, setSessionId] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -45,10 +49,12 @@ export default function TimedMockExam() {
     setLoading(true);
     setError(null);
 
+    const durationMinutes = questionCount * MINUTES_PER_QUESTION;
+
     try {
       const res = await authFetch("/api/timed-mock-exam/generate", {
         method: "POST",
-        body: JSON.stringify({ subject, questionCount: 10, durationMinutes: 20 }),
+        body: JSON.stringify({ subject, questionCount, durationMinutes }),
       });
 
       if (!res.ok) throw new Error("Failed to generate exam");
@@ -117,7 +123,19 @@ export default function TimedMockExam() {
               placeholder="e.g. Biology, Mathematics, Government..."
             />
           </div>
-          <p className={styles.info}>10 questions · 20 minutes</p>
+          <div className={styles.field}>
+            <label className={styles.label}>Number of questions</label>
+            <select
+              className={styles.input}
+              value={questionCount}
+              onChange={e => setQuestionCount(Number(e.target.value))}
+            >
+              {COUNT_OPTIONS.map(n => (
+                <option key={n} value={n}>{n} questions</option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.info}>{questionCount} questions · {questionCount * MINUTES_PER_QUESTION} minutes</p>
           <button className={styles.startBtn} onClick={startExam} disabled={loading}>
             {loading ? "Preparing exam..." : "Start Mock Exam"}
           </button>
