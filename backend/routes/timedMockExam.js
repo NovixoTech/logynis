@@ -9,7 +9,7 @@ import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/timed-mock-exam/generate
+// POST /api/timed-mock-exam/generate
 router.post("/generate", authMiddleware, async (req, res, next) => {
   try {
     const { subject, questionCount, durationMinutes } = req.body;
@@ -82,7 +82,7 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
   }
 });
 
-// POST /future/timed-mock-exam/submit
+// POST /api/timed-mock-exam/submit
 router.post("/submit", authMiddleware, async (req, res, next) => {
   try {
     const { sessionId, answers } = req.body;
