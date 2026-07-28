@@ -40,3 +40,18 @@
 
 .plainText { white-space: pre-wrap; line-height: 1.6; color: var(--text); }
 .rawFallback { white-space: pre-wrap; font-size: 0.75rem; color: var(--text-muted); }
+
+.conceptMapView { display: flex; flex-direction: column; gap: 0.6rem; }
+.centralNode { font-weight: 700; font-size: 1rem; color: var(--text); text-align: center; padding: 0.6rem; background: var(--bg); border-radius: var(--radius-sm); }
+.conceptNode { padding: 0.6rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.conceptLabel { display: block; font-weight: 700; font-size: 0.85rem; color: var(--text); }
+.conceptConnection { display: block; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+.onePagerView { display: flex; flex-direction: column; gap: 0.9rem; }
+.onePagerSection { }
+.onePagerHeading { font-weight: 700; font-size: 0.9rem; color: var(--text); margin: 0 0 0.3rem; }
+.onePagerPoints { margin: 0; padding-left: 1.1rem; color: var(--text); font-size: 0.85rem; line-height: 1.6; }
+
+.mistakesView { display: flex; flex-direction: column; gap: 0.75rem; }
+.mistakeItem { padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.mistakeTitle { font-weight: 700; font-size: 0.9rem; color: var(--text); margin: 0 0 0.4rem; }
