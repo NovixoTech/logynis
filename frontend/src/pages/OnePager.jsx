@@ -1,9 +1,7 @@
-// Draft page for One-Pager Generator
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./OnePager.module.css";
 
 export default function OnePager() {
@@ -89,6 +87,11 @@ export default function OnePager() {
             </div>
 
             <div className={styles.actions}>
+              <SaveOfflineButton
+                contentKey={`one-pager-${page.title}-${Date.now()}`}
+                contentData={{ title: page.title, page }}
+                contentType="one-pager"
+              />
               <button className={styles.printBtn} onClick={handlePrint}>Print / Save as PDF</button>
               <button className={styles.newBtn} onClick={() => { setPage(null); setTopic(""); }}>New Topic</button>
             </div>
@@ -97,4 +100,4 @@ export default function OnePager() {
       </div>
     </div>
   );
-}
+    }
