@@ -24,7 +24,20 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
       .eq("id", req.user.id)
       .single();
 
-    const systemPrompt = buildTimedMockExamPrompt(user, subject, questionCount || 10);
+    // Fetch recent past questions for this subject so we can avoid repeating them
+    const { data: pastSessions } = await supabase
+      .from("mock_exam_sessions")
+      .select("questions")
+      .eq("userid", req.user.id)
+      .eq("subject", subject)
+      .order("createdat", { ascending: false })
+      .limit(5);
+
+    const recentQuestions = (pastSessions || [])
+      .flatMap(s => (s.questions || []).map(q => q.question))
+      .slice(0, 30);
+
+    const systemPrompt = buildTimedMockExamPrompt(user, subject, questionCount || 10, recentQuestions);
 
     const response = await ai.chat(
       [{ role: "user", content: `Generate a timed mock exam for: ${subject}` }],
