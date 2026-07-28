@@ -1,15 +1,13 @@
-// Draft route for Exam Anxiety Simulator
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildAnxietySimulatorPrompt } from "../services/anxietySimulatorPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
+import { getRecentQuestions, logQuestions } from "../services/examHistory.js";
 
 const router = Router();
 
-// POST /future/anxiety-simulator/generate
+// POST /api/anxiety-simulator/generate
 router.post("/generate", authMiddleware, async (req, res, next) => {
   try {
     const { subject, questionCount, durationMinutes } = req.body;
@@ -24,7 +22,9 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
       .eq("id", req.user.id)
       .single();
 
-    const systemPrompt = buildAnxietySimulatorPrompt(user, subject, questionCount || 10);
+    const recentQuestions = await getRecentQuestions(req.user.id, subject);
+
+    const systemPrompt = buildAnxietySimulatorPrompt(user, subject, questionCount || 10, recentQuestions);
 
     const response = await ai.chat(
       [{ role: "user", content: `Generate exam simulation questions for: ${subject}` }],
@@ -52,6 +52,8 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
     });
 
     if (sessionErr) throw sessionErr;
+
+    await logQuestions(req.user.id, subject, questions);
 
     const questionsForStudent = questions.map(({ correctAnswer, ...rest }) => rest);
 
