@@ -67,7 +67,7 @@ export default function Signup() {
         subjects: subjects.join(", "),
         referredBy: referralCode.trim() ? referralCode.trim() : undefined,
       });
-      navigate("/dashboard");
+      navigate("/mode/study");
     } catch (e) {
       setError(e.message);
     } finally {
@@ -201,4 +201,4 @@ export default function Signup() {
       </div>
     </div>
   );
-    }
+}
