@@ -10,7 +10,7 @@ export default function ExplainDifferentlyButton({ originalQuestion, originalAns
   async function handleClick() {
     setLoading(true);
     try {
-      const res = await authFetch("/explain-differently", {
+      const res = await authFetch("/api/explain-differently", {
         method: "POST",
         body: JSON.stringify({
           originalQuestion,
