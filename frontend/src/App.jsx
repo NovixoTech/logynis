@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import Chat from "./pages/Chat.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -41,7 +42,7 @@ function Protected({ children }) {
 function Public({ children }) {
   const { user, loading } = useAuth();
   if (loading) return null;
-  if (user) return <Navigate to="/mode/study" replace />;
+  if (user) return <Navigate to="/dashboard" replace />;
   return children;
 }
 
@@ -51,6 +52,7 @@ function Routes_() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Public><Login /></Public>} />
       <Route path="/signup" element={<Public><Signup /></Public>} />
+      <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
       <Route path="/chat/:mode" element={<Protected><Chat /></Protected>} />
       <Route path="/mode/:mode/chat" element={<Protected><Chat /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
@@ -99,4 +101,4 @@ function Routes_() {
 
 export default function App() {
   return <AuthProvider><Routes_ /></AuthProvider>;
-  }
+}
