@@ -1,12 +1,9 @@
-// Draft route for Timed Mock Exam
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildTimedMockExamPrompt } from "../services/timedMockExamPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
-
+import { getRecentQuestions, logQuestions } from "../services/examHistory.js";
 
 const router = Router();
 
@@ -25,18 +22,7 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
       .eq("id", req.user.id)
       .single();
 
-    // Fetch recent past questions for this subject so we can avoid repeating them
-    const { data: pastSessions } = await supabase
-      .from("mock_exam_sessions")
-      .select("questions")
-      .eq("userid", req.user.id)
-      .eq("subject", subject)
-      .order("createdat", { ascending: false })
-      .limit(5);
-
-    const recentQuestions = (pastSessions || [])
-      .flatMap(s => (s.questions || []).map(q => q.question))
-      .slice(0, 30);
+    const recentQuestions = await getRecentQuestions(req.user.id, subject);
 
     const systemPrompt = buildTimedMockExamPrompt(user, subject, questionCount || 10, recentQuestions);
 
@@ -68,6 +54,8 @@ router.post("/generate", authMiddleware, async (req, res, next) => {
       .single();
 
     if (sessionErr) throw sessionErr;
+
+    await logQuestions(req.user.id, subject, questions);
 
     // Strip correct answers before sending to frontend - student shouldn't see them yet
     const questionsForStudent = questions.map(({ correctAnswer, ...rest }) => rest);
