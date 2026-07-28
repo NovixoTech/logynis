@@ -84,8 +84,7 @@ export default function Home() {
             <DailyChallengeCard />
           </div>
         )}
-
-        <div className={styles.grid}>
+         <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
               <div className={styles.cardLabel}>{m.label}</div>
