@@ -1,9 +1,8 @@
-// Memory Aid Generator page
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import MarkdownRenderer from "../components/MarkdownRenderer";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./MemoryAid.module.css";
 
 const FORMATS = [
@@ -94,9 +93,14 @@ export default function MemoryAid() {
         {result && (
           <div className={styles.result}>
             <MarkdownRenderer content={result} />
+            <SaveOfflineButton
+              contentKey={`memory-aid-${topic}-${Date.now()}`}
+              contentData={{ topic, content: result }}
+              contentType="memory-aid"
+            />
           </div>
         )}
       </div>
     </div>
   );
-          }
+         }
