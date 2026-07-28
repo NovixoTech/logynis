@@ -32,9 +32,10 @@ import speedDrillRouter from "./routes/speedDrill.js";
 import studyPlanRouter from "./routes/studyPlan.js";
 import successStoryRouter from "./routes/successStory.js";
 import timedMockExamRouter from "./routes/timedMockExam.js";
-import weakTopicRouter from "./routes/weakTopic.js";
+import weakTopicRouter from "./routes/weakTopics.js";
 import glossaryRouter from "./routes/glossary.js";
 import referralRouter from "./routes/referral.js";
+import dailyChallengeRouter from "./routes/dailyChallenge.js";
 
 
 dotenv.config();
@@ -85,6 +86,7 @@ app.use("/api/timed-mock-exam", timedMockExamRouter);
 app.use("/api/weak-topics", weakTopicRouter);
 app.use("/api/glossary", glossaryRouter);
 app.use("/api/referral", referralRouter);
+app.use("/api/daily-challenge", dailyChallengeRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
