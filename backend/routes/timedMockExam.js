@@ -6,7 +6,7 @@ import ai from "../services/ai.js";
 import { buildTimedMockExamPrompt } from "../services/timedMockExamPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
-import { recordTopicAttempt } from "../routes/weakTopic.js";
+
 
 const router = Router();
 
