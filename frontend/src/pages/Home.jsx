@@ -57,16 +57,16 @@ export default function Home() {
               <button className={styles.menuClose} onClick={() => setMenuOpen(false)}>×</button>
             </div>
             <button className={styles.menuItem} onClick={() => goTo("/settings")}>
-               Settings
+              Settings
             </button>
             <button className={styles.menuItem} onClick={() => goTo("/glossary")}>
-               Glossary
+              Glossary
             </button>
             <button className={styles.menuItem} onClick={() => goTo("/referrals")}>
-               Refer a Friend
+              Refer a Friend
             </button>
             <button className={styles.menuItem} onClick={() => goTo("/offline-library")}>
-               Offline Library
+              Offline Library
             </button>
           </div>
         </>
@@ -78,12 +78,7 @@ export default function Home() {
 
         <ClassReminderBanner />
 
-        {user && (
-          <div className={styles.dashboardExtras}>
-            <DailyChallengeCard />
-          </div>
-        )}
-         <div className={styles.grid}>
+        <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
               <div className={styles.cardLabel}>{m.label}</div>
@@ -99,4 +94,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-   } 
+   }
