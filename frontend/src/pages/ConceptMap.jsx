@@ -1,9 +1,7 @@
-// Draft page for Concept Map
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./ConceptMap.module.css";
 
 export default function ConceptMap() {
@@ -94,9 +92,15 @@ export default function ConceptMap() {
             <button className={styles.newBtn} onClick={() => { setMap(null); setTopic(""); }}>
               New Topic
             </button>
+
+            <SaveOfflineButton
+              contentKey={`concept-map-${topic}-${Date.now()}`}
+              contentData={{ topic, map }}
+              contentType="concept-map"
+            />
           </div>
         )}
       </div>
     </div>
   );
-}
+              }
