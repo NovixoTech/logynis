@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import MarkdownRenderer from "../components/MarkdownRenderer";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./CrossSubject.module.css";
 
 export default function CrossSubject() {
@@ -87,6 +88,11 @@ export default function CrossSubject() {
             <div className={styles.result}>
               <MarkdownRenderer content={result} />
             </div>
+            <SaveOfflineButton
+              contentKey={`cross-subject-${subjectA}-${subjectB}-${Date.now()}`}
+              contentData={{ topic: `${subjectA} ↔ ${subjectB}`, content: result }}
+              contentType="cross-subject"
+            />
             <button className={styles.newBtn} onClick={() => { setResult(null); setSubjectA(""); setSubjectB(""); }}>
               Try Another Pair
             </button>
@@ -95,4 +101,4 @@ export default function CrossSubject() {
       </div>
     </div>
   );
-          }
+    }
