@@ -113,6 +113,51 @@ function ContentView({ item }) {
     );
   }
 
+  if (type === "concept-map" && data?.map) {
+    const { central, nodes, insight } = data.map;
+    return (
+      <div className={styles.conceptMapView}>
+        <p className={styles.centralNode}>{central}</p>
+        {nodes?.map((n, i) => (
+          <div key={i} className={styles.conceptNode}>
+            <span className={styles.conceptLabel}>{n.label}</span>
+            <span className={styles.conceptConnection}>{n.connection}</span>
+          </div>
+        ))}
+        {insight && <p className={styles.plainText}><strong>Why this matters:</strong> {insight}</p>}
+      </div>
+    );
+  }
+
+  if (type === "one-pager" && data?.page) {
+    return (
+      <div className={styles.onePagerView}>
+        {data.page.sections?.map((s, i) => (
+          <div key={i} className={styles.onePagerSection}>
+            <p className={styles.onePagerHeading}>{s.heading}</p>
+            <ul className={styles.onePagerPoints}>
+              {s.points?.map((p, j) => <li key={j}>{p}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (type === "common-mistakes" && Array.isArray(data?.mistakes)) {
+    return (
+      <div className={styles.mistakesView}>
+        {data.mistakes.map((m, i) => (
+          <div key={i} className={styles.mistakeItem}>
+            <p className={styles.mistakeTitle}>{m.mistake}</p>
+            <p className={styles.plainText}><strong>Why it happens:</strong> {m.why}</p>
+            <p className={styles.plainText}><strong>Do this instead:</strong> {m.correction}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (typeof data?.content === "string") {
     return <div className={styles.plainText}>{data.content}</div>;
   }
@@ -122,4 +167,4 @@ function ContentView({ item }) {
   }
 
   return <pre className={styles.rawFallback}>{JSON.stringify(data, null, 2)}</pre>;
-}
+  }
