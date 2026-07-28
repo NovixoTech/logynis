@@ -7,7 +7,36 @@
 .loading, .empty { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 2rem; line-height: 1.6; }
 
 .itemsList { display: flex; flex-direction: column; gap: 0.6rem; }
-.itemCard { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
-.itemType { display: block; font-weight: 700; font-size: 0.85rem; color: var(--text); text-transform: capitalize; }
-.itemDate { display: block; font-size: 0.72rem; color: var(--text-muted); }
-.deleteBtn { font-size: 0.78rem; color: var(--error); }
+.itemCard { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+.itemName { display: block; font-weight: 700; font-size: 0.9rem; color: var(--text); }
+.itemType { display: block; font-size: 0.75rem; color: var(--accent); text-transform: capitalize; margin-top: 0.15rem; }
+.itemDate { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.1rem; }
+.deleteBtn { font-size: 0.78rem; color: var(--error); flex-shrink: 0; margin-left: 0.75rem; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; }
+.viewer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 480px);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  z-index: 41;
+  padding: 1.1rem;
+}
+.viewerHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
+.viewerType { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); text-transform: capitalize; }
+.viewerClose { font-size: 1.3rem; color: var(--text-muted); line-height: 1; background: none; border: none; }
+.viewerBody { font-size: 0.9rem; color: var(--text); }
+
+.flashcardList { display: flex; flex-direction: column; gap: 0.7rem; }
+.flashcardItem { padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.flashcardQ { font-weight: 700; margin: 0 0 0.4rem; color: var(--text); }
+.flashcardA { margin: 0; color: var(--text-muted); }
+
+.plainText { white-space: pre-wrap; line-height: 1.6; color: var(--text); }
+.rawFallback { white-space: pre-wrap; font-size: 0.75rem; color: var(--text-muted); }
