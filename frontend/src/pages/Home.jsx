@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { IconSettings } from "../components/Icons.jsx";
 import PomodoroTimer from "../components/PomodoroTimer.jsx";
 import DailyChallengeCard from "../components/DailyChallengeCard.jsx";
+import ClassReminderBanner from "../components/ClassReminderBanner.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
@@ -76,6 +77,8 @@ export default function Home() {
         <h1 className={styles.headline}>Your AI Study Companion,<br /><span className={styles.accent}> That Thinks With You.</span></h1>
         <p className={styles.sub}>Pick a mode and start learning.</p>
 
+        <ClassReminderBanner />
+
         {user && (
           <div className={styles.dashboardExtras}>
             <DailyChallengeCard />
@@ -98,4 +101,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-                        }
+   } 
