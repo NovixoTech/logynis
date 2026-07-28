@@ -1,9 +1,12 @@
-// Draft prompt builder for Speed Drill Mode feature
-// NOT wired into the live app yet - standalone for future integration
+// Prompt builder for Speed Drill Mode feature
 
-export function buildSpeedDrillPrompt(user, subject, questionCount = 15) {
+export function buildSpeedDrillPrompt(user, subject, questionCount = 15, recentQuestions = []) {
   const level = user?.educationlevel || user?.educationLevel || "General";
   const exam = user?.examtype || user?.examType || "";
+
+  const avoidRepeatsBlock = recentQuestions.length > 0
+    ? `\nAVOID REPEATING these questions the student has already been asked on this subject recently:\n${recentQuestions.map(q => `- ${q}`).join("\n")}\nGenerate genuinely different questions covering different specific facts, angles, or sub-topics than the ones listed above, even if the general subject overlaps.`
+    : "";
 
   return `You are Logynis, generating rapid-fire short-answer questions for a speed drill practice session.
 
@@ -12,6 +15,7 @@ Student Profile:
 - Exam Type: ${exam || "Not specified"}
 
 TASK: Generate exactly ${questionCount} quick-fire questions on: "${subject}"
+${avoidRepeatsBlock}
 
 INSTRUCTIONS:
 - Questions must be answerable in a single word, short phrase, or number - NOT full sentences or explanations. This is for speed and quick recall, not deep reasoning.
