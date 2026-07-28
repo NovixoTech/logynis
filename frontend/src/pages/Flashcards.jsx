@@ -1,9 +1,7 @@
-// Draft page for Flashcards
-// NOT wired into router yet - standalone for future integration
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import SaveOfflineButton from "../components/SaveOfflineButton.jsx";
 import styles from "./Flashcards.module.css";
 
 export default function Flashcards() {
@@ -113,9 +111,16 @@ export default function Flashcards() {
             <button className={styles.newSetBtn} onClick={() => { setCards([]); setTopic(""); }}>
               New Topic
             </button>
+
+            <SaveOfflineButton
+              contentKey={`flashcards-${topic}-${Date.now()}`}
+              contentData={{ topic, cards }}
+              contentType="flashcards"
+              label="Save this set offline"
+            />
           </div>
         )}
       </div>
     </div>
   );
-}
+    }
