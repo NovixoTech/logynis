@@ -1,10 +1,14 @@
 // Draft prompt builder for Timed Mock Exam feature
 // NOT wired into the live app yet - standalone for future integration
 
-export function buildTimedMockExamPrompt(user, subject, questionCount = 10) {
+export function buildTimedMockExamPrompt(user, subject, questionCount = 10, recentQuestions = []) {
   const level = user?.educationlevel || user?.educationLevel || "General";
   const exam = user?.examtype || user?.examType || "";
   const currentClass = user?.currentclass || "";
+
+  const avoidRepeatsBlock = recentQuestions.length > 0
+    ? `\nAVOID REPEATING these questions the student has already been asked on this subject recently:\n${recentQuestions.map(q => `- ${q}`).join("\n")}\nGenerate genuinely different questions covering different specific facts, angles, or sub-topics than the ones listed above, even if the general subject overlaps.`
+    : "";
 
   return `You are Logynis, generating a timed mock exam for a student.
 
@@ -14,6 +18,7 @@ Student Profile:
 - Exam Type: ${exam || "Not specified"}
 
 TASK: Generate exactly ${questionCount} exam-style multiple-choice questions on: "${subject}"
+${avoidRepeatsBlock}
 
 INSTRUCTIONS:
 - Match the authentic style, difficulty, and format of the student's specific exam type above (WAEC/JAMB/GCSE/SAT).
