@@ -1,12 +1,10 @@
-// Draft page for Speed Drill Mode
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./SpeedDrill.module.css";
 
 const SECONDS_PER_QUESTION = 10;
+const COUNT_OPTIONS = [5, 10, 15, 20, 25, 30];
 
 export default function SpeedDrill() {
   const navigate = useNavigate();
@@ -14,6 +12,7 @@ export default function SpeedDrill() {
 
   const [stage, setStage] = useState("setup"); // setup | drill | results
   const [subject, setSubject] = useState("");
+  const [questionCount, setQuestionCount] = useState(15);
   const [questions, setQuestions] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
@@ -55,7 +54,7 @@ export default function SpeedDrill() {
     try {
       const res = await authFetch("/api/speed-drill", {
         method: "POST",
-        body: JSON.stringify({ subject, questionCount: 15 }),
+        body: JSON.stringify({ subject, questionCount }),
       });
 
       if (!res.ok) throw new Error("Failed to generate drill");
@@ -108,7 +107,19 @@ export default function SpeedDrill() {
               placeholder="e.g. Chemistry, History dates, Vocabulary..."
             />
           </div>
-          <p className={styles.info}>15 quick-fire questions · {SECONDS_PER_QUESTION} seconds each</p>
+          <div className={styles.field}>
+            <label className={styles.label}>Number of questions</label>
+            <select
+              className={styles.input}
+              value={questionCount}
+              onChange={e => setQuestionCount(Number(e.target.value))}
+            >
+              {COUNT_OPTIONS.map(n => (
+                <option key={n} value={n}>{n} questions</option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.info}>{questionCount} quick-fire questions · {SECONDS_PER_QUESTION} seconds each</p>
           <button className={styles.startBtn} onClick={startDrill} disabled={loading}>
             {loading ? "Preparing..." : "Start Drill"}
           </button>
@@ -150,4 +161,4 @@ export default function SpeedDrill() {
       )}
     </div>
   );
-        }
+    }
