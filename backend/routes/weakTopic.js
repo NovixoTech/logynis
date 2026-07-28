@@ -1,124 +1,136 @@
-// Draft route for Weak Topic Tracker
+// Draft route for Timed Mock Exam
 // NOT registered in index.js yet - standalone for future integration
 
 import { Router } from "express";
 import ai from "../services/ai.js";
-import { buildTopicTaggingPrompt, buildWeakTopicRecommendationPrompt } from "../services/weakTopicPrompt.js";
+import { buildTimedMockExamPrompt } from "../services/timedMockExamPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
 import supabase from "../services/supabase.js";
+import { recordTopicAttempt } from "./weakTopic.js";
 
 const router = Router();
 
-const WEAK_THRESHOLD = 60; // percent accuracy below this = flagged as weak
-const MIN_ATTEMPTS = 3; // don't flag a topic until it's been attempted enough times to be meaningful
-
-// Internal helper - called by other features (like Timed Mock Exam) after scoring
-// Not a direct route, exported for reuse
-export async function recordTopicAttempt(userId, subject, question, wasCorrect) {
+// POST /future/timed-mock-exam/generate
+router.post("/generate", authMiddleware, async (req, res, next) => {
   try {
-    const taggingPrompt = buildTopicTaggingPrompt(subject, question);
-    const tagResponse = await ai.chat(
-      [{ role: "user", content: question }],
-      { systemPrompt: taggingPrompt, providers: ["cerebras", "groq", "gemini"] }
-    );
-    const topic = tagResponse.text.trim();
+    const { subject, questionCount, durationMinutes } = req.body;
 
-    const { data: existing } = await supabase
-      .from("topic_performance")
-      .select("*")
-      .eq("userid", userId)
-      .eq("subject", subject)
-      .eq("topic", topic)
-      .maybeSingle();
-
-    if (existing) {
-      await supabase
-        .from("topic_performance")
-        .update({
-          correctcount: existing.correctcount + (wasCorrect ? 1 : 0),
-          totalcount: existing.totalcount + 1,
-          lastpracticedat: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
-    } else {
-      await supabase.from("topic_performance").insert({
-        userid: userId,
-        subject,
-        topic,
-        correctcount: wasCorrect ? 1 : 0,
-        totalcount: 1,
-      });
+    if (!subject || !subject.trim()) {
+      return res.status(400).json({ error: "subject is required" });
     }
-  } catch (err) {
-    console.error("[record-topic-attempt-error]", err.message);
-    // Fail silently - topic tracking shouldn't break the main exam flow
-  }
-}
 
-// GET /future/weak-topics
-router.get("/", authMiddleware, async (req, res, next) => {
-  try {
-    const { data: topics, error } = await supabase
-      .from("topic_performance")
-      .select("*")
-      .eq("userid", req.user.id)
-      .gte("totalcount", MIN_ATTEMPTS)
-      .order("lastpracticedat", { ascending: false });
-
-    if (error) throw error;
-
-    const withAccuracy = (topics || []).map(t => ({
-      ...t,
-      accuracy: Math.round((t.correctcount / t.totalcount) * 100),
-    }));
-
-    const weakTopics = withAccuracy.filter(t => t.accuracy < WEAK_THRESHOLD);
-    const strongTopics = withAccuracy.filter(t => t.accuracy >= WEAK_THRESHOLD);
-
-    res.json({ weakTopics, strongTopics });
-  } catch (err) {
-    console.error("[weak-topics-list-error]", err.message);
-    next(err);
-  }
-});
-
-// POST /future/weak-topics/recommendations
-router.post("/recommendations", authMiddleware, async (req, res, next) => {
-  try {
     const { data: user } = await supabase
       .from("users")
       .select("*")
       .eq("id", req.user.id)
       .single();
 
-    const { data: topics, error } = await supabase
-      .from("topic_performance")
-      .select("*")
+    // Fetch recent past questions for this subject so we can avoid repeating them
+    const { data: pastSessions } = await supabase
+      .from("mock_exam_sessions")
+      .select("questions")
       .eq("userid", req.user.id)
-      .gte("totalcount", MIN_ATTEMPTS);
+      .eq("subject", subject)
+      .order("createdat", { ascending: false })
+      .limit(5);
 
-    if (error) throw error;
+    const recentQuestions = (pastSessions || [])
+      .flatMap(s => (s.questions || []).map(q => q.question))
+      .slice(0, 30);
 
-    const withAccuracy = (topics || []).map(t => ({
-      ...t,
-      accuracy: Math.round((t.correctcount / t.totalcount) * 100),
-    }));
+    const systemPrompt = buildTimedMockExamPrompt(user, subject, questionCount || 10, recentQuestions);
 
-    const weakTopics = withAccuracy.filter(t => t.accuracy < WEAK_THRESHOLD);
-
-    if (weakTopics.length === 0) {
-      return res.json({ text: "No weak topics found yet - keep practicing to build up your performance data, or great job if you're consistently scoring well!" });
-    }
-
-    const systemPrompt = buildWeakTopicRecommendationPrompt(user, weakTopics);
     const response = await ai.chat(
-      [{ role: "user", content: "What should I focus on?" }],
+      [{ role: "user", content: `Generate a timed mock exam for: ${subject}` }],
       { systemPrompt, providers: ["cerebras", "groq", "gemini"] }
     );
 
-    res.json({ text: response.text, weakTopics });
+    let questions;
+    try {
+      const cleaned = response.text.replace(/```json|```/g, "").trim();
+      questions = JSON.parse(cleaned);
+    } catch (parseErr) {
+      console.error("[mock-exam-parse-error]", parseErr.message, response.text);
+      return res.status(500).json({ error: "Failed to generate valid exam questions, please try again" });
+    }
+
+    // Save the exam session so results can be scored/tracked later
+    const { data: session, error: sessionErr } = await supabase
+      .from("mock_exam_sessions")
+      .insert({
+        userid: req.user.id,
+        subject,
+        questions,
+        durationminutes: durationMinutes || 20,
+        status: "in_progress",
+      })
+      .select()
+      .single();
+
+    if (sessionErr) throw sessionErr;
+
+    // Strip correct answers before sending to frontend - student shouldn't see them yet
+    const questionsForStudent = questions.map(({ correctAnswer, ...rest }) => rest);
+
+    res.json({
+      sessionId: session.id,
+      questions: questionsForStudent,
+      durationMinutes: durationMinutes || 20,
+    });
   } catch (err) {
-    console.error("[weak-topics-recommendations-error]", err.message);
+    console.error("[timed-mock-exam-generate-error]", err.message);
+    next(err);
+  }
+});
+
+// POST /future/timed-mock-exam/submit
+router.post("/submit", authMiddleware, async (req, res, next) => {
+  try {
+    const { sessionId, answers } = req.body;
+
+    if (!sessionId || !answers) {
+      return res.status(400).json({ error: "sessionId and answers are required" });
+    }
+
+    const { data: session, error: sessionErr } = await supabase
+      .from("mock_exam_sessions")
+      .select("*")
+      .eq("id", sessionId)
+      .eq("userid", req.user.id)
+      .single();
+
+    if (sessionErr || !session) return res.status(404).json({ error: "Session not found" });
+
+    let correctCount = 0;
+    const results = session.questions.map((q, i) => {
+      const studentAnswer = answers[i];
+      const isCorrect = studentAnswer === q.correctAnswer;
+      if (isCorrect) correctCount++;
+      return {
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        studentAnswer: studentAnswer || null,
+        isCorrect,
+      };
+    });
+
+    const score = Math.round((correctCount / session.questions.length) * 100);
+
+    await supabase
+      .from("mock_exam_sessions")
+      .update({ status: "completed", score, results })
+      .eq("id", sessionId);
+
+    // Feed each result into Weak Topic Tracker so it can build up accuracy data per topic.
+    // Fire-and-forget style - don't let a tagging failure block the student's score response.
+    Promise.all(
+      results.map(r => recordTopicAttempt(req.user.id, session.subject, r.question, r.isCorrect))
+    ).catch(err => console.error("[weak-topic-sync-error]", err.message));
+
+    res.json({ score, correctCount, total: session.questions.length, results });
+  } catch (err) {
+    console.error("[timed-mock-exam-submit-error]", err.message);
     next(err);
   }
 });
