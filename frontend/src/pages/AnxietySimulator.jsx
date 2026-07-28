@@ -1,12 +1,10 @@
-// Draft page for Exam Anxiety Simulator
-// NOT wired into router yet - standalone for future integration
-// Key difference from Timed Mock Exam: no going back to previous questions,
-// stricter framing, and a post-exam reflection step focused on the experience itself
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./AnxietySimulator.module.css";
+
+const COUNT_OPTIONS = [5, 10, 15, 20, 25, 30];
+const MINUTES_PER_QUESTION = 1.5;
 
 export default function AnxietySimulator() {
   const navigate = useNavigate();
@@ -14,6 +12,7 @@ export default function AnxietySimulator() {
 
   const [stage, setStage] = useState("intro"); // intro | exam | reflection
   const [subject, setSubject] = useState("");
+  const [questionCount, setQuestionCount] = useState(10);
   const [questions, setQuestions] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -48,10 +47,12 @@ export default function AnxietySimulator() {
     setLoading(true);
     setError(null);
 
+    const durationMinutes = Math.round(questionCount * MINUTES_PER_QUESTION);
+
     try {
       const res = await authFetch("/api/anxiety-simulator/generate", {
         method: "POST",
-        body: JSON.stringify({ subject, questionCount: 10, durationMinutes: 15 }),
+        body: JSON.stringify({ subject, questionCount, durationMinutes }),
       });
 
       if (!res.ok) throw new Error("Failed to prepare simulation");
@@ -106,6 +107,19 @@ export default function AnxietySimulator() {
               placeholder="e.g. Physics, Government..."
             />
           </div>
+          <div className={styles.field}>
+            <label className={styles.label}>Number of questions</label>
+            <select
+              className={styles.input}
+              value={questionCount}
+              onChange={e => setQuestionCount(Number(e.target.value))}
+            >
+              {COUNT_OPTIONS.map(n => (
+                <option key={n} value={n}>{n} questions</option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.introText}>{questionCount} questions · {Math.round(questionCount * MINUTES_PER_QUESTION)} minutes</p>
           <button className={styles.startBtn} onClick={startSimulation} disabled={loading}>
             {loading ? "Preparing..." : "I'm Ready - Begin"}
           </button>
@@ -139,11 +153,11 @@ export default function AnxietySimulator() {
             How did that feel? Take a moment to notice: did you rush, freeze, or stay steady?
             Practicing this feeling regularly - not just the content - is how real exam calm is built.
           </p>
-          <button className={styles.newBtn} onClick={() => { setStage("intro"); setAnswers({}); setCurrentQ(0); setSubject(""); }}>
+          <button className={styles.newBtn} onClick={() => { setStage("intro"); setAnswers({}); setCurrentQ(0); setSubject(""); setQuestionCount(10); }}>
             Try Another Simulation
           </button>
         </div>
       )}
     </div>
   );
-                  } 
+    }
