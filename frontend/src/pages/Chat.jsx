@@ -81,6 +81,8 @@ export default function Chat() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [history, setHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  
 
   const bottomRef = useRef(null);
   const taRef = useRef(null);
@@ -213,25 +215,40 @@ export default function Chat() {
             </select>
           </div>
           <div className={styles.topRight}>
-            {user && <span className={styles.userChip}>{user.name?.split(" ")[0]}</span>}
-            {user && (
-              <button className={styles.navBtn} onClick={openHistory} title="Recent chats">
-                <IconClock size={18} />
-              </button>
-            )}
-            {user && (
-              <button className={styles.navBtn} onClick={() => navigate("/settings")} title="Settings">
-                <IconSettings size={18} />
-              </button>
-            )}
-            {messages.length > 0 && (
-              <button className={styles.newBtn} onClick={startNewChat} title="New chat">
-                <IconPlus size={14} />
-              </button>
-            )}
-          </div>
+  {user && (
+    <div className={styles.userGroup}>
+      <span className={styles.userNameSmall}>{user.name?.split(" ")[0]}</span>
+      <button className={styles.navBtn} onClick={() => setMenuOpen(true)} title="Menu">
+        ☰
+      </button>
+    </div>
+  )}
+</div>
         </div>
 
+         {menuOpen && (
+          <>
+            <div className={styles.overlay} onClick={() => setMenuOpen(false)} />
+            <div className={styles.menuPanel}>
+              <div className={styles.menuHeader}>
+                <h3>Menu</h3>
+                <button className={styles.menuClose} onClick={() => setMenuOpen(false)}>×</button>
+              </div>
+              <button className={styles.menuItem} onClick={() => { setMenuOpen(false); openHistory(); }}>
+                <IconClock size={18} /> Recent Chats
+              </button>
+              <button className={styles.menuItem} onClick={() => { setMenuOpen(false); navigate("/settings"); }}>
+                <IconSettings size={18} /> Settings
+              </button>
+              {messages.length > 0 && (
+                <button className={styles.menuItem} onClick={() => { setMenuOpen(false); startNewChat(); }}>
+                  <IconPlus size={18} /> New Chat
+                </button>
+              )}
+            </div>
+          </>
+        )}
+        
         {/* Messages */}
         <div className={styles.messages}>
           {messages.length === 0 && (
