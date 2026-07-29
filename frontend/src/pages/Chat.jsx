@@ -123,7 +123,6 @@ export default function Chat() {
   const [history, setHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  
 
   const bottomRef = useRef(null);
   const taRef = useRef(null);
@@ -256,18 +255,18 @@ export default function Chat() {
             </select>
           </div>
           <div className={styles.topRight}>
-  {user && (
-    <div className={styles.userGroup}>
-      <span className={styles.userNameSmall}>{user.name?.split(" ")[0]}</span>
-      <button className={styles.navBtn} onClick={() => setMenuOpen(true)} title="Menu">
-        ☰
-      </button>
-    </div>
-  )}
-</div>
+            {user && (
+              <div className={styles.userGroup}>
+                <span className={styles.userNameSmall}>{user.name?.split(" ")[0]}</span>
+                <button className={styles.navBtn} onClick={() => setMenuOpen(true)} title="Menu">
+                  ☰
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-         {menuOpen && (
+        {menuOpen && (
           <>
             <div className={styles.overlay} onClick={() => setMenuOpen(false)} />
             <div className={styles.menuPanel}>
@@ -289,7 +288,7 @@ export default function Chat() {
             </div>
           </>
         )}
-        
+
         {/* Messages */}
         <div className={styles.messages}>
           {messages.length === 0 && (
