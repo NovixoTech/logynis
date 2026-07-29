@@ -6,6 +6,8 @@ import ConceptFirstToggle from "../components/ConceptFirstToggle.jsx";
 import DifficultyBadge from "../components/DifficultyBadge.jsx";
 import SuccessStoryButton from "../components/SuccessStoryButton.jsx";
 import PomodoroTimer from "../components/PomodoroTimer.jsx";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 import styles from "./Chat.module.css";
 
 const MODES = [
@@ -17,6 +19,37 @@ const MODES = [
 ];
 
 const API = "https://studysphere-api-production.up.railway.app";
+
+// Pulls out \[ ... \] and \( ... \) LaTeX blocks, renders them with KaTeX,
+// and swaps them for plain-text tokens that survive the HTML-escaping step
+// below. The rendered math HTML gets spliced back in at the very end.
+function extractMath(text) {
+  const mathStore = [];
+
+  function stash(html) {
+    const token = `MATHPLACEHOLDER${mathStore.length}ENDPLACEHOLDER`;
+    mathStore.push(html);
+    return token;
+  }
+
+  let out = text.replace(/\\\[([\s\S]+?)\\\]/g, (_, expr) => {
+    try {
+      return stash(katex.renderToString(expr.trim(), { displayMode: true, throwOnError: false }));
+    } catch {
+      return stash(`<pre>${expr}</pre>`);
+    }
+  });
+
+  out = out.replace(/\\\(([\s\S]+?)\\\)/g, (_, expr) => {
+    try {
+      return stash(katex.renderToString(expr.trim(), { displayMode: false, throwOnError: false }));
+    } catch {
+      return stash(expr);
+    }
+  });
+
+  return { text: out, mathStore };
+}
 
 function formatTable(tableBlock) {
   const lines = tableBlock.trim().split("\n").filter(Boolean);
@@ -42,12 +75,14 @@ function formatTable(tableBlock) {
 }
 
 function formatResponse(text) {
-  let escaped = text
+  const { text: withMathTokens, mathStore } = extractMath(text);
+
+  let escaped = withMathTokens
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   escaped = escaped.replace(/((?:^\|.*\|$\n?)+)/gm, (match) => formatTable(match));
 
-  return escaped
+  let html = escaped
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/`([^`]+)`/g, "<code>$1</code>")
@@ -59,6 +94,12 @@ function formatResponse(text) {
     .replace(/^(?!<[hutd])(.+)$/gm, "<p>$1</p>")
     .replace(/<p><\/p>/g, "")
     .replace(/<p>(<div class="table-wrap">.*?<\/div>)<\/p>/gs, "$1");
+
+  mathStore.forEach((mathHtml, i) => {
+    html = html.replace(`MATHPLACEHOLDER${i}ENDPLACEHOLDER`, mathHtml);
+  });
+
+  return html;
 }
 
 function getActiveKey(mode, userId) {
@@ -385,4 +426,3 @@ export default function Chat() {
     </div>
   );
 }
-
