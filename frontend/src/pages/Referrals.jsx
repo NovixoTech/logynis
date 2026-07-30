@@ -1,5 +1,4 @@
-// Draft page for Referral Rewards Program
-// NOT wired into router yet - standalone for future integration
+// Page for Referral Rewards Program
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -80,8 +79,8 @@ export default function Referrals() {
             <span className={styles.statLabel}>Friends Invited</span>
           </div>
           <div className={styles.statCard}>
-            <span className={styles.statNumber}>{data.points}</span>
-            <span className={styles.statLabel}>Total Points</span>
+            <span className={styles.statNumber}>{data.referralPointsEarned}</span>
+            <span className={styles.statLabel}>Points from Referrals</span>
           </div>
         </div>
 
@@ -99,4 +98,4 @@ export default function Referrals() {
       </div>
     </div>
   );
-        } 
+        }
