@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import MarkdownRenderer from "../components/MarkdownRenderer";
@@ -13,6 +13,19 @@ const FORMATS = [
   { id: "story", label: "Memory Story" },
 ];
 
+// Strips markdown symbols so the browser doesn't read out "asterisk asterisk"
+// and similar noise when speaking the result aloud.
+function stripMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^[-•]\s+/gm, "")
+    .replace(/\|/g, " ")
+    .trim();
+}
+
 export default function MemoryAid() {
   const navigate = useNavigate();
   const { authFetch } = useAuth();
@@ -22,6 +35,14 @@ export default function MemoryAid() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [speaking, setSpeaking] = useState(false);
+
+  // Stop any speech if the user navigates away mid-playback
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis?.cancel();
+    };
+  }, []);
 
   async function generate() {
     if (!topic.trim()) {
@@ -29,6 +50,8 @@ export default function MemoryAid() {
       return;
     }
 
+    window.speechSynthesis?.cancel();
+    setSpeaking(false);
     setLoading(true);
     setError(null);
     setResult(null);
@@ -48,6 +71,25 @@ export default function MemoryAid() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function togglePlayback() {
+    if (!result || !window.speechSynthesis) return;
+
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(stripMarkdown(result));
+    utterance.rate = 0.95;
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    setSpeaking(true);
   }
 
   return (
@@ -93,14 +135,19 @@ export default function MemoryAid() {
         {result && (
           <div className={styles.result}>
             <MarkdownRenderer content={result} />
-            <SaveOfflineButton
-              contentKey={`memory-aid-${topic}-${Date.now()}`}
-              contentData={{ topic, content: result }}
-              contentType="memory-aid"
-            />
+            <div className={styles.resultActions}>
+              <button className={styles.playBtn} onClick={togglePlayback}>
+                {speaking ? "⏹ Stop" : "🔊 Read aloud"}
+              </button>
+              <SaveOfflineButton
+                contentKey={`memory-aid-${topic}-${Date.now()}`}
+                contentData={{ topic, content: result }}
+                contentType="memory-aid"
+              />
+            </div>
           </div>
         )}
       </div>
     </div>
   );
-         }
+  }
