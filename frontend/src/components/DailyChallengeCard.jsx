@@ -1,13 +1,13 @@
-// Draft component for Daily Challenge Question
-// NOT wired into the app yet - standalone for future integration
-// Meant to appear on the homepage/main dashboard
+// Component for Daily Challenge Question - shown on the homepage
 
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./DailyChallengeCard.module.css";
 
+const API = "https://studysphere-api-production.up.railway.app";
+
 export default function DailyChallengeCard() {
-  const { authFetch } = useAuth();
+  const { token } = useAuth();
   const [challenge, setChallenge] = useState(null);
   const [answered, setAnswered] = useState(false);
   const [funFact, setFunFact] = useState(null);
@@ -15,20 +15,27 @@ export default function DailyChallengeCard() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    loadChallenge();
-  }, []);
+    if (token) loadChallenge();
+    else setLoading(false);
+  }, [token]);
 
+  // Uses a plain, isolated fetch (not the shared authFetch) so that if this
+  // one endpoint has a hiccup, it can never trigger a global logout and take
+  // down the rest of the homepage with it.
   async function loadChallenge() {
     setLoading(true);
     try {
-      const res = await authFetch("/api/daily-challenge");
-      if (!res.ok) throw new Error();
+      const res = await fetch(`${API}/api/daily-challenge`, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("daily-challenge fetch failed");
       const data = await res.json();
       setChallenge(data.challenge);
       setAnswered(data.answered);
       if (data._funFact) setFunFact(data._funFact);
     } catch (e) {
-      // silent fail
+      console.error("[DailyChallengeCard]", e.message);
+      setChallenge(null);
     } finally {
       setLoading(false);
     }
@@ -37,18 +44,17 @@ export default function DailyChallengeCard() {
   async function submitAnswer(option) {
     setSubmitting(true);
     try {
-      const res = await authFetch("/api/daily-challenge/answer", {
+      const res = await fetch(`${API}/api/daily-challenge/answer`, {
         method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ answer: option }),
       });
-
-      if (!res.ok) throw new Error();
-
+      if (!res.ok) throw new Error("daily-challenge answer failed");
       const data = await res.json();
       setChallenge(prev => ({ ...prev, correctAnswer: data.correctAnswer, userAnswer: option, isCorrect: data.isCorrect }));
       setAnswered(true);
     } catch (e) {
-      // silent fail
+      console.error("[DailyChallengeCard]", e.message);
     } finally {
       setSubmitting(false);
     }
@@ -88,4 +94,4 @@ export default function DailyChallengeCard() {
       {answered && funFact && <p className={styles.funFact}>💡 {funFact}</p>}
     </div>
   );
-}
+    }
