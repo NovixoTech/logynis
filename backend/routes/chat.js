@@ -133,8 +133,8 @@ router.post("/", authMiddleware, async (req, res, next) => {
 async function updateStreak(userId, user) {
   try {
     const today = new Date().toDateString();
-    const lastDate = user?.lastStudyDate
-      ? new Date(user.lastStudyDate).toDateString()
+    const lastDate = user?.laststudydate
+      ? new Date(user.laststudydate).toDateString()
       : null;
     const yesterday = new Date(Date.now() - 86400000).toDateString();
 
@@ -150,7 +150,7 @@ async function updateStreak(userId, user) {
 
     await supabase
       .from("users")
-      .update({ streak: newStreak, lastStudyDate: new Date().toISOString().split("T")[0] })
+      .update({ streak: newStreak, laststudydate: new Date().toISOString().split("T")[0] })
       .eq("id", userId);
   } catch (err) {
     console.error("[streak]", err.message);
