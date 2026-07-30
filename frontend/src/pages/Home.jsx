@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { IconSettings } from "../components/Icons.jsx";
 import PomodoroTimer from "../components/PomodoroTimer.jsx";
 import ClassReminderBanner from "../components/ClassReminderBanner.jsx";
+import DailyChallengeCard from "../components/DailyChallengeCard.jsx";
 import styles from "./Home.module.css";
 
 const MODES = [
@@ -81,6 +82,8 @@ export default function Home() {
 
         <ClassReminderBanner />
 
+        {user && <DailyChallengeCard />}
+
         <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
@@ -97,4 +100,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-            }
+  }
