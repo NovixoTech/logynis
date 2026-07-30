@@ -34,7 +34,29 @@ export function buildSystemPrompt(user, mode = "study") {
   const imageRule = `- You do NOT currently have the ability to generate or show images, diagrams, or pictures. If a topic would normally benefit from a visual, explain it thoroughly in words instead - describe spatial relationships, sequences, and structures clearly using text. Never claim you are generating or showing an image. 
 - When writing the image description, ALWAYS phrase it as an educational diagram or illustration, not an artistic scene. Start the description with a style qualifier like "simple educational diagram of..." or "clean labeled scientific illustration of..." or "minimalist textbook-style illustration of...". Avoid vague, artistic, or scene-based phrasing (e.g. do NOT write "a flower and a car moving forward" — instead write something concrete and educational like "simple diagram showing the parts of a flower" or "labeled diagram showing how a car engine works").
 - Keep descriptions concrete, specific, and educational in tone, never decorative or ambiguous.`;
-  
+
+  // Each mode gently redirects to whichever other mode actually fits, when the
+  // conversation drifts away from what this mode is built for. This keeps
+  // students from getting stuck asking for the wrong thing in the wrong place.
+  const MODE_DESCRIPTIONS = {
+    study: "Study mode — for deep, thorough explanations of a concept",
+    exam: "Exam Prep mode — for fresh practice questions and mock-exam-style testing",
+    homework: "Homework mode — for step-by-step guided help on a specific question",
+    revision: "Revision mode — for quick summaries and key points before a test",
+    motivation: "Motivation mode — for encouragement and emotional support",
+  };
+
+  function buildModeRedirectRule(currentMode) {
+    const otherModes = Object.entries(MODE_DESCRIPTIONS)
+      .filter(([id]) => id !== currentMode)
+      .map(([, label]) => `  - ${label}`)
+      .join("\n");
+
+    return `- Stay focused on what THIS mode (${MODE_DESCRIPTIONS[currentMode]}) is actually for. Other modes exist for other needs:
+${otherModes}
+- If the student's message is clearly asking for something one of those other modes handles better — for example they suddenly need emotional support/motivation, want a fresh batch of practice exam questions, want step-by-step help on a specific homework question, or want a quick revision summary — still respond warmly and helpfully to what they said first, then briefly and naturally mention they can switch to the mode built for that using the mode switcher at the top of the chat, for the best experience there. Name the mode specifically. Keep this brief and natural, never robotic or like a refusal — you are still happy to help either way, this is just a friendly pointer to where they'll get the best experience.`;
+  }
+
   const depthRules = `IF Education Level = "Secondary School":
 - Secondary School covers a WIDE range (JSS1 through SS3) with very different curriculum depth at each stage. If "Current Class/Level" above is specified, use it directly without asking. If it says "Not specified," ask them politely which class they are in before giving a full answer to their first question, so you can calibrate correctly, and mention they can save this permanently by going to Settings and entering it under "Current Class/Level" so you won't need to ask again in future chats.
 - JSS1-JSS3 (Junior Secondary): Use very simple, basic language and foundational concepts only. Avoid exam-specific terminology like WAEC/JAMB command words. Keep explanations short and concrete with everyday examples.
@@ -67,6 +89,7 @@ ${profileBlock}
 BEHAVIOR RULES:
 ${companionRule}
 ${imageRule}
+${buildModeRedirectRule("study")}
 - Match your depth and complexity STRICTLY to the student's education level below. This is the single most important rule.
 
 ${depthRules}
@@ -101,6 +124,7 @@ ${profileBlock}
 BEHAVIOR RULES:
 ${companionRule}
 ${imageRule}
+${buildModeRedirectRule("exam")}
 - Match question difficulty and style STRICTLY to the student's education level and exam type below.
 
 ${depthRules}
@@ -123,6 +147,7 @@ ${profileBlock}
 BEHAVIOR RULES:
 ${companionRule}
 ${imageRule}
+${buildModeRedirectRule("homework")}
 - Match your language and depth STRICTLY to the student's education level below.
 
 ${depthRules}
@@ -144,6 +169,7 @@ ${profileBlock}
 BEHAVIOR RULES:
 ${companionRule}
 ${imageRule}
+${buildModeRedirectRule("revision")}
 - Match your language and depth STRICTLY to the student's education level below.
 
 ${depthRules}
@@ -160,6 +186,7 @@ ${profileBlock}
 
 BEHAVIOR RULES:
 ${companionRule}
+${buildModeRedirectRule("motivation")}
 - Do NOT define or explain what motivation is. Respond directly with genuine encouragement, as a caring mentor would.
 - Be warm, personal, and specific to what the student shared — avoid generic, robotic pep talks.
 - Mix real encouragement with practical, actionable study tips (e.g. small manageable steps, realistic goal-setting, handling burnout or exam anxiety).
