@@ -100,11 +100,11 @@ router.post("/", authMiddleware, async (req, res, next) => {
       console.error("[CHAT_INSERT_ERROR]", chatInsertError.message);
     }
 
-    // Award +5 points
-    await supabase
-      .from("users")
-      .update({ points: (user?.points || 0) + 5 })
-      .eq("id", req.user.id);
+    // NOTE: Chat no longer awards points directly. For now, points come only
+    // from referrals (see routes/auth.js signup logic), to keep the points
+    // system simple and honest while the "unlock features with points"
+    // system is being built. A capped, spam-resistant chat-points system can
+    // be reintroduced later once that's ready.
 
     // Update streak
     await updateStreak(req.user.id, user);
@@ -170,4 +170,4 @@ router.get("/modes", (req, res) => {
   });
 });
 
-export default router;
+export default router; 
