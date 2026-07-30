@@ -81,8 +81,6 @@ export default function Home() {
 
         <ClassReminderBanner />
 
-        {user && <DailyChallengeCard />}
-
         <div className={styles.grid}>
           {MODES.map((m) => (
             <button key={m.id} className={styles.card} onClick={() => navigate(`/mode/${m.id}`)}>
@@ -99,4 +97,4 @@ export default function Home() {
       <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
     </div>
   );
-  }
+}
