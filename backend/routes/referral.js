@@ -1,7 +1,5 @@
-// Draft route for Referral Rewards Program
-// NOT registered in index.js yet - standalone for future integration
+// Route for Referral Rewards Program
 // NOTE: This mostly READS data your live auth.js already writes (referralcode, points, invitecount)
-// No new AI logic needed - this is a surfacing/display feature
 
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth.js";
@@ -26,12 +24,15 @@ router.get("/summary", authMiddleware, async (req, res, next) => {
       .select("name, createdat")
       .eq("referredby", user.referralcode);
 
+    const pointsPerReferral = 10; // matches the existing hardcoded value in auth.js signup logic
+
     res.json({
       referralCode: user.referralcode,
       points: user.points || 0,
+      referralPointsEarned: (user.invitecount || 0) * pointsPerReferral,
       inviteCount: user.invitecount || 0,
       referredUsers: (referredUsers || []).map(u => ({ name: u.name, joinedAt: u.createdat })),
-      pointsPerReferral: 10, // matches the existing hardcoded value in auth.js signup logic
+      pointsPerReferral,
     });
   } catch (err) {
     console.error("[referral-summary-error]", err.message);
