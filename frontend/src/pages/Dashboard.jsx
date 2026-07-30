@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Dashboard.module.css";
@@ -16,8 +17,38 @@ function firstName(fullName) {
 }
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user: cachedUser, updateUser, logout, authFetch } = useAuth();
   const navigate = useNavigate();
+
+  // Start with the cached user so the page isn't empty while the fresh
+  // fetch is in flight, then replace it with live data from the server.
+  const [user, setUser] = useState(cachedUser);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFreshProfile() {
+      try {
+        const res = await authFetch("/user/profile");
+        if (!res.ok) throw new Error("Failed to load profile");
+        const fresh = await res.json();
+        if (!cancelled) {
+          setUser(fresh);
+          updateUser(fresh); // keeps the cached copy fresh everywhere else too
+        }
+      } catch (e) {
+        // If this fails, we just keep showing the cached user - not worth
+        // blocking the whole dashboard over a refresh failure.
+        console.error("[Dashboard] profile refresh failed", e.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadFreshProfile();
+    return () => { cancelled = true; };
+  }, []);
 
   const subjects = (user?.subjects || "")
     .split(",")
@@ -64,7 +95,9 @@ export default function Dashboard() {
             )}
             <div className={styles.passportRow}>
               <span className={styles.passportLabel}>Points</span>
-              <span className={styles.passportValue}>{user?.points ?? 0}</span>
+              <span className={styles.passportValue}>
+                {loading ? "…" : (user?.points ?? 0)}
+              </span>
             </div>
           </div>
           {subjects.length > 0 && (
