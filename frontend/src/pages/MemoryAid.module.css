@@ -18,3 +18,20 @@
 .generateBtn:disabled { opacity: 0.6; }
 
 .result { padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; }
+
+.resultActions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.playBtn {
+  font-size: 0.78rem;
+  color: var(--accent);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  background: none;
+    }
