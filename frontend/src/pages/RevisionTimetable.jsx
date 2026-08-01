@@ -48,7 +48,7 @@ export default function RevisionTimetable() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/revision-timetable/generate", {
+      const res = await authFetch("/api/revision-timetable/generate", {
         method: "POST",
         body: JSON.stringify({ subjects, daysPerWeek, hoursPerSession }),
       });
