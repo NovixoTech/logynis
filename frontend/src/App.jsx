@@ -42,7 +42,7 @@ function Protected({ children }) {
 function Public({ children }) {
   const { user, loading } = useAuth();
   if (loading) return null;
-  if (user) return <Navigate to="/mode/study" replace />;
+  if (user) return <Navigate to="/" replace />;
   return children;
 }
 
@@ -101,4 +101,4 @@ function Routes_() {
 
 export default function App() {
   return <AuthProvider><Routes_ /></AuthProvider>;
-  }
+}
