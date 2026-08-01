@@ -51,7 +51,7 @@ export default function StudyPlan() {
     setError(null);
 
     try {
-      const res = await authFetch("/future/study-plan/generate", {
+      const res = await authFetch("/api/study-plan/generate", {
         method: "POST",
         body: JSON.stringify({ examDate, subjects }),
       });
