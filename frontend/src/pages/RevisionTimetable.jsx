@@ -1,6 +1,3 @@
-// Draft page for Auto-Generated Revision Timetable
-// NOT wired into router yet - standalone for future integration
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -131,4 +128,4 @@ export default function RevisionTimetable() {
       </div>
     </div>
   );
-    }
+                                               }
