@@ -2,6 +2,7 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildSystemPrompt } from "../services/prompts.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 import { AgentLogger } from "novixo-agent-logger";
 
@@ -16,7 +17,7 @@ function makeTitle(text) {
 }
 
 // POST /api/chat
-router.post("/", authMiddleware, async (req, res, next) => {
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { mode = "study", messages, subject, conversationId } = req.body;
 
@@ -170,4 +171,4 @@ router.get("/modes", (req, res) => {
   });
 });
 
-export default router; 
+export default router;
