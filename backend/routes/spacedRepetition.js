@@ -10,7 +10,7 @@ const router = Router();
 
 // POST /future/spaced-repetition/add
 // Called when a student finishes learning/revising a topic for the first time, to start tracking it
-router.post("/add", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, subject } = req.body;
 
