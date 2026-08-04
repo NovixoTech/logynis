@@ -1,6 +1,3 @@
-// Draft route for Spaced Repetition Reminders
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import { calculateNextReview } from "../services/spacedRepetitionLogic.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -8,9 +5,11 @@ import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/spaced-repetition/add
-// Called when a student finishes learning/revising a topic for the first time, to start tracking it
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/spaced-repetition/add
+// Called when a student finishes learning/revising a topic for the first time, to start tracking it.
+// This is pure calculation + a database insert - no AI call - so it stays
+// ungated. Path restored to "/add" (had been accidentally changed to "/generate").
+router.post("/add", authMiddleware, async (req, res, next) => {
   try {
     const { topic, subject } = req.body;
 
@@ -40,7 +39,7 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
   }
 });
 
-// GET /future/spaced-repetition/due
+// GET /api/spaced-repetition/due
 // Returns topics that are due for review right now
 router.get("/due", authMiddleware, async (req, res, next) => {
   try {
@@ -61,7 +60,7 @@ router.get("/due", authMiddleware, async (req, res, next) => {
   }
 });
 
-// GET /future/spaced-repetition/upcoming
+// GET /api/spaced-repetition/upcoming
 // Returns topics coming up soon (not due yet), for a preview view
 router.get("/upcoming", authMiddleware, async (req, res, next) => {
   try {
@@ -83,7 +82,7 @@ router.get("/upcoming", authMiddleware, async (req, res, next) => {
   }
 });
 
-// POST /future/spaced-repetition/:id/complete
+// POST /api/spaced-repetition/:id/complete
 // Called when a student completes a review, schedules the next one automatically
 router.post("/:id/complete", authMiddleware, async (req, res, next) => {
   try {
@@ -119,7 +118,7 @@ router.post("/:id/complete", authMiddleware, async (req, res, next) => {
   }
 });
 
-// DELETE /future/spaced-repetition/:id
+// DELETE /api/spaced-repetition/:id
 // Stop tracking a topic (mastered it, or no longer relevant)
 router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
