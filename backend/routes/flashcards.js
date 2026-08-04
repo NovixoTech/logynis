@@ -2,12 +2,15 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildFlashcardsPrompt } from "../services/flashcardsPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /flashcards
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/flashcards
+// NOTE: path is root "/" (not "/generate") to match what Flashcards.jsx
+// actually calls: authFetch("/api/flashcards", { method: "POST", ... })
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, count } = req.body;
 
