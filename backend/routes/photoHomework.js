@@ -26,7 +26,7 @@ INSTRUCTIONS:
 }
 
 // POST /photo-homework
-router.post("/", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { imageBase64, mimeType, followUpText } = req.body;
 
