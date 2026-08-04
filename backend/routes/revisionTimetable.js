@@ -1,15 +1,13 @@
-// Draft route for Auto-Generated Revision Timetable
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildRevisionTimetablePrompt } from "../services/revisionTimetablePrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/revision-timetable/generate
+// POST /api/revision-timetable/generate
 router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subjects, daysPerWeek, hoursPerSession } = req.body;
@@ -64,7 +62,7 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
   }
 });
 
-// GET /future/revision-timetable/latest
+// GET /api/revision-timetable/latest
 router.get("/latest", authMiddleware, async (req, res, next) => {
   try {
     const { data: timetable, error } = await supabase
