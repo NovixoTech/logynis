@@ -1,10 +1,8 @@
-// Draft route for Daily Challenge Question
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildDailyChallengePrompt } from "../services/dailyChallengePrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
@@ -13,9 +11,11 @@ function todayDateString() {
   return new Date().toISOString().split("T")[0];
 }
 
-// GET /future/daily-challenge
+// GET /api/daily-challenge
 // Returns today's challenge - generates one if it doesn't exist yet, or returns existing/answered one
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// NOTE: method/path restored to GET "/" (had been accidentally changed to
+// POST "/generate"), matching what DailyChallengeCard.jsx actually calls.
+router.get("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const today = todayDateString();
 
@@ -92,7 +92,8 @@ function todayDateString() {
   }
 });
 
-// POST /future/daily-challenge/answer
+// POST /api/daily-challenge/answer
+// This just scores an already-generated challenge (no new AI call), so it stays ungated.
 router.post("/answer", authMiddleware, async (req, res, next) => {
   try {
     const { answer } = req.body;
