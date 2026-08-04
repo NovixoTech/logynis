@@ -8,8 +8,8 @@ export default function Subscribe() {
 
   function handleSubscribe() {
     // Placeholder until Paystack checkout is wired in - this button will
-    // POST to a backend route that starts a Paystack transaction and
-    // redirects to their checkout page once that's built.
+    // POST to a backend route that starts a Paystack transaction and opens
+    // their payment popup/checkout page once that's built.
     alert("Subscription checkout is coming very soon!");
   }
 
@@ -19,7 +19,7 @@ export default function Subscribe() {
         <span className={styles.badge}>Trial ended</span>
         <h1 className={styles.title}>Your free trial has ended</h1>
         <p className={styles.sub}>
-          Subscribe for <strong>₦3,000/month</strong> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
+          Subscribe for <span className={styles.priceHighlight}>₦3,000/month</span> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
         </p>
 
         <button className={styles.subscribeBtn} onClick={handleSubscribe}>
@@ -33,4 +33,4 @@ export default function Subscribe() {
       </div>
     </div>
   );
-        }
+            }
