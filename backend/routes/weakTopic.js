@@ -56,7 +56,7 @@ export async function recordTopicAttempt(userId, subject, question, wasCorrect) 
 }
 
 // GET /future/weak-topics
-router.get("/", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: topics, error } = await supabase
       .from("topic_performance")
