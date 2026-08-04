@@ -13,8 +13,8 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /future/homework-multi-subject
-// Draft version of the homework chat endpoint with subject-tracking support
-router.post("/", authMiddleware, async (req, res, next) => {
+// Draft version of the homework chat endpoint with subject-tracking support) 
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { messages, activeSubject, previousSubjects, conversationId } = req.body;
 
