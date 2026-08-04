@@ -11,8 +11,7 @@ const router = Router();
 
 const MIN_ATTEMPTS_FOR_SCORE = 5; // don't score a subject until there's enough data to be meaningful
 
-// GET /future/readiness-score?subject=Biology
-router.get("/", authMiddleware, async (req, res, next) => {
+// GET /future/readiness-score?subject=Biology router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subject } = req.query;
 
