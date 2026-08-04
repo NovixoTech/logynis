@@ -1,10 +1,8 @@
-// Draft route for Weak Topic Tracker
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildTopicTaggingPrompt, buildWeakTopicRecommendationPrompt } from "../services/weakTopicPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
@@ -55,8 +53,11 @@ export async function recordTopicAttempt(userId, subject, question, wasCorrect) 
   }
 }
 
-// GET /future/weak-topics
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// GET /api/weak-topics
+// Pure calculation from already-stored data - no AI call - so it stays
+// ungated. Path/method restored to GET "/" (had been accidentally changed
+// to POST "/generate"). It's /recommendations below that actually calls AI.
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { data: topics, error } = await supabase
       .from("topic_performance")
@@ -82,8 +83,9 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
   }
 });
 
-// POST /future/weak-topics/recommendations
-router.post("/recommendations", authMiddleware, async (req, res, next) => {
+// POST /api/weak-topics/recommendations
+// This DOES call the AI, so this is the one that actually needs the gate.
+router.post("/recommendations", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: user } = await supabase
       .from("users")
