@@ -1,15 +1,13 @@
-// Draft route for One-Pager Generator
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildOnePagerPrompt } from "../services/onePagerPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/one-pager
+// POST /api/one-pager/generate
 router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic } = req.body;
