@@ -15,7 +15,7 @@ const router = Router();
 const VALID_MOODS = ["great", "good", "okay", "stressed", "overwhelmed", "sad", "tired"];
 
 // POST /future/mood-checkin
-router.post("/", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { mood, note } = req.body;
 
