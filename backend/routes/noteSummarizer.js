@@ -1,16 +1,14 @@
-// Draft route for Note Summarizer
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildNoteSummarizerPrompt } from "../services/noteSummarizerPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/note-summarizer
-router.post("/", authMiddleware, async (req, res, next) => {
+// POST /api/note-summarizer
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { rawNotes } = req.body;
 
