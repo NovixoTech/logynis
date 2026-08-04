@@ -10,7 +10,7 @@ function makeTitle(text) {
 }
 
 // GET /conversations?mode=study
-router.get("/", authMiddleware, async (req, res) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { mode } = req.query;
     if (!mode) return res.status(400).json({ error: "mode is required" });
