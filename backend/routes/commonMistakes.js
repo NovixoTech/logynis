@@ -5,7 +5,7 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildCommonMistakesPrompt } from "../services/commonMistakesPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
-+ import { requireActiveSubscription } from "../middleware/subscription.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
