@@ -1,17 +1,17 @@
-// Draft route for Gratitude/Reflection Prompt
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildReflectionPrompt } from "../services/reflectionPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// GET /future/reflection/prompt
+// GET /api/reflection/prompt
 // Generates a fresh reflection question
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// NOTE: method/path restored to GET "/prompt" - this had been accidentally
+// changed to POST "/generate"
+router.get("/prompt", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: user } = await supabase
       .from("users")
@@ -33,9 +33,9 @@ const router = Router();
   }
 });
 
-// POST /future/reflection/respond
+// POST /api/reflection/respond
 // Student answers the reflection question, gets a warm acknowledgment back
-router.post("/respond", authMiddleware, async (req, res, next) => {
+router.post("/respond", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { reflection } = req.body;
 
@@ -69,4 +69,4 @@ router.post("/respond", authMiddleware, async (req, res, next) => {
   }
 });
 
-export default router; 
+export default router;
