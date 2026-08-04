@@ -1,17 +1,22 @@
-// Draft route for Subject Readiness Score
-// NOT registered in index.js yet - standalone for future integration
-// This feature reads from the same topic_performance table used by Weak Topic Tracker
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
 const MIN_ATTEMPTS_FOR_SCORE = 5; // don't score a subject until there's enough data to be meaningful
 
-// GET /future/readiness-score?subject=Biology router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// GET /api/readiness-score?subject=Biology
+// NOTE: this route declaration had accidentally been appended onto the end
+// of a "//" comment line, which commented out the entire function
+// declaration - the return statements deeper in the file were then parsed
+// as being outside any function, causing "SyntaxError: Illegal return
+// statement" and crashing the whole server. Restored to its own line below.
+// This route itself doesn't call the AI (pure calculation from stored data),
+// so it stays ungated - it's /insight below that actually costs an AI call.
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { subject } = req.query;
 
@@ -81,9 +86,9 @@ const MIN_ATTEMPTS_FOR_SCORE = 5; // don't score a subject until there's enough 
   }
 });
 
-// POST /future/readiness-score/insight
+// POST /api/readiness-score/insight
 // Optional AI-generated encouraging note about the score, separate from the raw calculation above
-router.post("/insight", authMiddleware, async (req, res, next) => {
+router.post("/insight", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subject, readinessScore, readinessLabel, topicBreakdown } = req.body;
 
