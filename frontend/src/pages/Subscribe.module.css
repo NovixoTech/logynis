@@ -44,6 +44,12 @@
   margin: 0 0 1.5rem;
 }
 
+.priceHighlight {
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
 .subscribeBtn {
   width: 100%;
   padding: 0.85rem;
@@ -54,6 +60,7 @@
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .linksRow {
