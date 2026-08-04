@@ -2,12 +2,13 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildExplainDifferentlyPrompt } from "../services/explainDifferentlyPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /explain-differently
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/explain-differently
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { originalQuestion, originalAnswer, attemptNumber } = req.body;
 
