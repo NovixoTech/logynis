@@ -15,7 +15,7 @@ function todayDateString() {
 
 // GET /future/daily-challenge
 // Returns today's challenge - generates one if it doesn't exist yet, or returns existing/answered one
-router.get("/", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const today = todayDateString();
 
