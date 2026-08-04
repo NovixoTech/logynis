@@ -10,7 +10,7 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /future/revision-timetable/generate
-router.post("/generate", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subjects, daysPerWeek, hoursPerSession } = req.body;
 
