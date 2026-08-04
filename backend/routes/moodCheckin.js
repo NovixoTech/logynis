@@ -1,5 +1,3 @@
-// Draft route for Mood Check-In Tracker
-// NOT registered in index.js yet - standalone for future integration
 // CRITICAL SAFETY NOTE: this feature must never attempt to diagnose or label
 // a student's mental state. It only reflects patterns gently and, when a
 // concerning pattern appears, encourages talking to a trusted real person.
@@ -8,14 +6,17 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildMoodPatternPrompt } from "../services/moodCheckinPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
 const VALID_MOODS = ["great", "good", "okay", "stressed", "overwhelmed", "sad", "tired"];
 
-// POST /future/mood-checkin
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/mood-checkin
+// This just saves a mood entry to the database - it does not call the AI,
+// so it stays ungated. It's /insight below that actually costs an AI call.
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { mood, note } = req.body;
 
@@ -38,7 +39,7 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
   }
 });
 
-// GET /future/mood-checkin/history?days=14
+// GET /api/mood-checkin/history?days=14
 router.get("/history", authMiddleware, async (req, res, next) => {
   try {
     const days = parseInt(req.query.days) || 14;
@@ -61,9 +62,9 @@ router.get("/history", authMiddleware, async (req, res, next) => {
   }
 });
 
-// GET /future/mood-checkin/insight
-// Only generates a gentle pattern note if there's enough recent data to be meaningful
-router.get("/insight", authMiddleware, async (req, res, next) => {
+// GET /api/mood-checkin/insight
+// This DOES call the AI, so this is the one that actually needs the gate.
+router.get("/insight", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const since = new Date();
     since.setDate(since.getDate() - 14);
