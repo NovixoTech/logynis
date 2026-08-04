@@ -8,7 +8,7 @@ import { getRecentQuestions, logQuestions } from "../services/examHistory.js";
 const router = Router();
 
 // POST /api/timed-mock-exam/generate
-router.post("/generate", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subject, questionCount, durationMinutes } = req.body;
 
