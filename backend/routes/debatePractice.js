@@ -1,16 +1,14 @@
-// Draft route for Debate/Argument Practice
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildDebatePracticePrompt } from "../services/debatePracticePrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/debate-practice
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/debate-practice/generate
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, studentPosition, messages } = req.body;
 
