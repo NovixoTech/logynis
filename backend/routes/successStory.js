@@ -1,16 +1,14 @@
-// Draft route for Success Story Sharing
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildSuccessStoryPrompt } from "../services/successStoryPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/success-story
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/success-story/generate
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { currentStruggle } = req.body;
 
