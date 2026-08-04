@@ -11,7 +11,7 @@ const router = Router();
 
 // GET /future/reflection/prompt
 // Generates a fresh reflection question
-router.get("/prompt", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: user } = await supabase
       .from("users")
