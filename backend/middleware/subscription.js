@@ -46,7 +46,7 @@ export async function requireActiveSubscription(req, res, next) {
     // subscriptionstatus is "inactive", or fell through from an expired
     // trial/subscription just above - block access to this feature.
     return res.status(402).json({
-      error: "Your free trial has ended. Subscribe for \u20a61000/month to keep using this feature.",
+      error: "Your free trial has ended. Subscribe for \u20a63000/month to keep using this feature.",
       code: "SUBSCRIPTION_REQUIRED",
     });
   } catch (err) {
@@ -57,4 +57,4 @@ export async function requireActiveSubscription(req, res, next) {
       code: "SUBSCRIPTION_CHECK_FAILED",
     });
   }
-}
+        }
