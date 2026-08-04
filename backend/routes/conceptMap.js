@@ -10,7 +10,7 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /future/concept-map
-router.post("/", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic } = req.body;
 
