@@ -10,7 +10,7 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /future/concept-first
-router.post("/", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { homeworkQuestion } = req.body;
 
