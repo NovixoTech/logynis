@@ -10,7 +10,10 @@ function makeTitle(text) {
 }
 
 // GET /conversations?mode=study
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// This just reads past conversations - it does not call the AI, so it stays
+// ungated. A student whose trial/subscription has lapsed should still be
+// able to see and manage their conversation history.
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { mode } = req.query;
     if (!mode) return res.status(400).json({ error: "mode is required" });
