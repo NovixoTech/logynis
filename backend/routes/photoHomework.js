@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
@@ -26,7 +27,8 @@ INSTRUCTIONS:
 }
 
 // POST /photo-homework
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// NOTE: path restored to root "/" to match this file's own original comment
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { imageBase64, mimeType, followUpText } = req.body;
 
