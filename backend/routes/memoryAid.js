@@ -1,16 +1,16 @@
-// Draft route for Memory Aid Generator
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildMemoryAidPrompt } from "../services/memoryAidPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/memory-aid
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/memory-aid
+// NOTE: path is root "/" (not "/generate") to match what MemoryAid.jsx
+// actually calls: authFetch("/api/memory-aid", { method: "POST", ... })
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, format } = req.body;
 
