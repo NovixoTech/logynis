@@ -1,15 +1,13 @@
-// Draft route for Rapid-Fire Recall Quiz
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildRapidRecallPrompt } from "../services/rapidRecallPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/rapid-recall
+// POST /api/rapid-recall/generate
 router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, questionCount } = req.body;
