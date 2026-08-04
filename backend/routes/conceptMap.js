@@ -1,16 +1,14 @@
-// Draft route for Concept Map
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildConceptMapPrompt } from "../services/conceptMapPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/concept-map
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/concept-map/generate
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic } = req.body;
 
@@ -51,4 +49,4 @@ const router = Router();
   }
 });
 
-export default router; 
+export default router;
