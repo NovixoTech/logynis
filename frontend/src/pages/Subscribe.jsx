@@ -19,11 +19,11 @@ export default function Subscribe() {
         <span className={styles.badge}>Trial ended</span>
         <h1 className={styles.title}>Your free trial has ended</h1>
         <p className={styles.sub}>
-          Subscribe for <strong>₦1,000/month</strong> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
+          Subscribe for <strong>₦3,000/month</strong> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
         </p>
 
         <button className={styles.subscribeBtn} onClick={handleSubscribe}>
-          Subscribe for ₦1,000/month
+          Subscribe for ₦3,000/month
         </button>
 
         <div className={styles.linksRow}>
