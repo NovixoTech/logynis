@@ -8,13 +8,13 @@ import ai from "../services/ai.js";
 import { buildSystemPrompt } from "../services/prompts.js";
 import { buildMultiSubjectAddendum } from "../services/multiSubjectPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/homework-multi-subject
-// Draft version of the homework chat endpoint with subject-tracking support) 
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/multi-subject/generate
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { messages, activeSubject, previousSubjects, conversationId } = req.body;
 
