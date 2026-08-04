@@ -2,13 +2,14 @@ import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildAnxietySimulatorPrompt } from "../services/anxietySimulatorPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 import { getRecentQuestions, logQuestions } from "../services/examHistory.js";
 
 const router = Router();
 
 // POST /api/anxiety-simulator/generate
-router.post("/generate", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subject, questionCount, durationMinutes } = req.body;
 
