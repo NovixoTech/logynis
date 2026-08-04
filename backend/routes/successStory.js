@@ -10,7 +10,7 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /future/success-story
-router.post("/", authMiddleware, async (req, res, next) => {
+ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { currentStruggle } = req.body;
 
