@@ -1,16 +1,14 @@
-// Draft route for Cross-Subject Connections
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildCrossSubjectPrompt } from "../services/crossSubjectPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
 
-// POST /future/cross-subject
- router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+// POST /api/cross-subject/generate
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subjectA, subjectB } = req.body;
 
