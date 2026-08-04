@@ -17,7 +17,7 @@ function daysBetween(dateStr) {
 }
 
 // POST /future/study-plan/generate
-router.post("/generate", authMiddleware, async (req, res, next) => {
+router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { examDate, subjects } = req.body;
 
