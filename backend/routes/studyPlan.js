@@ -1,10 +1,8 @@
-// Draft route for Exam Countdown + Study Plan
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildStudyPlanPrompt } from "../services/studyPlanPrompt.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
@@ -16,7 +14,7 @@ function daysBetween(dateStr) {
   return Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 }
 
-// POST /future/study-plan/generate
+// POST /api/study-plan/generate
 router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { examDate, subjects } = req.body;
@@ -87,7 +85,7 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
   }
 });
 
-// GET /future/study-plan/latest
+// GET /api/study-plan/latest
 router.get("/latest", authMiddleware, async (req, res, next) => {
   try {
     const { data: plan, error } = await supabase
