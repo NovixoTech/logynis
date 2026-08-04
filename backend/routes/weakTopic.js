@@ -57,7 +57,7 @@ export async function recordTopicAttempt(userId, subject, question, wasCorrect) 
 // Pure calculation from already-stored data - no AI call - so it stays
 // ungated. Path/method restored to GET "/" (had been accidentally changed
 // to POST "/generate"). It's /recommendations below that actually calls AI.
-router.get("/", authMiddleware, async (req, res, next) => {
+
   try {
     const { data: topics, error } = await supabase
       .from("topic_performance")
