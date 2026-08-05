@@ -8,8 +8,6 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/flashcards
-// NOTE: path is root "/" (not "/generate") to match what Flashcards.jsx
-// actually calls: authFetch("/api/flashcards", { method: "POST", ... })
 router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, count } = req.body;
