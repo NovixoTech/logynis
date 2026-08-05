@@ -8,9 +8,6 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/glossary/add
-// Manually add a term (student types a word they want defined and saved)
-// NOTE: path restored to "/add" to match this file's own original comment -
-// it had been accidentally changed to "/generate"
 router.post("/add", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { term, context, subject, sourceMode } = req.body;
