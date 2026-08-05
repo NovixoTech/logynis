@@ -12,9 +12,6 @@ function todayDateString() {
 }
 
 // GET /api/daily-challenge
-// Returns today's challenge - generates one if it doesn't exist yet, or returns existing/answered one
-// NOTE: method/path restored to GET "/" (had been accidentally changed to
-// POST "/generate"), matching what DailyChallengeCard.jsx actually calls.
 router.get("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const today = todayDateString();
@@ -27,7 +24,6 @@ router.get("/", authMiddleware, requireActiveSubscription, async (req, res, next
       .maybeSingle();
 
     if (existing) {
-      // If already answered, don't leak the correct answer separately - it's fine to show since they've responded
       const alreadyAnswered = !!existing.answeredat;
       return res.json({
         challenge: {
@@ -39,8 +35,6 @@ router.get("/", authMiddleware, requireActiveSubscription, async (req, res, next
         answered: alreadyAnswered,
       });
     }
-
-    // No challenge yet today - generate one
     const { data: user } = await supabase
       .from("users")
       .select("*")
@@ -93,7 +87,6 @@ router.get("/", authMiddleware, requireActiveSubscription, async (req, res, next
 });
 
 // POST /api/daily-challenge/answer
-// This just scores an already-generated challenge (no new AI call), so it stays ungated.
 router.post("/answer", authMiddleware, async (req, res, next) => {
   try {
     const { answer } = req.body;
