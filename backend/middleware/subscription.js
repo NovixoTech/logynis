@@ -25,6 +25,12 @@ export async function requireActiveSubscription(req, res, next) {
         .from("users")
         .update({ subscriptionstatus: "inactive" })
         .eq("id", req.user.id);
+
+      return res.status(402).json({
+        error: "Your subscription has ended. Subscribe again to keep enjoying Logynis \u2014 monthly access to all study modes and features.",
+        code: "SUBSCRIPTION_REQUIRED",
+        reason: "subscription_expired",
+      });
     } else if (user.subscriptionstatus === "trial") {
       const trialStart = user.trialstartdate ? new Date(user.trialstartdate) : now;
       const trialEnd = new Date(trialStart.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
@@ -35,11 +41,18 @@ export async function requireActiveSubscription(req, res, next) {
         .from("users")
         .update({ subscriptionstatus: "inactive" })
         .eq("id", req.user.id);
+
+      return res.status(402).json({
+        error: "Your free trial has ended. Subscribe for \u20a61000/month to keep using this feature.",
+        code: "SUBSCRIPTION_REQUIRED",
+        reason: "trial_expired",
+      });
     }
 
     return res.status(402).json({
       error: "Your free trial has ended. Subscribe for \u20a61000/month to keep using this feature.",
       code: "SUBSCRIPTION_REQUIRED",
+      reason: "trial_expired",
     });
   } catch (err) {
     console.error("[subscription-check-error]", err.message);
@@ -48,4 +61,4 @@ export async function requireActiveSubscription(req, res, next) {
       code: "SUBSCRIPTION_CHECK_FAILED",
     });
   }
-                                   }
+}
