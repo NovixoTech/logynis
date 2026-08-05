@@ -49,4 +49,5 @@ router.post("/", authMiddleware, requireActiveSubscription, async (req, res, nex
     next(err);
   }
 });
+
 export default router;
