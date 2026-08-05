@@ -1,6 +1,3 @@
-// Draft route for "Show Me the Concept First"
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildConceptFirstPrompt } from "../services/conceptFirstPrompt.js";
