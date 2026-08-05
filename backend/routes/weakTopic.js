@@ -7,11 +7,9 @@ import supabase from "../services/supabase.js";
 
 const router = Router();
 
-const WEAK_THRESHOLD = 60; // percent accuracy below this = flagged as weak
-const MIN_ATTEMPTS = 3; // don't flag a topic until it's been attempted enough times to be meaningful
+const WEAK_THRESHOLD = 60;
+const MIN_ATTEMPTS = 3;
 
-// Internal helper - called by other features (like Timed Mock Exam) after scoring
-// Not a direct route, exported for reuse
 export async function recordTopicAttempt(userId, subject, question, wasCorrect) {
   try {
     const taggingPrompt = buildTopicTaggingPrompt(subject, question);
@@ -49,11 +47,9 @@ export async function recordTopicAttempt(userId, subject, question, wasCorrect) 
     }
   } catch (err) {
     console.error("[record-topic-attempt-error]", err.message);
-    // Fail silently - topic tracking shouldn't break the main exam flow
   }
 }
 
-// GET /api/weak-topics
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { data: topics, error } = await supabase
@@ -80,8 +76,6 @@ router.get("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-// POST /api/weak-topics/recommendations
-// This DOES call the AI, so this is the one that actually needs the gate.
 router.post("/recommendations", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: user } = await supabase
