@@ -44,5 +44,4 @@ const router = Router();
     next(err);
   }
 });
-
 export default router;
