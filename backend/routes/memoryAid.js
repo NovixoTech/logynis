@@ -8,8 +8,6 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/memory-aid
-// NOTE: path is root "/" (not "/generate") to match what MemoryAid.jsx
-// actually calls: authFetch("/api/memory-aid", { method: "POST", ... })
 router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, format } = req.body;
