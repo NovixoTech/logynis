@@ -8,9 +8,6 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // GET /api/reflection/prompt
-// Generates a fresh reflection question
-// NOTE: method/path restored to GET "/prompt" - this had been accidentally
-// changed to POST "/generate"
 router.get("/prompt", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { data: user } = await supabase
