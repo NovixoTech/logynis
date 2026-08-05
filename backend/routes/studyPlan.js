@@ -6,7 +6,6 @@ import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
-
 function daysBetween(dateStr) {
   const examDate = new Date(dateStr);
   const today = new Date();
@@ -105,4 +104,5 @@ router.get("/latest", authMiddleware, async (req, res, next) => {
     next(err);
   }
 });
+
 export default router;
