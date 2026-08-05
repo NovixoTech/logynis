@@ -61,7 +61,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
     next(err);
   }
 });
-
 // GET /api/revision-timetable/latest
 router.get("/latest", authMiddleware, async (req, res, next) => {
   try {
@@ -83,4 +82,5 @@ router.get("/latest", authMiddleware, async (req, res, next) => {
     next(err);
   }
 });
+
 export default router;
