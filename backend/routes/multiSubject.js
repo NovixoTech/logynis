@@ -1,8 +1,3 @@
-// Draft route modification for Multi-Subject Session
-// NOT registered in index.js yet - standalone for future integration
-// This shows how the EXISTING homework chat route would need to change,
-// rather than being a fully separate route
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildSystemPrompt } from "../services/prompts.js";
