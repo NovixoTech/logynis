@@ -27,7 +27,6 @@ INSTRUCTIONS:
 }
 
 // POST /photo-homework
-// NOTE: path restored to root "/" to match this file's own original comment
 router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { imageBase64, mimeType, followUpText } = req.body;
