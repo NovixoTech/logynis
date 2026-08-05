@@ -19,7 +19,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: "messages array is required" });
     }
-
     const { data: user } = await supabase
       .from("users")
       .select("*")
@@ -43,4 +42,5 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
     next(err);
   }
 });
+
 export default router;
