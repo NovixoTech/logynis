@@ -1,13 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Subscribe.module.css";
 
 export default function Subscribe() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { authFetch } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Figure out whether this is a first-time trial ending, or a paid
+  // subscription that has lapsed. We check (in order):
+  // 1. state passed via navigate("/subscribe", { state: { reason: "..." } })
+  // 2. a ?reason=... query param
+  // 3. default to trial_expired
+  const searchParams = new URLSearchParams(location.search);
+  const reason = location.state?.reason || searchParams.get("reason") || "trial_expired";
+  const isSubscriptionExpired = reason === "subscription_expired";
 
   async function handleSubscribe() {
     setLoading(true);
@@ -27,10 +37,20 @@ export default function Subscribe() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <span className={styles.badge}>Trial ended</span>
-        <h1 className={styles.title}>Your free trial has ended</h1>
+        <span className={styles.badge}>
+          {isSubscriptionExpired ? "Subscription ended" : "Trial ended"}
+        </span>
+        <h1 className={styles.title}>
+          {isSubscriptionExpired ? "Your subscription has ended" : "Your free trial has ended"}
+        </h1>
         <p className={styles.sub}>
-          Subscribe for <span className={styles.priceHighlight}>₦1,000/month</span> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
+          {isSubscriptionExpired ? (
+            "Subscribe again to keep enjoying Logynis — monthly access to all study modes and features."
+          ) : (
+            <>
+              Subscribe for <span className={styles.priceHighlight}>₦1,000/month</span> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
+            </>
+          )}
         </p>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -46,4 +66,4 @@ export default function Subscribe() {
       </div>
     </div>
   );
-          }
+  }
