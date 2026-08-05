@@ -36,6 +36,7 @@ import weakTopicRouter from "./routes/weakTopic.js";
 import dailyChallengeRouter from "./routes/dailyChallenge.js";
 import glossaryRouter from "./routes/glossary.js";
 import referralRouter from "./routes/referral.js";
+import subscriptionRouter from "./routes/subscription.js";
 
 dotenv.config();
 
@@ -43,7 +44,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({
+  limit: "10mb",
+  verify: (req, res, buf) => { req.rawBody = buf; }
+}));
 
 // Health check
 app.get("/health", (req, res) => {
@@ -86,6 +90,7 @@ app.use("/api/weak-topics", weakTopicRouter);
 app.use("/api/daily-challenge", dailyChallengeRouter);
 app.use("/api/glossary", glossaryRouter);
 app.use("/api/referral", referralRouter);
+app.use("/api/subscription", subscriptionRouter);
 
 // Global error handler
 app.use((err, req, res, next) => {
