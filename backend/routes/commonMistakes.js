@@ -1,6 +1,3 @@
-// Draft route for Common Mistakes Digest
-// NOT registered in index.js yet - standalone for future integration
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildCommonMistakesPrompt } from "../services/commonMistakesPrompt.js";
