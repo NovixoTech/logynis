@@ -10,9 +10,6 @@ function makeTitle(text) {
 }
 
 // GET /conversations?mode=study
-// This just reads past conversations - it does not call the AI, so it stays
-// ungated. A student whose trial/subscription has lapsed should still be
-// able to see and manage their conversation history.
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { mode } = req.query;
