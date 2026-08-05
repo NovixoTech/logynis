@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
@@ -35,10 +36,6 @@ import OfflineLibrary from "./pages/OfflineLibrary.jsx";
 
 const TRIAL_DAYS = 7;
 
-// Same expiry logic as the backend middleware, computed client-side from the
-// cached user object so we don't need an extra request just to decide
-// whether to redirect. The backend check on each AI route is still the real
-// protection - this is purely about sending them to the right screen fast.
 function isSubscriptionExpired(user) {
   if (!user) return false;
   const now = new Date();
@@ -57,23 +54,58 @@ function isSubscriptionExpired(user) {
   return user.subscriptionstatus === "inactive";
 }
 
-// For pages that just need login (Dashboard, Settings, Referrals, etc.) -
-// these stay usable even after trial/subscription expiry.
+const LoadingScreen = (
+  <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",color:"#6b7280"}}>Loading...</div>
+);
+
+// For pages that just need login - Dashboard, Settings, Referrals, etc, and
+// now ModeFeatures (the list of features inside a mode, like "Flashcards,
+// Memory Aid, Concept Map..."). Browsing that list doesn't cost anything,
+// so it stays open even after trial/subscription expiry - no reason to
+// block someone from just looking at what's available.
 function Protected({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",color:"#6b7280"}}>Loading...</div>;
+  if (loading) return LoadingScreen;
   if (!user) return <Navigate to="/signup" replace />;
   return children;
 }
 
-// For the actual AI-costing mode/feature pages - this is the one place that
-// redirects to the paywall the moment someone clicks in after their trial
-// or subscription has lapsed.
+// For the actual AI-generation surfaces - Chat, Flashcards, Memory Aid, and
+// every other page where visiting it means you're about to trigger an AI
+// call. This is where the clean paywall redirect belongs, so an expired
+// trial gets a proper card instead of an inline error mid-generation.
 function ProtectedFeature({ children }) {
-  const { user, loading } = useAuth();
-  if (loading) return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",color:"#6b7280"}}>Loading...</div>;
-  if (!user) return <Navigate to="/signup" replace />;
-  if (isSubscriptionExpired(user)) return <Navigate to="/subscribe" replace />;
+  const { user: cachedUser, loading: authLoading, authFetch, updateUser } = useAuth();
+  const [checking, setChecking] = useState(true);
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !cachedUser) return;
+    let cancelled = false;
+
+    async function checkFresh() {
+      try {
+        const res = await authFetch("/user/profile");
+        if (!res.ok) throw new Error("profile check failed");
+        const fresh = await res.json();
+        if (!cancelled) {
+          updateUser(fresh);
+          setExpired(isSubscriptionExpired(fresh));
+        }
+      } catch (e) {
+        if (!cancelled) setExpired(isSubscriptionExpired(cachedUser));
+      } finally {
+        if (!cancelled) setChecking(false);
+      }
+    }
+
+    checkFresh();
+    return () => { cancelled = true; };
+  }, [authLoading, cachedUser?.id]);
+
+  if (authLoading || checking) return LoadingScreen;
+  if (!cachedUser) return <Navigate to="/signup" replace />;
+  if (expired) return <Navigate to="/subscribe" replace />;
   return children;
 }
 
@@ -95,7 +127,7 @@ function Routes_() {
       <Route path="/chat/:mode" element={<ProtectedFeature><Chat /></ProtectedFeature>} />
       <Route path="/mode/:mode/chat" element={<ProtectedFeature><Chat /></ProtectedFeature>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
-      <Route path="/mode/:mode" element={<ProtectedFeature><ModeFeatures /></ProtectedFeature>} />
+      <Route path="/mode/:mode" element={<Protected><ModeFeatures /></Protected>} />
       <Route path="/glossary" element={<Protected><Glossary /></Protected>} />
       <Route path="/referrals" element={<Protected><Referrals /></Protected>} />
       <Route path="/offline-library" element={<Protected><OfflineLibrary /></Protected>} />
@@ -140,4 +172,4 @@ function Routes_() {
 
 export default function App() {
   return <AuthProvider><Routes_ /></AuthProvider>;
-  }
+    }
