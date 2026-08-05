@@ -1,16 +1,27 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Subscribe.module.css";
 
 export default function Subscribe() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { authFetch } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  function handleSubscribe() {
-    // Placeholder until Paystack checkout is wired in - this button will
-    // POST to a backend route that starts a Paystack transaction and opens
-    // their payment popup/checkout page once that's built.
-    alert("Subscription checkout is coming very soon!");
+  async function handleSubscribe() {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await authFetch("/api/subscription/initialize", { method: "POST" });
+      if (!res.ok) throw new Error("Failed to start checkout");
+      const data = await res.json();
+      // Send the browser to Paystack's hosted checkout page
+      window.location.href = data.authorizationUrl;
+    } catch (e) {
+      setError("Something went wrong starting checkout. Please try again.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -22,8 +33,10 @@ export default function Subscribe() {
           Subscribe for <span className={styles.priceHighlight}>₦1,000/month</span> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
         </p>
 
-        <button className={styles.subscribeBtn} onClick={handleSubscribe}>
-          Subscribe for ₦1,000/month
+        {error && <div className={styles.error}>{error}</div>}
+
+        <button className={styles.subscribeBtn} onClick={handleSubscribe} disabled={loading}>
+          {loading ? "Starting checkout..." : "Subscribe for ₦1,000/month"}
         </button>
 
         <div className={styles.linksRow}>
@@ -33,4 +46,4 @@ export default function Subscribe() {
       </div>
     </div>
   );
-            }
+          }
