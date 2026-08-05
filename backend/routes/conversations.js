@@ -56,7 +56,6 @@ router.get("/:id/messages", authMiddleware, async (req, res) => {
   }
 });
 
-// POST /conversations - create a new conversation
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { mode, firstMessage } = req.body;
