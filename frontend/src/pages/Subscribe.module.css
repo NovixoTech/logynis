@@ -50,6 +50,16 @@
   text-decoration: none;
 }
 
+.error {
+  background: color-mix(in srgb, var(--error) 10%, transparent);
+  color: var(--error);
+  border: 1px solid var(--error);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+}
+
 .subscribeBtn {
   width: 100%;
   padding: 0.85rem;
@@ -61,6 +71,11 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   text-decoration: none;
+}
+
+.subscribeBtn:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
 .linksRow {
@@ -77,4 +92,4 @@
   font-size: 0.82rem;
   cursor: pointer;
   text-decoration: underline;
-}
+  }
