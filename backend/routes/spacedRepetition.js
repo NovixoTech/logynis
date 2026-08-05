@@ -37,7 +37,6 @@ router.post("/add", authMiddleware, async (req, res, next) => {
 });
 
 // GET /api/spaced-repetition/due
-// Returns topics that are due for review right now
 router.get("/due", authMiddleware, async (req, res, next) => {
   try {
     const { data, error } = await supabase
@@ -58,7 +57,6 @@ router.get("/due", authMiddleware, async (req, res, next) => {
 });
 
 // GET /api/spaced-repetition/upcoming
-// Returns topics coming up soon (not due yet), for a preview view
 router.get("/upcoming", authMiddleware, async (req, res, next) => {
   try {
     const { data, error } = await supabase
@@ -80,7 +78,6 @@ router.get("/upcoming", authMiddleware, async (req, res, next) => {
 });
 
 // POST /api/spaced-repetition/:id/complete
-// Called when a student completes a review, schedules the next one automatically
 router.post("/:id/complete", authMiddleware, async (req, res, next) => {
   try {
     const { data: item, error: fetchErr } = await supabase
@@ -116,7 +113,6 @@ router.post("/:id/complete", authMiddleware, async (req, res, next) => {
 });
 
 // DELETE /api/spaced-repetition/:id
-// Stop tracking a topic (mastered it, or no longer relevant)
 router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { error } = await supabase
