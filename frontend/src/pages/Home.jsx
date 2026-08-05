@@ -94,7 +94,7 @@ export default function Home() {
 
       {user && <PomodoroTimer />}
 
-      <footer className={styles.footer}>Powered by <a href="https://github.com/NovixoTech" target="_blank" rel="noreferrer">NovixoTech</a></footer>
+      <footer className={styles.footer}>Powered by NovixoTech</footer>
     </div>
   );
 }
