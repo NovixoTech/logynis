@@ -8,7 +8,7 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/rapid-recall/generate
-router.post("/generate", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic, questionCount } = req.body;
 
