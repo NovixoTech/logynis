@@ -40,8 +40,7 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
       console.error("[mock-exam-parse-error]", parseErr.message, response.text);
       return res.status(500).json({ error: "Failed to generate valid exam questions, please try again" });
     }
-
-    // Save the exam session so results can be scored/tracked later
+    
     const { data: session, error: sessionErr } = await supabase
       .from("mock_exam_sessions")
       .insert({
@@ -58,7 +57,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
 
     await logQuestions(req.user.id, subject, questions);
 
-    // Strip correct answers before sending to frontend - student shouldn't see them yet
     const questionsForStudent = questions.map(({ correctAnswer, ...rest }) => rest);
 
     res.json({
