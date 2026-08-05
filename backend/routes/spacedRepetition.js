@@ -6,9 +6,6 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/spaced-repetition/add
-// Called when a student finishes learning/revising a topic for the first time, to start tracking it.
-// This is pure calculation + a database insert - no AI call - so it stays
-// ungated. Path restored to "/add" (had been accidentally changed to "/generate").
 router.post("/add", authMiddleware, async (req, res, next) => {
   try {
     const { topic, subject } = req.body;
