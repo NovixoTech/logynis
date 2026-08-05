@@ -8,27 +8,18 @@ import supabase from "../services/supabase.js";
 const router = Router();
 
 // POST /api/common-mistakes
- router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
+router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { topic } = req.body;
-
     if (!topic || !topic.trim()) {
       return res.status(400).json({ error: "topic is required" });
     }
-
-    const { data: user } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", req.user.id)
-      .single();
-
+    const { data: user } = await supabase.from("users").select("*").eq("id", req.user.id).single();
     const systemPrompt = buildCommonMistakesPrompt(user, topic);
-
     const response = await ai.chat(
       [{ role: "user", content: `What are common mistakes on: ${topic}` }],
       { systemPrompt, providers: ["cerebras", "groq", "gemini"] }
     );
-
     let mistakes;
     try {
       const cleaned = response.text.replace(/```json|```/g, "").trim();
@@ -37,11 +28,11 @@ const router = Router();
       console.error("[common-mistakes-parse-error]", parseErr.message, response.text);
       return res.status(500).json({ error: "Failed to generate valid results, please try again" });
     }
-
     res.json({ mistakes, provider: response.provider, topic });
   } catch (err) {
     console.error("[common-mistakes-error]", err.message);
     next(err);
   }
 });
+
 export default router;
