@@ -65,6 +65,7 @@ router.post("/initialize", authMiddleware, async (req, res, next) => {
 // Paystack's HMAC signature to confirm it genuinely came from Paystack and
 // wasn't forged by someone who found this URL.
 router.post("/webhook", async (req, res) => {
+  console.log('Webhook hit:', new Date().toISOString());
   try {
     const signature = req.headers["x-paystack-signature"];
 
