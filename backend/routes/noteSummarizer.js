@@ -6,7 +6,6 @@ import { requireActiveSubscription } from "../middleware/subscription.js";
 import supabase from "../services/supabase.js";
 
 const router = Router();
-
 // POST /api/note-summarizer
 router.post("/", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
