@@ -34,8 +34,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
       .select("*")
       .eq("id", req.user.id)
       .single();
-
-    // Pull real weak topic data if it exists, to make the plan genuinely personalized
     const { data: topicData } = await supabase
       .from("topic_performance")
       .select("*")
@@ -67,7 +65,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
       return res.status(500).json({ error: "Failed to generate a valid study plan, please try again" });
     }
 
-    // Save the plan and the exam date on the user's profile
     await supabase.from("users").update({ examdate: examDate }).eq("id", req.user.id);
 
     const { data: savedPlan, error: saveErr } = await supabase
