@@ -1,7 +1,3 @@
-// CRITICAL SAFETY NOTE: this feature must never attempt to diagnose or label
-// a student's mental state. It only reflects patterns gently and, when a
-// concerning pattern appears, encourages talking to a trusted real person.
-
 import { Router } from "express";
 import ai from "../services/ai.js";
 import { buildMoodPatternPrompt } from "../services/moodCheckinPrompt.js";
