@@ -35,6 +35,7 @@ router.post("/initialize", authMiddleware, async (req, res, next) => {
       },
       body: JSON.stringify({
         email: emailForPaystack(user),
+        amount: 100000, // in kobo - this is ₦1,000. Paystack requires this field even when "plan" is also set.
         plan: process.env.PAYSTACK_PLAN_CODE,
         // Sends the browser back to the paywall page after checkout. This
         // is purely cosmetic - the webhook below is what actually grants
