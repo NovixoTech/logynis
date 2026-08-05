@@ -38,7 +38,6 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
       return res.status(500).json({ error: "Failed to generate a valid rating, please try again" });
     }
 
-    // Optionally attach rating to the conversation record if one exists, for later reference
     if (conversationId) {
       await supabase
         .from("conversations")
