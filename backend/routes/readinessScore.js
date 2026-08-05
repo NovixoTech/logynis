@@ -9,13 +9,6 @@ const router = Router();
 const MIN_ATTEMPTS_FOR_SCORE = 5; // don't score a subject until there's enough data to be meaningful
 
 // GET /api/readiness-score?subject=Biology
-// NOTE: this route declaration had accidentally been appended onto the end
-// of a "//" comment line, which commented out the entire function
-// declaration - the return statements deeper in the file were then parsed
-// as being outside any function, causing "SyntaxError: Illegal return
-// statement" and crashing the whole server. Restored to its own line below.
-// This route itself doesn't call the AI (pure calculation from stored data),
-// so it stays ungated - it's /insight below that actually costs an AI call.
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { subject } = req.query;
@@ -51,7 +44,6 @@ router.get("/", authMiddleware, async (req, res, next) => {
     const totalCorrect = topics.reduce((sum, t) => sum + t.correctcount, 0);
     const overallAccuracy = Math.round((totalCorrect / totalQuestions) * 100);
 
-    // Weight recent performance slightly more than old performance for a fairer "current" readiness picture
     const now = Date.now();
     const weightedScores = topics.map(t => {
       const daysSinceLastPractice = (now - new Date(t.lastpracticedat).getTime()) / (1000 * 60 * 60 * 24);
@@ -87,7 +79,6 @@ router.get("/", authMiddleware, async (req, res, next) => {
 });
 
 // POST /api/readiness-score/insight
-// Optional AI-generated encouraging note about the score, separate from the raw calculation above
 router.post("/insight", authMiddleware, requireActiveSubscription, async (req, res, next) => {
   try {
     const { subject, readinessScore, readinessLabel, topicBreakdown } = req.body;
