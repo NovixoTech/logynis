@@ -105,5 +105,4 @@ router.get("/latest", authMiddleware, async (req, res, next) => {
     next(err);
   }
 });
-
 export default router;
