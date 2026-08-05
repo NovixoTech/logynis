@@ -10,8 +10,6 @@ const router = Router();
 const VALID_MOODS = ["great", "good", "okay", "stressed", "overwhelmed", "sad", "tired"];
 
 // POST /api/mood-checkin
-// This just saves a mood entry to the database - it does not call the AI,
-// so it stays ungated. It's /insight below that actually costs an AI call.
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { mood, note } = req.body;
