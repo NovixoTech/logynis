@@ -41,7 +41,7 @@ export default function Subscribe() {
           {isSubscriptionExpired ? "Subscription ended" : "Trial ended"}
         </span>
         <h1 className={styles.title}>
-          {isSubscriptionExpired ? "Your subscription has ended" : "Your free trial has ended"}
+          {isSubscriptionExpired ? "Your subscription has ended"}
         </h1>
         <p className={styles.sub}>
           {isSubscriptionExpired ? (
