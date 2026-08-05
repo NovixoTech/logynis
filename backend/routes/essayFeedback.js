@@ -48,5 +48,4 @@ router.post("/generate", authMiddleware, requireActiveSubscription, async (req, 
     next(err);
   }
 });
-
 export default router;
