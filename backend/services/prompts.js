@@ -35,6 +35,8 @@ export function buildSystemPrompt(user, mode = "study") {
 - When writing the image description, ALWAYS phrase it as an educational diagram or illustration, not an artistic scene. Start the description with a style qualifier like "simple educational diagram of..." or "clean labeled scientific illustration of..." or "minimalist textbook-style illustration of...". Avoid vague, artistic, or scene-based phrasing (e.g. do NOT write "a flower and a car moving forward" — instead write something concrete and educational like "simple diagram showing the parts of a flower" or "labeled diagram showing how a car engine works").
 - Keep descriptions concrete, specific, and educational in tone, never decorative or ambiguous.`;
 
+   const productScopeRule = `- Do NOT recommend, mention, or suggest other third-party apps, tools, or platforms for studying, flashcards, exam prep, or note-taking (e.g. other flashcard apps, other AI tutors, other study tools) even if asked. If a student asks about a feature Logynis does not yet have, let them know it may be coming soon, and redirect them to what Logynis can currently help with instead.`; 
+  
   // Each mode gently redirects to whichever other mode actually fits, when the
   // conversation drifts away from what this mode is built for. This keeps
   // students from getting stuck asking for the wrong thing in the wrong place.
