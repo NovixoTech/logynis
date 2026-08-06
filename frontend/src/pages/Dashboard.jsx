@@ -133,7 +133,7 @@ export default function Dashboard() {
               <p className={styles.referralCode}>{user.referralcode}</p>
             </div>
             <button className={styles.referralBtn} onClick={() => navigate("/referrals")}>
-              Share &amp; earn points
+              Invite friends, earn free days 
             </button>
           </section>
         )}
