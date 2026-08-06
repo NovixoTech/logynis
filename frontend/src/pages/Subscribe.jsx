@@ -3,10 +3,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./Subscribe.module.css";
 
+const PLANS = [
+  { id: "weekly", label: "Weekly", price: "₦350", sub: "per week" },
+  { id: "monthly", label: "Monthly", price: "₦1,500", sub: "per month" },
+  { id: "yearly", label: "Yearly", price: "₦19,000", sub: "per year" },
+];
+
 export default function Subscribe() {
   const navigate = useNavigate();
   const location = useLocation();
   const { authFetch } = useAuth();
+  const [selectedPlan, setSelectedPlan] = useState("monthly");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -23,7 +30,10 @@ export default function Subscribe() {
     setLoading(true);
     setError(null);
     try {
-      const res = await authFetch("/api/subscription/initialize", { method: "POST" });
+      const res = await authFetch("/api/subscription/initialize", {
+        method: "POST",
+        body: JSON.stringify({ plan: selectedPlan }),
+      });
       if (!res.ok) throw new Error("Failed to start checkout");
       const data = await res.json();
       // Send the browser to Paystack's hosted checkout page
@@ -42,22 +52,33 @@ export default function Subscribe() {
         </span>
         <h1 className={styles.title}>
           {isSubscriptionExpired ? "Your subscription has ended" : "Your free trial has ended"}
-
         </h1>
         <p className={styles.sub}>
-          {isSubscriptionExpired ? (
-            "Subscribe again to keep enjoying Logynis — monthly access to all study modes and features."
-          ) : (
-            <>
-              Subscribe for <span className={styles.priceHighlight}>₦1,000/month</span> to keep using Study, Exam Prep, Homework, Revision, and Motivation mode.
-            </>
-          )}
+          {isSubscriptionExpired
+            ? "Subscribe again to keep enjoying Logynis \u2014 access to all study modes and features."
+            : "Choose a plan to keep using Study, Exam Prep, Homework, Revision, and Motivation mode."}
         </p>
+
+        <div className={styles.planGrid}>
+          {PLANS.map((p) => (
+            <button
+              key={p.id}
+              className={`${styles.planCard} ${selectedPlan === p.id ? styles.planCardActive : ""}`}
+              onClick={() => setSelectedPlan(p.id)}
+            >
+              <span className={styles.planLabel}>{p.label}</span>
+              <span className={styles.planPrice}>{p.price}</span>
+              <span className={styles.planSub}>{p.sub}</span>
+            </button>
+          ))}
+        </div>
 
         {error && <div className={styles.error}>{error}</div>}
 
         <button className={styles.subscribeBtn} onClick={handleSubscribe} disabled={loading}>
-          {loading ? "Starting checkout..." : "Subscribe for ₦1,000/month"}
+          {loading
+            ? "Starting checkout..."
+            : `Subscribe \u2014 ${PLANS.find((p) => p.id === selectedPlan).price}`}
         </button>
 
         <div className={styles.linksRow}>
@@ -67,4 +88,4 @@ export default function Subscribe() {
       </div>
     </div>
   );
-  }
+  } 
