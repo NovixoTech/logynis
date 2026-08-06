@@ -214,6 +214,7 @@ async function rewardReferrer(referredUserId, referrerCode) {
       .from("users")
       .update({ streak: newStreak, laststudydate: new Date().toISOString().split("T")[0] })
       .eq("id", userId);
+
   } catch (err) {
     console.error("[streak]", err.message);
   }
