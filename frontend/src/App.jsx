@@ -36,22 +36,27 @@ import OfflineLibrary from "./pages/OfflineLibrary.jsx";
 
 const TRIAL_DAYS = 7;
 
-function isSubscriptionExpired(user) {
-  if (!user) return false;
+// Returns null if the user's access is fine, or a reason string
+// ("trial_expired" | "subscription_expired") if they should be blocked.
+// hasSubscribedBefore (subscriptionexpiry ever being set) is what decides
+// which message they see - it stays true even after subscriptionstatus
+// flips to "inactive", so it survives repeated checks correctly.
+function getExpiryReason(user) {
+  if (!user) return null;
   const now = new Date();
+  const hasSubscribedBefore = !!user.subscriptionexpiry;
 
-  if (user.subscriptionstatus === "active") {
-    if (!user.subscriptionexpiry) return false;
-    return new Date(user.subscriptionexpiry) <= now;
+  if (user.subscriptionstatus === "active" && user.subscriptionexpiry) {
+    return new Date(user.subscriptionexpiry) > now ? null : "subscription_expired";
   }
 
-  if (user.subscriptionstatus === "trial") {
+  if (!hasSubscribedBefore) {
     const start = user.trialstartdate ? new Date(user.trialstartdate) : now;
     const trialEnd = new Date(start.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
-    return now >= trialEnd;
+    return now >= trialEnd ? "trial_expired" : null;
   }
 
-  return user.subscriptionstatus === "inactive";
+  return hasSubscribedBefore ? "subscription_expired" : "trial_expired";
 }
 
 const LoadingScreen = (
@@ -77,7 +82,7 @@ function Protected({ children }) {
 function ProtectedFeature({ children }) {
   const { user: cachedUser, loading: authLoading, authFetch, updateUser } = useAuth();
   const [checking, setChecking] = useState(true);
-  const [expired, setExpired] = useState(false);
+  const [expiredReason, setExpiredReason] = useState(null);
 
   useEffect(() => {
     if (authLoading || !cachedUser) return;
@@ -90,10 +95,10 @@ function ProtectedFeature({ children }) {
         const fresh = await res.json();
         if (!cancelled) {
           updateUser(fresh);
-          setExpired(isSubscriptionExpired(fresh));
+          setExpiredReason(getExpiryReason(fresh));
         }
       } catch (e) {
-        if (!cancelled) setExpired(isSubscriptionExpired(cachedUser));
+        if (!cancelled) setExpiredReason(getExpiryReason(cachedUser));
       } finally {
         if (!cancelled) setChecking(false);
       }
@@ -105,7 +110,7 @@ function ProtectedFeature({ children }) {
 
   if (authLoading || checking) return LoadingScreen;
   if (!cachedUser) return <Navigate to="/signup" replace />;
-  if (expired) return <Navigate to="/subscribe" replace />;
+  if (expiredReason) return <Navigate to={`/subscribe?reason=${expiredReason}`} replace />;
   return children;
 }
 
@@ -172,4 +177,4 @@ function Routes_() {
 
 export default function App() {
   return <AuthProvider><Routes_ /></AuthProvider>;
-    }
+}
