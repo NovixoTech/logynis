@@ -47,6 +47,13 @@ export async function requireActiveSubscription(req, res, next) {
         .eq("id", req.user.id);
     }
 
+    console.log("[SUB-DEBUG]", {
+  subscriptionstatus: user.subscriptionstatus,
+  subscriptionexpiry: user.subscriptionexpiry,
+  hasSubscribedBefore,
+  now: now.toISOString(),
+});
+    
     if (hasSubscribedBefore) {
       return res.status(402).json({
         error: "Your subscription has ended. Subscribe again to keep enjoying Logynis \u2014 monthly access to all study modes and features.",
