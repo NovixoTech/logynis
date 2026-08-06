@@ -12,7 +12,7 @@ const router = Router();
 const PLANS = {
   daily: {
     planCode: process.env.PAYSTACK_PLAN_WEEKLY,
-    amount: 35000, // ₦50
+    amount: 35000, // ₦350
     days: 7,
   },
   monthly: {
@@ -36,7 +36,7 @@ function emailForPaystack(user) {
   return `${user.id}@logynis-user.com`;
 }
 
-// Works out which of our 3 plan keys ("daily"/"monthly"/"yearly") a
+// Works out which of our 3 plan keys ("weekly "/"monthly"/"yearly") a
 // webhook event belongs to. On the FIRST charge, our own metadata.planType
 // is reliable since we set it ourselves at initialize time. On RENEWAL
 // charges (the subscription auto-charging again later), Paystack doesn't
@@ -57,7 +57,7 @@ function resolvePlanType(eventData) {
 }
 
 // POST /api/subscription/initialize
-// Body: { plan: "daily" | "monthly" | "yearly" }
+// Body: { plan: "weekly" | "monthly" | "yearly" }
 // Starts a Paystack checkout for the logged-in user's chosen plan.
 // Returns a hosted checkout URL for the frontend to redirect the browser to.
 router.post("/initialize", authMiddleware, async (req, res, next) => {
