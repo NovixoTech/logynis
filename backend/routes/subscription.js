@@ -10,7 +10,7 @@ const router = Router();
 // payment grants. Keep these three in sync with what's actually configured
 // in the Paystack dashboard.
 const PLANS = {
-  daily: {
+  weekly: {
     planCode: process.env.PAYSTACK_PLAN_WEEKLY,
     amount: 35000, // ₦350
     days: 7,
