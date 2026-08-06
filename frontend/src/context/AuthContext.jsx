@@ -61,7 +61,23 @@ export function AuthProvider({ children }) {
       ...opts,
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...opts.headers },
     });
+
     if (res.status === 401) { logout(); throw new Error("Session expired"); }
+
+    if (res.status === 402) {
+      // Read the reason the backend gave (trial_expired vs subscription_expired)
+      // Clone first so the caller can still read the body if it wants to.
+      let reason = "trial_expired";
+      try {
+        const data = await res.clone().json();
+        if (data.reason) reason = data.reason;
+      } catch (e) {
+        // body wasn't JSON or was empty — fall back to default reason
+      }
+      window.location.href = `/subscribe?reason=${reason}`;
+      throw new Error("Subscription required");
+    }
+
     return res;
   }
 
