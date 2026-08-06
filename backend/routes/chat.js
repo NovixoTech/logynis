@@ -168,8 +168,10 @@ async function updateStreak(userId, user) {
 // Grants the referrer +1 day of access, bumps their running
 // referraldaysearned counter (shown on the Referrals page), and marks this
 // user as already having triggered their reward so it can never fire a
-// second time (e.g. if streak logic re-runs, or the user's streak resets
-// and climbs back to 3 again later).
+// second time. Both Supabase updates are error-checked and logged - if the
+// referrer's reward update fails, we deliberately do NOT mark the referred
+// user as rewarded, so a later retry has a chance to actually succeed
+// instead of silently skipping forever.
 async function rewardReferrer(referredUserId, referrerCode) {
   try {
     const { data: referrer, error: referrerErr } = await supabase
@@ -179,7 +181,7 @@ async function rewardReferrer(referredUserId, referrerCode) {
       .maybeSingle();
 
     if (referrerErr || !referrer) {
-      console.error("[referral-reward] referrer not found for code", referrerCode);
+      console.error("[referral-reward] referrer not found for code", referrerCode, referrerErr?.message);
       return;
     }
 
@@ -195,27 +197,30 @@ async function rewardReferrer(referredUserId, referrerCode) {
     const newExpiry = new Date(base.getTime() + 24 * 60 * 60 * 1000);
 
     const { error: referrerUpdateErr } = await supabase
-  .from("users")
-  .update({
-    subscriptionstatus: "active",
-    subscriptionexpiry: newExpiry.toISOString(),
-    referraldaysearned: (referrer.referraldaysearned || 0) + 1,
-  })
-  .eq("id", referrer.id);
+      .from("users")
+      .update({
+        subscriptionstatus: "active",
+        subscriptionexpiry: newExpiry.toISOString(),
+        referraldaysearned: (referrer.referraldaysearned || 0) + 1,
+      })
+      .eq("id", referrer.id);
 
-if (referrerUpdateErr) {
-  console.error("[referral-reward] failed updating referrer:", referrerUpdateErr.message);
-  return; // don't mark as rewarded if the actual reward didn't apply
-}
+    if (referrerUpdateErr) {
+      console.error("[referral-reward] failed updating referrer:", referrerUpdateErr.message);
+      return; // don't mark as rewarded if the actual reward didn't apply
+    }
 
-const { error: rewardedFlagErr } = await supabase
-  .from("users")
-  .update({ referralrewarded: true })
-  .eq("id", referredUserId);
+    const { error: rewardedFlagErr } = await supabase
+      .from("users")
+      .update({ referralrewarded: true })
+      .eq("id", referredUserId);
 
-if (rewardedFlagErr) {
-  console.error("[referral-reward] failed marking referredUserId as rewarded:", rewardedFlagErr.message);
-    }    
+    if (rewardedFlagErr) {
+      console.error("[referral-reward] failed marking referredUserId as rewarded:", rewardedFlagErr.message);
+    }
+  } catch (err) {
+    console.error("[referral-reward-error]", err.message);
+  }
 }
 
 // GET /api/chat/modes
