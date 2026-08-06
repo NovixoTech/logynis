@@ -107,7 +107,7 @@ router.post("/", authMiddleware, requireActiveSubscription, async (req, res, nex
     // system is being built. A capped, spam-resistant chat-points system can
     // be reintroduced later once that's ready.
 
-    // Update streak
+    // Update streak (and, if applicable, credit the referrer with a free day)
     await updateStreak(req.user.id, user);
 
     logger.log({
@@ -209,7 +209,6 @@ async function rewardReferrer(referredUserId, referrerCode) {
     console.error("[referral-reward-error]", err.message);
   }
 }
-    
 
 // GET /api/chat/modes
 router.get("/modes", (req, res) => {
