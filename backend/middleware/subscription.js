@@ -15,37 +15,43 @@ export async function requireActiveSubscription(req, res, next) {
     }
 
     const now = new Date();
+    // If subscriptionexpiry has ever been set, this user has subscribed
+    // before at least once. This stays true even after we mark them
+    // "inactive" below, so it's a reliable way to tell trial vs. lapsed
+    // subscription apart across repeated requests.
+    const hasSubscribedBefore = !!user.subscriptionexpiry;
 
-    if (user.subscriptionstatus === "active") {
-      const expiry = user.subscriptionexpiry ? new Date(user.subscriptionexpiry) : null;
-      if (expiry && expiry > now) {
-        return next();
-      }
-      await supabase
-        .from("users")
-        .update({ subscriptionstatus: "inactive" })
-        .eq("id", req.user.id);
+    // Case 1: currently active and not yet expired — let them through
+    if (
+      user.subscriptionstatus === "active" &&
+      user.subscriptionexpiry &&
+      new Date(user.subscriptionexpiry) > now
+    ) {
+      return next();
+    }
 
-      return res.status(402).json({
-        error: "Your subscription has ended. Subscribe again to keep enjoying Logynis \u2014 monthly access to all study modes and features.",
-        code: "SUBSCRIPTION_REQUIRED",
-        reason: "subscription_expired",
-      });
-    } else if (user.subscriptionstatus === "trial") {
+    // Case 2: never subscribed before, and still inside the trial window
+    if (!hasSubscribedBefore) {
       const trialStart = user.trialstartdate ? new Date(user.trialstartdate) : now;
       const trialEnd = new Date(trialStart.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
       if (now < trialEnd) {
         return next();
       }
+    }
+
+    // Blocked. Make sure their status reflects that.
+    if (user.subscriptionstatus !== "inactive") {
       await supabase
         .from("users")
         .update({ subscriptionstatus: "inactive" })
         .eq("id", req.user.id);
+    }
 
+    if (hasSubscribedBefore) {
       return res.status(402).json({
-        error: "Your free trial has ended. Subscribe for \u20a61000/month to keep using this feature.",
+        error: "Your subscription has ended. Subscribe again to keep enjoying Logynis \u2014 monthly access to all study modes and features.",
         code: "SUBSCRIPTION_REQUIRED",
-        reason: "trial_expired",
+        reason: "subscription_expired",
       });
     }
 
@@ -61,4 +67,4 @@ export async function requireActiveSubscription(req, res, next) {
       code: "SUBSCRIPTION_CHECK_FAILED",
     });
   }
-}
+  }
