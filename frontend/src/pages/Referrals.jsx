@@ -61,7 +61,8 @@ export default function Referrals() {
 
       <div className={styles.content}>
         <div className={styles.explainer}>
-          Invite friends to Logynis and earn <strong>{data.pointsPerReferral} points</strong> for each person who joins using your code.
+          Invite friends to Logynis. Once someone you invite studies <strong>3 days in a row</strong>,
+          you get <strong>1 free day</strong> added to your account automatically.
         </div>
 
         <div className={styles.codeCard}>
@@ -79,8 +80,8 @@ export default function Referrals() {
             <span className={styles.statLabel}>Friends Invited</span>
           </div>
           <div className={styles.statCard}>
-            <span className={styles.statNumber}>{data.referralPointsEarned}</span>
-            <span className={styles.statLabel}>Points from Referrals</span>
+            <span className={styles.statNumber}>{data.daysEarned}</span>
+            <span className={styles.statLabel}>Free Days Earned</span>
           </div>
         </div>
 
@@ -90,7 +91,9 @@ export default function Referrals() {
             {data.referredUsers.map((u, i) => (
               <div key={i} className={styles.invitedItem}>
                 <span>{u.name}</span>
-                <span className={styles.invitedDate}>{new Date(u.joinedAt).toLocaleDateString()}</span>
+                <span className={styles.invitedDate}>
+                  {u.rewarded ? "🎉 Day earned" : "Building streak..."}
+                </span>
               </div>
             ))}
           </div>
@@ -98,4 +101,4 @@ export default function Referrals() {
       </div>
     </div>
   );
-        }
+                 }
