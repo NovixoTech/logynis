@@ -209,14 +209,7 @@ async function rewardReferrer(referredUserId, referrerCode) {
     console.error("[referral-reward-error]", err.message);
   }
 }
-    await supabase
-      .from("users")
-      .update({ streak: newStreak, laststudydate: new Date().toISOString().split("T")[0] })
-      .eq("id", userId);
- } catch (err) {
-    console.error("[streak]", err.message);
-  }
-}
+    
 
 // GET /api/chat/modes
 router.get("/modes", (req, res) => {
