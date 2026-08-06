@@ -205,12 +205,10 @@ export default function Chat() {
     setError(null);
     try {
       const clean = updated.map(({ role, content }) => ({ role, content }));
-      const headers = { "Content-Type": "application/json" };
-      if (token) headers["Authorization"] = `Bearer ${token}`;
-      const res = await fetch(`${API}/api/chat`, {
-        method: "POST", headers,
-        body: JSON.stringify({ mode, messages: clean, conversationId }),
-      });
+      const res = await authFetch(`/api/chat`, {
+  method: "POST",
+  body: JSON.stringify({ mode, messages: clean, conversationId }),
+}); 
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Error"); }
       const data = await res.json();
       setMessages([...updated, { role: "assistant", content: data.text, provider: data.provider, imageUrl: data.imageUrl || null }]);
