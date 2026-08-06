@@ -165,15 +165,16 @@ async function updateStreak(userId, user) {
   }
 }
 
-// Grants the referrer +1 day of access, and marks this user as already
-// having triggered their reward so it can never fire a second time (e.g.
-// if streak logic re-runs, or the user's streak resets and climbs back to
-// 3 again later).
+// Grants the referrer +1 day of access, bumps their running
+// referraldaysearned counter (shown on the Referrals page), and marks this
+// user as already having triggered their reward so it can never fire a
+// second time (e.g. if streak logic re-runs, or the user's streak resets
+// and climbs back to 3 again later).
 async function rewardReferrer(referredUserId, referrerCode) {
   try {
     const { data: referrer, error: referrerErr } = await supabase
       .from("users")
-      .select("id, subscriptionstatus, subscriptionexpiry")
+      .select("id, subscriptionstatus, subscriptionexpiry, referraldaysearned")
       .eq("referralcode", referrerCode)
       .maybeSingle();
 
@@ -198,13 +199,9 @@ async function rewardReferrer(referredUserId, referrerCode) {
       .update({
         subscriptionstatus: "active",
         subscriptionexpiry: newExpiry.toISOString(),
+        referraldaysearned: (referrer.referraldaysearned || 0) + 1,
       })
       .eq("id", referrer.id);
-   
-    await supabase
-  .from("users")
-  .update({ referraldaysearned: (referrer.referraldaysearned || 0) + 1 })
-  .eq("id", referrer.id);
 
     await supabase
       .from("users")
