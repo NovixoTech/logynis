@@ -200,6 +200,11 @@ async function rewardReferrer(referredUserId, referrerCode) {
         subscriptionexpiry: newExpiry.toISOString(),
       })
       .eq("id", referrer.id);
+   
+    await supabase
+  .from("users")
+  .update({ referraldaysearned: (referrer.referraldaysearned || 0) + 1 })
+  .eq("id", referrer.id);
 
     await supabase
       .from("users")
