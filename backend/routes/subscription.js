@@ -66,7 +66,7 @@ router.post("/initialize", authMiddleware, async (req, res, next) => {
     const planConfig = PLANS[plan];
 
     if (!planConfig) {
-      return res.status(400).json({ error: "Invalid plan. Choose daily, monthly, or yearly." });
+      return res.status(400).json({ error: "Invalid plan. Choose weekly, monthly, or yearly." });
     }
 
     const { data: user, error } = await supabase
