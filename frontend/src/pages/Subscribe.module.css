@@ -50,6 +50,59 @@
   text-decoration: none;
 }
 
+/* Plan picker */
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.planCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.85rem 0.4rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.planCard:active {
+  transform: scale(0.97);
+}
+
+.planCardActive {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.planLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.planCardActive .planLabel {
+  color: var(--accent);
+}
+
+.planPrice {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.planSub {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
 .error {
   background: color-mix(in srgb, var(--error) 10%, transparent);
   color: var(--error);
