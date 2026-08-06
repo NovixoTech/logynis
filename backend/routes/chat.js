@@ -194,22 +194,28 @@ async function rewardReferrer(referredUserId, referrerCode) {
     const base = currentExpiry > now ? currentExpiry : now;
     const newExpiry = new Date(base.getTime() + 24 * 60 * 60 * 1000);
 
-    await supabase
-      .from("users")
-      .update({
-        subscriptionstatus: "active",
-        subscriptionexpiry: newExpiry.toISOString(),
-        referraldaysearned: (referrer.referraldaysearned || 0) + 1,
-      })
-      .eq("id", referrer.id);
+    const { error: referrerUpdateErr } = await supabase
+  .from("users")
+  .update({
+    subscriptionstatus: "active",
+    subscriptionexpiry: newExpiry.toISOString(),
+    referraldaysearned: (referrer.referraldaysearned || 0) + 1,
+  })
+  .eq("id", referrer.id);
 
-    await supabase
-      .from("users")
-      .update({ referralrewarded: true })
-      .eq("id", referredUserId);
-  } catch (err) {
-    console.error("[referral-reward-error]", err.message);
-  }
+if (referrerUpdateErr) {
+  console.error("[referral-reward] failed updating referrer:", referrerUpdateErr.message);
+  return; // don't mark as rewarded if the actual reward didn't apply
+}
+
+const { error: rewardedFlagErr } = await supabase
+  .from("users")
+  .update({ referralrewarded: true })
+  .eq("id", referredUserId);
+
+if (rewardedFlagErr) {
+  console.error("[referral-reward] failed marking referredUserId as rewarded:", rewardedFlagErr.message);
+    }    
 }
 
 // GET /api/chat/modes
