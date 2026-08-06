@@ -130,7 +130,10 @@ router.post("/", authMiddleware, requireActiveSubscription, async (req, res, nex
   }
 });
 
-// Update streak logic
+// Update streak logic, plus one-time referral reward: once a referred
+// user proves they're a real, engaged student (3-day streak) rather than
+// a throwaway signup, their referrer gets +1 day of access. Guarded by
+// referralrewarded so this can only ever fire once per referred user.
 async function updateStreak(userId, user) {
   try {
     const today = new Date().toDateString();
@@ -148,6 +151,64 @@ async function updateStreak(userId, user) {
     } else {
       newStreak = 1;
     }
+
+    await supabase
+      .from("users")
+      .update({ streak: newStreak, laststudydate: new Date().toISOString().split("T")[0] })
+      .eq("id", userId);
+
+    if (newStreak >= 3 && user?.referredby && !user?.referralrewarded) {
+      await rewardReferrer(userId, user.referredby);
+    }
+  } catch (err) {
+    console.error("[streak]", err.message);
+  }
+}
+
+// Grants the referrer +1 day of access, and marks this user as already
+// having triggered their reward so it can never fire a second time (e.g.
+// if streak logic re-runs, or the user's streak resets and climbs back to
+// 3 again later).
+async function rewardReferrer(referredUserId, referrerCode) {
+  try {
+    const { data: referrer, error: referrerErr } = await supabase
+      .from("users")
+      .select("id, subscriptionstatus, subscriptionexpiry")
+      .eq("referralcode", referrerCode)
+      .maybeSingle();
+
+    if (referrerErr || !referrer) {
+      console.error("[referral-reward] referrer not found for code", referrerCode);
+      return;
+    }
+
+    const now = new Date();
+    const currentExpiry =
+      referrer.subscriptionstatus === "active" && referrer.subscriptionexpiry
+        ? new Date(referrer.subscriptionexpiry)
+        : now;
+
+    // If their current access already extends past today, add the day on
+    // top of that. If they're expired/on trial, the extra day starts now.
+    const base = currentExpiry > now ? currentExpiry : now;
+    const newExpiry = new Date(base.getTime() + 24 * 60 * 60 * 1000);
+
+    await supabase
+      .from("users")
+      .update({
+        subscriptionstatus: "active",
+        subscriptionexpiry: newExpiry.toISOString(),
+      })
+      .eq("id", referrer.id);
+
+    await supabase
+      .from("users")
+      .update({ referralrewarded: true })
+      .eq("id", referredUserId);
+  } catch (err) {
+    console.error("[referral-reward-error]", err.message);
+  }
+}
 
     await supabase
       .from("users")
