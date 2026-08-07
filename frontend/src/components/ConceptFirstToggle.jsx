@@ -1,7 +1,3 @@
-// Draft component for "Show Me the Concept First" toggle
-// NOT wired into Homework chat yet - standalone for future integration
-// Meant to sit above the homework input box as an optional pre-step
-
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import styles from "./ConceptFirstToggle.module.css";
