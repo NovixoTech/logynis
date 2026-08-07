@@ -92,13 +92,7 @@ export default function Dashboard() {
                 <span className={styles.passportLabel}>Course</span>
                 <span className={styles.passportValue}>{user.coursename}</span>
               </div>
-            )}
-            <div className={styles.passportRow}>
-              <span className={styles.passportLabel}>Points</span>
-              <span className={styles.passportValue}>
-                {loading ? "…" : (user?.points ?? 0)}
-              </span>
-            </div>
+            )} 
           </div>
           {subjects.length > 0 && (
             <div className={styles.subjectRow}>
