@@ -33,7 +33,7 @@ export default function ConceptFirstToggle({ homeworkQuestion, onConceptReceived
     }
   }
 
-  return (
+ return (
     <div className={styles.wrapper}>
       {error && <p className={styles.error}>{error}</p>}
       <button className={styles.button} onClick={handleClick} disabled={loading}>
