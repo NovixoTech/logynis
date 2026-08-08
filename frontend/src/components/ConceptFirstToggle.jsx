@@ -17,7 +17,7 @@ export default function ConceptFirstToggle({ homeworkQuestion, onConceptReceived
     setError(null);
 
     try {
-      const res = await authFetch("/api/concept-first", {
+      const res = await authFetch("/api/concept-first/generate", {
         method: "POST",
         body: JSON.stringify({ homeworkQuestion }),
       });
