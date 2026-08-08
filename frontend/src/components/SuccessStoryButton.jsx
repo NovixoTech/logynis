@@ -15,7 +15,7 @@ export default function SuccessStoryButton({ currentStruggle, onStoryReceived })
 
     setLoading(true);
     try {
-      const res = await authFetch("/api/success-story", {
+      const res = await authFetch("/api/success-story/generate", {
         method: "POST",
         body: JSON.stringify({ currentStruggle }),
       });
