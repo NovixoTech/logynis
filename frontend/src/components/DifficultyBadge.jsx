@@ -22,7 +22,7 @@ export default function DifficultyBadge({ homeworkQuestion, conversationId }) {
   async function checkDifficulty() {
     setLoading(true);
     try {
-      const res = await authFetch("/api/difficulty-rating", {
+      const res = await authFetch("/api/difficulty-rating/generate", {
         method: "POST",
         body: JSON.stringify({ homeworkQuestion, conversationId }),
       });
